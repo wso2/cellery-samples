@@ -21,3 +21,16 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# MacOS
+*.DS_Store
+
+# Intellij Idea files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# NPM
+*node_modules
+*build
