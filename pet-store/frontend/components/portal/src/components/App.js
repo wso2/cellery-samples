@@ -18,7 +18,7 @@
 
 import Catalog from "./Catalog";
 import Orders from "./Orders";
-import {Pets} from "@material-ui/icons";
+import {Pets, AccountCircle} from "@material-ui/icons";
 import React from "react";
 import {withStyles} from "@material-ui/core/styles";
 import {AppBar, Toolbar, Typography} from "@material-ui/core";
@@ -30,6 +30,9 @@ const styles = (theme) => ({
     },
     icon: {
         marginRight: theme.spacing.unit * 2
+    },
+    title: {
+        flexGrow: 1
     },
     heroContent: {
         maxWidth: 600,
@@ -92,15 +95,32 @@ class App extends React.Component {
                 <AppBar position="static" className={classes.appBar}>
                     <Toolbar>
                         <Pets className={classes.icon}/>
-                        <Typography variant="h6" color="inherit" noWrap>
+                        <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                             Pet Store
                         </Typography>
+                        {
+                            initialState.user
+                                ? (
+                                    <div>
+                                        <Typography variant="h3" color="inherit" noWrap>
+                                            {initialState.user}
+                                        </Typography>
+                                        <AccountCircle/>
+                                    </div>
+                                )
+                                : null
+                        }
                     </Toolbar>
                 </AppBar>
                 <main>
                     <Switch>
-                        <Route exact path={pages[0]} render={() => <Catalog catalog={initialState.catalog}/>}/>
-                        <Route exact path={pages[1]} render={() => <Orders orders={initialState.orders}/>}/>
+                        <Route exact path={pages[0]} render={() => <Catalog catalog={initialState.catalog}
+                                                                            user={initialState.user}/>}/>
+                        {
+                            initialState.user
+                                ? <Route exact path={pages[1]} render={() => <Orders orders={initialState.orders}/>}/>
+                                : null
+                        }
                         <Redirect from={"*"} to={"/"}/>
                     </Switch>
                 </main>

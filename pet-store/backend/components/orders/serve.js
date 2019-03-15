@@ -21,6 +21,8 @@ const service = express();
 const port = process.env.SERVICE_PORT || 3003;
 const ordersDataFile = "data/orders.json";
 
+const CELLERY_USER_HEADER = "x-cellery-auth-subject";
+
 service.use(express.json());
 
 /**
@@ -74,7 +76,9 @@ service.get("/orders", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            handleSuccess(res, JSON.parse(data));
+            const user = req.get(CELLERY_USER_HEADER);
+            const orderList = JSON.parse(data).filter((order) => order.customer === user);
+            handleSuccess(res, orderList);
         }
     });
 });
@@ -87,10 +91,12 @@ service.post("/orders", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            // Creating the new order data.
+            // Creating the new order data
+            const user = req.get(CELLERY_USER_HEADER);
             const maxId = data.reduce((order, acc) => order.id > acc ? order.id : acc, 0);
             data.push({
                 ...req.body,
+                customer: user,
                 id: maxId
             });
 
@@ -116,7 +122,8 @@ service.get("/orders/:id", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            let match = JSON.parse(data).filter((order) => order.id === req.params.id);
+            const user = req.get(CELLERY_USER_HEADER);
+            let match = JSON.parse(data).filter((order) => order.id === req.params.id && order.customer === user);
             if (match.length === 1) {
                 handleSuccess(res, match[0]);
             } else {
@@ -134,7 +141,8 @@ service.put("/orders/:id", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            const match = data.filter((order) => order.id === req.params.id);
+            const user = req.get(CELLERY_USER_HEADER);
+            const match = data.filter((order) => order.id === req.params.id && order.customer === user);
 
             if (match.length === 1) {
                 Object.assign(match[0], req.body);
@@ -162,7 +170,8 @@ service.delete("/orders/:id", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            const newData = data.filter((order) => order.id !== req.params.id);
+            const user = req.get(CELLERY_USER_HEADER);
+            const newData = data.filter((order) => order.id !== req.params.id || order.customer !== user);
 
             if (newData.length === data.length) {
                 handleNotFound("Order not available");
