@@ -29,6 +29,8 @@ import * as express from "express";
 import * as path from "path";
 import * as petStoreApi from "../gen/petStoreApi";
 
+const CELLERY_USER_HEADER = "x-cellery-auth-subject";
+
 const forwardedHeaders = [
     "Authorization",
     "x-request-id",
@@ -76,12 +78,12 @@ const createServer = (port) => {
         const match = routes.reduce((acc, route) => matchPath(req.url, {path: route, exact: true}) || acc, null);
 
         const initialState = {
-            petStoreCell: process.env.PET_STORE_CELL_URL
+            user: req.get(CELLERY_USER_HEADER)
         };
         const basePath = process.env.BASE_PATH;
 
         // Setting the Pet Store Cell URL for the Swagger Generated Client
-        petStoreApi.setDomain(initialState.petStoreCell);
+        petStoreApi.setDomain(process.env.PET_STORE_CELL_URL);
 
         const petStoreApiHeaders = {};
         forwardedHeaders.forEach((header) => {

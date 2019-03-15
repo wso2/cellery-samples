@@ -34,12 +34,22 @@
   },
   {
     "id": 4,
-    "customer": "stevew",
+    "customer": "alice",
     "items": [
       4,
       5
     ],
     "orderDate": "20-03-2019",
+    "deliveryDate": null,
+    "deliveryAddress": "Colombo-15"
+  },
+  {
+    "id": 5,
+    "customer": "alice",
+    "items": [
+      3
+    ],
+    "orderDate": "21-03-2019",
     "deliveryDate": null,
     "deliveryAddress": "Colombo-15"
   }

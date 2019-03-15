@@ -66,7 +66,7 @@ const styles = (theme) => ({
     }
 });
 
-const Catalog = ({catalog, classes}) => (
+const Catalog = ({catalog, user, classes}) => (
     <div className={classes.titleUnit}>
         <div className={classes.titleContent}>
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -78,11 +78,18 @@ const Catalog = ({catalog, classes}) => (
             <div className={classes.titleButtons}>
                 <Grid container spacing={16} justify="center">
                     <Grid item>
-                        <Button variant="contained" color="primary" onClick={() => {
-                            window.location.href = (window.__BASE_PATH__ ? window.__BASE_PATH__ : "") + "/orders";
-                        }}>
-                            Check My Orders
-                        </Button>
+                        {
+                            user
+                                ? (
+                                    <Button variant="contained" color="primary" onClick={() => {
+                                        window.location.href = (window.__BASE_PATH__ ? window.__BASE_PATH__ : "")
+                                            + "/orders";
+                                    }}>
+                                        Check My Orders
+                                    </Button>
+                                )
+                                : null
+                        }
                     </Grid>
                 </Grid>
             </div>
