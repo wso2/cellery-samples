@@ -29,6 +29,17 @@ import * as express from "express";
 import * as path from "path";
 import * as petStoreApi from "../gen/petStoreApi";
 
+const forwardedHeaders = [
+    "Authorization",
+    "x-request-id",
+    "x-b3-traceid",
+    "x-b3-spanid",
+    "x-b3-parentspanid",
+    "x-b3-sampled",
+    "x-b3-flags",
+    "x-ot-span-context"
+];
+
 const routes = [
     "/",
     "/orders"
@@ -72,9 +83,22 @@ const createServer = (port) => {
         // Setting the Pet Store Cell URL for the Swagger Generated Client
         petStoreApi.setDomain(initialState.petStoreCell);
 
+        const petStoreApiHeaders = {};
+        forwardedHeaders.forEach((header) => {
+            const headerValue = req.get(header);
+            if (headerValue) {
+                petStoreApiHeaders[header] = headerValue;
+            }
+        });
+        const petStoreApiParameters = {
+            $config: {
+                headers: petStoreApiHeaders
+            }
+        };
+
         if (match) {
             if (match.path === routes[0]) {
-                petStoreApi.getCatalog()
+                petStoreApi.getCatalog(petStoreApiParameters)
                     .then((response) => {
                         let responseBody = response.data;
                         initialState.catalog = {
@@ -86,7 +110,7 @@ const createServer = (port) => {
                         console.log("[ERROR] Failed to fetch the catalog due to " + e);
                     });
             } else if (match.path === routes[1]) {
-                petStoreApi.getOrders()
+                petStoreApi.getOrders(petStoreApiParameters)
                     .then((response) => {
                         const responseBody = response.data;
                         initialState.orders = responseBody.data.orders;

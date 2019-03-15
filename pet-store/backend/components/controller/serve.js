@@ -31,6 +31,17 @@ const CATALOG_SERVICE_URL = "http://" + CATALOG_HOST + ":" + CATALOG_PORT;
 const CUSTOMERS_SERVICE_URL = "http://" + CUSTOMERS_HOST + ":" + CUSTOMERS_PORT;
 const ORDERS_SERVICE_URL = "http://" + ORDERS_HOST + ":" + ORDERS_PORT;
 
+const forwardedHeaders = [
+    "Authorization",
+    "x-request-id",
+    "x-b3-traceid",
+    "x-b3-spanid",
+    "x-b3-parentspanid",
+    "x-b3-sampled",
+    "x-b3-flags",
+    "x-ot-span-context"
+];
+
 service.use(express.json());
 
 /**
@@ -67,9 +78,20 @@ const handleError = (res, message) => {
  * Call an API.
  *
  * @param config Axios configuration to be used
+ * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callAPI = (config) => new Promise((resolve, reject) => {
+const callAPI = (config, req) => new Promise((resolve, reject) => {
+    if (!config.headers) {
+        config.headers = {};
+    }
+    forwardedHeaders.forEach((header) => {
+        const headerValue = req.get(header);
+        if (headerValue) {
+            config.headers[header] = headerValue;
+        }
+    });
+
     axios(config)
         .then((response) => {
             const responseBody = response.data;
@@ -93,13 +115,14 @@ const callAPI = (config) => new Promise((resolve, reject) => {
  *
  * @param endpoint The endpoint to call in the service
  * @param method The HTTP method to use
+ * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callCatalogService = (endpoint, method) => {
+const callCatalogService = (endpoint, method, req) => {
     return callAPI({
         url: CATALOG_SERVICE_URL + endpoint,
         method: method
-    });
+    }, req);
 };
 
 /**
@@ -107,13 +130,14 @@ const callCatalogService = (endpoint, method) => {
  *
  * @param endpoint The endpoint to call in the service
  * @param method The HTTP method to use
+ * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callCustomersService = (endpoint, method) => {
+const callCustomersService = (endpoint, method, req) => {
     return callAPI({
         url: CUSTOMERS_SERVICE_URL + endpoint,
         method: method
-    });
+    }, req);
 };
 
 /**
@@ -121,20 +145,21 @@ const callCustomersService = (endpoint, method) => {
  *
  * @param endpoint The endpoint to call in the service
  * @param method The HTTP method to use
+ * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callOrdersService = (endpoint, method) => {
+const callOrdersService = (endpoint, method, req) => {
     return callAPI({
         url: ORDERS_SERVICE_URL + endpoint,
         method: method
-    });
+    }, req);
 };
 
 /*
  * API endpoint for getting a list of accessories available in the catalog.
  */
 service.get("/catalog", (req, res) => {
-    callCatalogService("/accessories", "GET")
+    callCatalogService("/accessories", "GET", req)
         .then((data) => {
             handleSuccess(res, {
                 accessories: data
@@ -150,8 +175,8 @@ service.get("/catalog", (req, res) => {
  */
 service.get("/orders", (req, res) => {
     Promise.all([
-        callOrdersService("/orders", "GET"),
-        callCatalogService("/accessories", "GET")
+        callOrdersService("/orders", "GET", req),
+        callCatalogService("/accessories", "GET", req)
     ])
         .then((data) => {
             const orders = data[0];
