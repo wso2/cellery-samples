@@ -20,56 +20,30 @@ import Catalog from "./Catalog";
 import Orders from "./Orders";
 import {Pets, AccountCircle} from "@material-ui/icons";
 import React from "react";
+import routes from "../routes";
 import {withStyles} from "@material-ui/core/styles";
-import {AppBar, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 
 const styles = (theme) => ({
     appBar: {
         position: "relative"
     },
-    icon: {
+    logo: {
         marginRight: theme.spacing.unit * 2
     },
     title: {
         flexGrow: 1
     },
-    heroContent: {
-        maxWidth: 600,
-        margin: "0 auto",
-        padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
+    userAvatarContainer: {
+        marginBottom: theme.spacing.unit * 2,
+        pointerEvents: "none"
     },
-    heroButtons: {
-        marginTop: theme.spacing.unit * 4
+    userAvatar: {
+        marginRight: theme.spacing.unit * 1.5,
+        color: "#fff",
+        backgroundColor: theme.palette.primary.main
     },
-    layout: {
-        width: "auto",
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(1100 + (theme.spacing.unit * 3 * 2))]: {
-            width: 1100,
-            marginLeft: "auto",
-            marginRight: "auto"
-        }
-    },
-    cardGrid: {
-        padding: `${theme.spacing.unit * 8}px 0`
-    },
-    card: {
-        height: "100%",
-        display: "flex",
-        flexDirection: "column"
-    },
-    cardMedia: {
-        paddingTop: "56.25%" // 16:9
-    },
-    cardContent: {
-        flexGrow: 1
-    },
-    footer: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing.unit * 6
-    }
 });
 
 class App extends React.Component {
@@ -78,23 +52,40 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            open: false
+            accountPopoverElement: null
         };
     }
 
-    render() {
-        const {classes, initialState} = this.props;
+    handleAccountPopoverOpen = (event) => {
+        this.setState({
+            accountPopoverElement: event.currentTarget
+        });
+    };
 
-        const pages = [
-            "/",
-            "/orders"
-        ];
+    handleAccountPopoverClose = () => {
+        this.setState({
+            accountPopoverElement: null
+        });
+    };
+
+    signIn = () => {
+        window.location.href = window.__BASE_PATH__ + routes[1];
+    };
+
+    signOut = () => {
+        window.location.href = window.__BASE_PATH__ + "/_auth/logout";
+    };
+
+    render() {
+        const {classes, initialState, isSSR} = this.props;
+        const {accountPopoverElement} = this.state;
+        const isAccountPopoverOpen = Boolean(accountPopoverElement);
 
         return (
             <div className={classes.root}>
                 <AppBar position="static" className={classes.appBar}>
                     <Toolbar>
-                        <Pets className={classes.icon}/>
+                        <Pets className={classes.logo}/>
                         <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                             Pet Store
                         </Typography>
@@ -102,23 +93,55 @@ class App extends React.Component {
                             initialState.user
                                 ? (
                                     <div>
-                                        <Typography variant="h3" color="inherit" noWrap>
-                                            {initialState.user}
-                                        </Typography>
-                                        <AccountCircle/>
+                                        <IconButton
+                                            aria-owns={isAccountPopoverOpen ? "user-info-appbar" : undefined}
+                                            color="inherit" aria-haspopup="true"
+                                            onClick={this.handleAccountPopoverOpen}>
+                                            <AccountCircle/>
+                                        </IconButton>
+                                        <Menu id="user-info-appbar" anchorEl={accountPopoverElement}
+                                              anchorOrigin={{
+                                                  vertical: "top",
+                                                  horizontal: "right"
+                                              }}
+                                              transformOrigin={{
+                                                  vertical: "top",
+                                                  horizontal: "right"
+                                              }}
+                                              open={isAccountPopoverOpen}
+                                              onClose={this.handleAccountPopoverClose}>
+                                            <MenuItem onClick={this.handleAccountPopoverClose}
+                                                      className={classes.userAvatarContainer}>
+                                                <Avatar className={classes.userAvatar}>
+                                                    {initialState.user.substr(0, 1).toUpperCase()}
+                                                </Avatar>
+                                                {initialState.user}
+                                            </MenuItem>
+                                            <MenuItem onClick={this.signOut}>
+                                                Sign Out
+                                            </MenuItem>
+                                        </Menu>
                                     </div>
                                 )
-                                : null
+                                : (
+                                    <Button style={{color: "#ffffff"}} onClick={this.signIn}>Sign In</Button>
+                                )
                         }
                     </Toolbar>
                 </AppBar>
                 <main>
                     <Switch>
-                        <Route exact path={pages[0]} render={() => <Catalog catalog={initialState.catalog}
+                        <Route exact path={routes[0]} render={() => <Catalog catalog={initialState.catalog}
                                                                             user={initialState.user}/>}/>
+                        <Route exact path={routes[1]} render={() => {
+                            if (!isSSR) {
+                                window.location.href = window.__BASE_PATH__;
+                            }
+                            return null;
+                        }}/>
                         {
                             initialState.user
-                                ? <Route exact path={pages[1]} render={() => <Orders orders={initialState.orders}/>}/>
+                                ? <Route exact path={routes[2]} render={() => <Orders orders={initialState.orders}/>}/>
                                 : null
                         }
                         <Redirect from={"*"} to={"/"}/>

@@ -25,10 +25,16 @@ import ReactDOM from "react-dom";
 import {generateTheme} from "./utils";
 import {MuiThemeProvider, createGenerateClassName} from "@material-ui/core/styles";
 
-const initialState = window.__INITIAL_STATE__;
+const initialState = window.__INITIAL_STATE__ ? window.__INITIAL_STATE__ : {};
 Reflect.deleteProperty(window, "__INITIAL_STATE__");
 
-const basePath = window.__BASE_PATH__;
+if (!Boolean(window.__BASE_PATH__)) {
+    window.__BASE_PATH__ = ""
+} else if (window.__BASE_PATH__ === "/") {
+    window.__BASE_PATH__ = "."
+} else if (window.__BASE_PATH__.endsWith("/")) {
+    window.__BASE_PATH__ = window.__BASE_PATH__.substr(0, window.__BASE_PATH__.length - 1)
+}
 
 class Main extends React.Component {
 
@@ -50,7 +56,7 @@ ReactDOM.hydrate((
     <JssProvider generateClassName={createGenerateClassName()}>
         <MuiThemeProvider theme={generateTheme()}>
             <CssBaseline/>
-            <BrowserRouter basename={basePath}>
+            <BrowserRouter basename={window.__BASE_PATH__}>
                 <Main/>
             </BrowserRouter>
         </MuiThemeProvider>

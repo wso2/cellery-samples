@@ -82,8 +82,7 @@ const Catalog = ({catalog, user, classes}) => (
                             user
                                 ? (
                                     <Button variant="contained" color="primary" onClick={() => {
-                                        window.location.href = (window.__BASE_PATH__ ? window.__BASE_PATH__ : "")
-                                            + "/orders";
+                                        window.location.href = window.__BASE_PATH__ + "/orders";
                                     }}>
                                         Check My Orders
                                     </Button>

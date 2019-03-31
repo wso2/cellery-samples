@@ -25,6 +25,7 @@ import {SheetsRegistry} from "jss";
 import {MuiThemeProvider, createGenerateClassName} from "@material-ui/core/styles";
 import {StaticRouter, matchPath} from "react-router-dom";
 import {generateTheme, renderFullPage} from "../utils";
+import routes from "../routes";
 import * as express from "express";
 import * as path from "path";
 import * as petStoreApi from "../gen/petStoreApi";
@@ -42,11 +43,6 @@ const forwardedHeaders = [
     "x-ot-span-context"
 ];
 
-const routes = [
-    "/",
-    "/orders"
-];
-
 const renderApp = (req, res, initialState, basePath) => {
     const sheetsRegistry = new SheetsRegistry();
     const sheetsManager = new Map();
@@ -56,7 +52,7 @@ const renderApp = (req, res, initialState, basePath) => {
             <MuiThemeProvider theme={generateTheme()} sheetsManager={sheetsManager}>
                 <CssBaseline/>
                 <StaticRouter context={context} location={req.url}>
-                    <App initialState={initialState}/>
+                    <App initialState={initialState} isSSR={true}/>
                 </StaticRouter>
             </MuiThemeProvider>
         </JssProvider>
@@ -98,20 +94,24 @@ const createServer = (port) => {
             }
         };
 
+        function renderCatalog() {
+            petStoreApi.getCatalog(petStoreApiParameters)
+                .then((response) => {
+                    let responseBody = response.data;
+                    initialState.catalog = {
+                        accessories: responseBody.data.accessories
+                    };
+                    renderApp(req, res, initialState, basePath);
+                })
+                .catch((e) => {
+                    console.log("[ERROR] Failed to fetch the catalog due to " + e);
+                });
+        }
+
         if (match) {
             if (match.path === routes[0]) {
-                petStoreApi.getCatalog(petStoreApiParameters)
-                    .then((response) => {
-                        let responseBody = response.data;
-                        initialState.catalog = {
-                            accessories: responseBody.data.accessories
-                        };
-                        renderApp(req, res, initialState, basePath);
-                    })
-                    .catch((e) => {
-                        console.log("[ERROR] Failed to fetch the catalog due to " + e);
-                    });
-            } else if (match.path === routes[1]) {
+                renderCatalog();
+            } else if (match.path === routes[2]) {
                 petStoreApi.getOrders(petStoreApiParameters)
                     .then((response) => {
                         const responseBody = response.data;
@@ -122,10 +122,10 @@ const createServer = (port) => {
                         console.log("[ERROR] Failed to fetch the orders due to " + e);
                     });
             } else {
-                renderApp(req, res, initialState, basePath);
+                renderCatalog();
             }
         } else {
-            renderApp(req, res, initialState, basePath);
+            renderCatalog();
         }
     });
 
