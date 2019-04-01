@@ -16,14 +16,15 @@
  * under the License.
  */
 
+import {ExpandMore} from "@material-ui/icons";
 import React from "react";
 import classNames from "classnames";
-import {ExpandMore} from "@material-ui/icons";
 import {withStyles} from "@material-ui/core/styles";
 import {
-    ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, Table, TableBody, TableRow, TableCell,
+    ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, Table, TableBody, TableCell, TableRow,
     Typography
 } from "@material-ui/core";
+import * as PropTypes from "prop-types";
 
 const styles = (theme) => ({
     titleUnit: {
@@ -53,19 +54,19 @@ const styles = (theme) => ({
     orderId: {
         fontSize: theme.typography.pxToRem(15),
         flexBasis: "30%",
-        flexShrink: 0,
+        flexShrink: 0
     },
     itemCount: {
         fontSize: theme.typography.pxToRem(15),
         color: theme.palette.text.secondary,
         flexBasis: "30%",
-        flexShrink: 0,
+        flexShrink: 0
     },
     price: {
         fontSize: theme.typography.pxToRem(15),
         color: theme.palette.text.secondary,
         flexBasis: "30%",
-        flexShrink: 0,
+        flexShrink: 0
     },
     orderDescriptionItem: {
         padding: theme.spacing.unit
@@ -80,6 +81,7 @@ const styles = (theme) => ({
 });
 
 class Orders extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -92,12 +94,12 @@ class Orders extends React.Component {
     /**
      * Handle changes in the expansion panels expaneded status.
      *
-     * @param panel The panel for which the on change should be handled for
-     * @return {Function} The function for handling the change for the panel
+     * @param {number} orderId The order id of the panel for which the on change should be handled for
+     * @returns {Function} The function for handling the change for the panel
      */
-    handlePanelExpansionChange = (panel) => (event, expanded) => {
+    handlePanelExpansionChange = (orderId) => (event, expanded) => {
         this.setState({
-            expanded: expanded ? panel : false,
+            expanded: expanded ? orderId : false
         });
     };
 
@@ -119,7 +121,7 @@ class Orders extends React.Component {
                                     {
                                         orders.map((order) => (
                                             <ExpansionPanel key={order.id} expanded={expanded === order.id}
-                                                            onChange={this.handlePanelExpansionChange(order.id)}>
+                                                onChange={this.handlePanelExpansionChange(order.id)}>
                                                 <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
                                                     <Typography className={classes.orderId}>
                                                         Order {order.id}
@@ -129,9 +131,9 @@ class Orders extends React.Component {
                                                     </Typography>
                                                     <Typography className={classes.price} align={"right"}>
                                                         $ {
-                                                        order.items.reduce((acc, item) => acc + item.unitPrice, 0)
-                                                            .toFixed(2)
-                                                    }
+                                                            order.items.reduce((acc, item) => acc + item.unitPrice, 0)
+                                                                .toFixed(2)
+                                                        }
                                                     </Typography>
                                                 </ExpansionPanelSummary>
                                                 <ExpansionPanelDetails>
@@ -194,7 +196,8 @@ class Orders extends React.Component {
                                                                         {
                                                                             order.items.map((item) => (
                                                                                 <TableRow key={item.id}>
-                                                                                    <TableCell component="th" scope="row">
+                                                                                    <TableCell component="th"
+                                                                                        scope="row">
                                                                                         {item.name}
                                                                                     </TableCell>
                                                                                     <TableCell align="right">
@@ -224,6 +227,19 @@ class Orders extends React.Component {
             </div>
         );
     }
+
 }
+
+Orders.propTypes = {
+    classes: PropTypes.object.isRequired,
+    orders: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        customer: PropTypes.string.isRequired,
+        items: PropTypes.arrayOf(PropTypes.number).isRequired,
+        orderDate: PropTypes.string.isRequired,
+        deliveryDate: PropTypes.string.isRequired,
+        deliveryAddress: PropTypes.string.isRequired
+    }))
+};
 
 export default withStyles(styles)(Orders);

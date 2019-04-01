@@ -28,12 +28,12 @@ import {MuiThemeProvider, createGenerateClassName} from "@material-ui/core/style
 const initialState = window.__INITIAL_STATE__ ? window.__INITIAL_STATE__ : {};
 Reflect.deleteProperty(window, "__INITIAL_STATE__");
 
-if (!Boolean(window.__BASE_PATH__)) {
-    window.__BASE_PATH__ = ""
+if (!window.__BASE_PATH__) {
+    window.__BASE_PATH__ = "";
 } else if (window.__BASE_PATH__ === "/") {
-    window.__BASE_PATH__ = "."
+    window.__BASE_PATH__ = ".";
 } else if (window.__BASE_PATH__.endsWith("/")) {
-    window.__BASE_PATH__ = window.__BASE_PATH__.substr(0, window.__BASE_PATH__.length - 1)
+    window.__BASE_PATH__ = window.__BASE_PATH__.substr(0, window.__BASE_PATH__.length - 1);
 }
 
 class Main extends React.Component {

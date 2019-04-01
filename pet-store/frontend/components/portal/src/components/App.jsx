@@ -18,12 +18,13 @@
 
 import Catalog from "./Catalog";
 import Orders from "./Orders";
-import {Pets, AccountCircle} from "@material-ui/icons";
 import React from "react";
 import routes from "../routes";
 import {withStyles} from "@material-ui/core/styles";
+import {AccountCircle, Pets} from "@material-ui/icons";
 import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
+import * as PropTypes from "prop-types";
 
 const styles = (theme) => ({
     appBar: {
@@ -43,7 +44,7 @@ const styles = (theme) => ({
         marginRight: theme.spacing.unit * 1.5,
         color: "#fff",
         backgroundColor: theme.palette.primary.main
-    },
+    }
 });
 
 class App extends React.Component {
@@ -73,7 +74,7 @@ class App extends React.Component {
     };
 
     signOut = () => {
-        window.location.href = window.__BASE_PATH__ + "/_auth/logout";
+        window.location.href = `${window.__BASE_PATH__}/_auth/logout`;
     };
 
     render() {
@@ -100,18 +101,18 @@ class App extends React.Component {
                                             <AccountCircle/>
                                         </IconButton>
                                         <Menu id="user-info-appbar" anchorEl={accountPopoverElement}
-                                              anchorOrigin={{
-                                                  vertical: "top",
-                                                  horizontal: "right"
-                                              }}
-                                              transformOrigin={{
-                                                  vertical: "top",
-                                                  horizontal: "right"
-                                              }}
-                                              open={isAccountPopoverOpen}
-                                              onClose={this.handleAccountPopoverClose}>
+                                            anchorOrigin={{
+                                                vertical: "top",
+                                                horizontal: "right"
+                                            }}
+                                            transformOrigin={{
+                                                vertical: "top",
+                                                horizontal: "right"
+                                            }}
+                                            open={isAccountPopoverOpen}
+                                            onClose={this.handleAccountPopoverClose}>
                                             <MenuItem onClick={this.handleAccountPopoverClose}
-                                                      className={classes.userAvatarContainer}>
+                                                className={classes.userAvatarContainer}>
                                                 <Avatar className={classes.userAvatar}>
                                                     {initialState.user.substr(0, 1).toUpperCase()}
                                                 </Avatar>
@@ -132,7 +133,7 @@ class App extends React.Component {
                 <main>
                     <Switch>
                         <Route exact path={routes[0]} render={() => <Catalog catalog={initialState.catalog}
-                                                                            user={initialState.user}/>}/>
+                            user={initialState.user}/>}/>
                         <Route exact path={routes[1]} render={() => {
                             if (!isSSR) {
                                 window.location.href = window.__BASE_PATH__;
@@ -152,5 +153,14 @@ class App extends React.Component {
     }
 
 }
+
+App.propTypes = {
+    classes: PropTypes.string.isRequired,
+    isSSR: PropTypes.bool.isRequired,
+    initialState: PropTypes.shape({
+        catalog: PropTypes.object,
+        orders: PropTypes.object
+    }).isRequired
+};
 
 export default withStyles(styles, {withTheme: true})(withRouter(App));

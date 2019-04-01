@@ -16,6 +16,9 @@
  * under the License.
  */
 
+/* eslint-env node */
+/* eslint "no-process-env": "off" */
+
 import createServer from "./server/app";
 
 const webPortalPort = process.env.PORTAL_PORT || 3000;

@@ -16,16 +16,20 @@
  * under the License.
  */
 
+/* eslint-env node */
+/* eslint no-process-env: "off" */
+/* eslint no-console: "off" */
+
 import App from "../components/App";
 import {CssBaseline} from "@material-ui/core";
 import {JssProvider} from "react-jss";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import {SheetsRegistry} from "jss";
+import routes from "../routes";
 import {MuiThemeProvider, createGenerateClassName} from "@material-ui/core/styles";
 import {StaticRouter, matchPath} from "react-router-dom";
 import {generateTheme, renderFullPage} from "../utils";
-import routes from "../routes";
 import * as express from "express";
 import * as path from "path";
 import * as petStoreApi from "../gen/petStoreApi";
@@ -97,14 +101,14 @@ const createServer = (port) => {
         function renderCatalog() {
             petStoreApi.getCatalog(petStoreApiParameters)
                 .then((response) => {
-                    let responseBody = response.data;
+                    const responseBody = response.data;
                     initialState.catalog = {
                         accessories: responseBody.data.accessories
                     };
                     renderApp(req, res, initialState, basePath);
                 })
                 .catch((e) => {
-                    console.log("[ERROR] Failed to fetch the catalog due to " + e);
+                    console.log(`[ERROR] Failed to fetch the catalog due to ${e}`);
                 });
         }
 
@@ -119,7 +123,7 @@ const createServer = (port) => {
                         renderApp(req, res, initialState, basePath);
                     })
                     .catch((e) => {
-                        console.log("[ERROR] Failed to fetch the orders due to " + e);
+                        console.log(`[ERROR] Failed to fetch the orders due to ${e}`);
                     });
             } else {
                 renderCatalog();

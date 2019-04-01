@@ -24,20 +24,24 @@ BACKEND_COMPONENTS := catalog customers orders controller
 FRONTEND_COMPONENTS := portal
 
 CELL_CLEAN_TARGETS := $(addprefix clean., $(CELLS))
+CELL_CHECK_STYLE_TARGETS := $(addprefix check-style., $(CELLS))
 CELL_BUILD_TARGETS := $(addprefix build., $(CELLS))
 CELL_DOCKER_TARGETS := $(addprefix docker., $(CELLS))
 CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(CELLS))
 
 BACKEND_CELL_CLEAN_TARGETS := $(addprefix clean.backend., $(BACKEND_COMPONENTS))
+BACKEND_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.backend., $(BACKEND_COMPONENTS))
 BACKEND_CELL_BUILD_TARGETS := $(addprefix build.backend., $(BACKEND_COMPONENTS))
 BACKEND_CELL_DOCKER_TARGETS := $(addprefix docker.backend., $(BACKEND_COMPONENTS))
 BACKEND_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push.backend., $(BACKEND_COMPONENTS))
 FRONTEND_CELL_CLEAN_TARGETS := $(addprefix clean.frontend., $(FRONTEND_COMPONENTS))
+FRONTEND_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.frontend., $(FRONTEND_COMPONENTS))
 FRONTEND_CELL_BUILD_TARGETS := $(addprefix build.frontend., $(FRONTEND_COMPONENTS))
 FRONTEND_CELL_DOCKER_TARGETS := $(addprefix docker.frontend., $(FRONTEND_COMPONENTS))
 FRONTEND_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push.frontend., $(FRONTEND_COMPONENTS))
 
 COMPONENT_CLEAN_TARGETS := $(BACKEND_CELL_CLEAN_TARGETS) $(FRONTEND_CELL_CLEAN_TARGETS)
+COMPONENT_CHECK_STYLE_TARGETS := $(BACKEND_CELL_CHECK_STYLE_TARGETS) $(FRONTEND_CELL_CHECK_STYLE_TARGETS)
 COMPONENT_BUILD_TARGETS := $(BACKEND_CELL_BUILD_TARGETS) $(FRONTEND_CELL_BUILD_TARGETS)
 COMPONENT_DOCKER_TARGETS := $(BACKEND_CELL_DOCKER_TARGETS) $(FRONTEND_CELL_DOCKER_TARGETS)
 COMPONENT_DOCKER_PUSH_TARGETS := $(BACKEND_CELL_DOCKER_PUSH_TARGETS) $(FRONTEND_CELL_DOCKER_PUSH_TARGETS)
@@ -48,6 +52,9 @@ all: clean build docker
 
 .PHONY: clean
 clean: $(CELL_CLEAN_TARGETS)
+
+.PHONY: check-style
+check-style: $(CELL_CHECK_STYLE_TARGETS)
 
 .PHONY: build
 build: $(CELL_BUILD_TARGETS)
@@ -64,25 +71,31 @@ docker-push: $(CELL_DOCKER_PUSH_TARGETS)
 .PHONY: $(CELL_CLEAN_TARGETS)
 $(CELL_CLEAN_TARGETS):
 	$(eval CELL=$(patsubst clean.%,%,$@))
-	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z]' '[A-Z]'))
+	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
 	@CELL=$(CELL) $(MAKE) $(addprefix clean.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
+
+.PHONY: $(CELL_CHECK_STYLE_TARGETS)
+$(CELL_CHECK_STYLE_TARGETS):
+	$(eval CELL=$(patsubst check-style.%,%,$@))
+	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
+	@CELL=$(CELL) $(MAKE) $(addprefix check-style.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
 .PHONY: $(CELL_BUILD_TARGETS)
 $(CELL_BUILD_TARGETS):
 	$(eval CELL=$(patsubst build.%,%,$@))
-	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z]' '[A-Z]'))
+	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
 	@CELL=$(CELL) $(MAKE) $(addprefix build.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
 .PHONY: $(CELL_DOCKER_TARGETS)
 $(CELL_DOCKER_TARGETS):
 	$(eval CELL=$(patsubst docker.%,%,$@))
-	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z]' '[A-Z]'))
+	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
 	@CELL=$(CELL) $(MAKE) $(addprefix docker.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
 .PHONY: $(CELL_DOCKER_PUSH_TARGETS)
 $(CELL_DOCKER_PUSH_TARGETS):
 	$(eval CELL=$(patsubst docker-push.%,%,$@))
-	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z]' '[A-Z]'))
+	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
 	@CELL=$(CELL) $(MAKE) $(addprefix docker-push.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
 
@@ -96,8 +109,15 @@ $(BACKEND_CELL_CLEAN_TARGETS):
 $(FRONTEND_CELL_CLEAN_TARGETS):
 	$(eval COMPONENT=$(patsubst clean.frontend.%,%,$@))
 	cd  $(CELL)/components/$(COMPONENT); \
-	npm install; \
+	npm ci; \
 	npm run clean
+
+.PHONY: $(COMPONENT_CHECK_STYLE_TARGETS)
+$(COMPONENT_CHECK_STYLE_TARGETS):
+	$(eval COMPONENT=$(patsubst check-style.$(CELL).%,%,$@))
+	cd  $(CELL)/components/$(COMPONENT); \
+	npm ci; \
+	npm run lint
 
 .PHONY: $(BACKEND_CELL_BUILD_TARGETS)
 $(BACKEND_CELL_BUILD_TARGETS):
@@ -107,11 +127,11 @@ $(BACKEND_CELL_BUILD_TARGETS):
 $(FRONTEND_CELL_BUILD_TARGETS):
 	$(eval COMPONENT=$(patsubst build.frontend.%,%,$@))
 	cd  $(CELL)/components/$(COMPONENT); \
-	npm install; \
+	npm ci; \
 	npm run build
 
 .PHONY: $(COMPONENT_DOCKER_TARGETS)
-$(COMPONENT_DOCKER_TARGETS): $($(shell echo $(CELL) | tr '[a-z]' '[A-Z]')_CELL_BUILD_TARGETS)
+$(COMPONENT_DOCKER_TARGETS): $($(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]')_CELL_BUILD_TARGETS)
 	$(eval COMPONENT=$(patsubst docker.$(CELL).%,%,$@))
 	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(CELL)/components/$(COMPONENT)
 
