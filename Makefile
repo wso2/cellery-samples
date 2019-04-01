@@ -15,12 +15,13 @@
 #  under the License.
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
-DOCKER_REPO ?= celleryio
+DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
 
 SAMPLES := pet-store
 
 CLEAN_TARGETS := $(addprefix clean., $(SAMPLES))
+CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES))
 BUILD_TARGETS := $(addprefix build., $(SAMPLES))
 DOCKER_TARGETS := $(addprefix docker., $(SAMPLES))
 DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(SAMPLES))
@@ -30,6 +31,9 @@ all: clean build docker
 
 .PHONY: clean
 clean: $(CLEAN_TARGETS)
+
+.PHONY: check-style
+check-style: $(CHECK_STYLE_TARGETS)
 
 .PHONY: build
 build: $(BUILD_TARGETS)
@@ -48,6 +52,12 @@ $(CLEAN_TARGETS):
 	$(eval SAMPLE=$(patsubst clean.%,%,$@))
 	@cd $(SAMPLE); \
 	$(MAKE) clean
+
+.PHONY: $(CHECK_STYLE_TARGETS)
+$(CHECK_STYLE_TARGETS):
+	$(eval SAMPLE=$(patsubst check-style.%,%,$@))
+	@cd $(SAMPLE); \
+	$(MAKE) check-style
 
 .PHONY: $(BUILD_TARGETS)
 $(BUILD_TARGETS):

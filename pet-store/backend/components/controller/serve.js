@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
-
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
-
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,6 +30,8 @@ const ORDERS_PORT = process.env.ORDER_PORT;
 const CATALOG_SERVICE_URL = "http://" + CATALOG_HOST + ":" + CATALOG_PORT;
 const CUSTOMERS_SERVICE_URL = "http://" + CUSTOMERS_HOST + ":" + CUSTOMERS_PORT;
 const ORDERS_SERVICE_URL = "http://" + ORDERS_HOST + ":" + ORDERS_PORT;
+
+const CELLERY_USER_HEADER = "x-cellery-auth-subject";
 
 const forwardedHeaders = [
     "Authorization",
@@ -98,14 +100,14 @@ const callAPI = (config, req) => new Promise((resolve, reject) => {
             if (responseBody.status === "SUCCESS") {
                 resolve(responseBody.data);
             } else {
-                console.log("[ERROR] Failed to call API " + config.url + " using method " + config.method + " due to "
-                    + responseBody.message);
-                reject("Failed to fetch data");
+                console.log("[ERROR] Failed to call API " + config.url + " using method " + config.method + " due to " +
+                    responseBody.message);
+                reject(new Error("Failed to fetch data"));
             }
         })
         .catch((error) => {
-            console.log("[ERROR] Failed to call API " + config.url + " using method " + config.method + " due to "
-                + error);
+            console.log("[ERROR] Failed to call API " + config.url + " using method " + config.method + " due to " +
+                error);
             reject(error);
         });
 });
@@ -118,12 +120,10 @@ const callAPI = (config, req) => new Promise((resolve, reject) => {
  * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callCatalogService = (endpoint, method, req) => {
-    return callAPI({
+const callCatalogService = (endpoint, method, req) => callAPI({
         url: CATALOG_SERVICE_URL + endpoint,
         method: method
     }, req);
-};
 
 /**
  * Call an API in the Customers Service.
@@ -133,12 +133,10 @@ const callCatalogService = (endpoint, method, req) => {
  * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callCustomersService = (endpoint, method, req) => {
-    return callAPI({
+const callCustomersService = (endpoint, method, req) => callAPI({
         url: CUSTOMERS_SERVICE_URL + endpoint,
         method: method
     }, req);
-};
 
 /**
  * Call an API in the Orders Service.
@@ -148,12 +146,10 @@ const callCustomersService = (endpoint, method, req) => {
  * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callOrdersService = (endpoint, method, req) => {
-    return callAPI({
+const callOrdersService = (endpoint, method, req) => callAPI({
         url: ORDERS_SERVICE_URL + endpoint,
         method: method
     }, req);
-};
 
 /*
  * API endpoint for getting a list of accessories available in the catalog.
@@ -186,6 +182,22 @@ service.get("/orders", (req, res) => {
             });
             handleSuccess(res, {
                 orders: orders
+            });
+        })
+        .catch((error) => {
+            handleError(res, "Failed to fetch orders data due to " + error);
+        });
+});
+
+/*
+ * API endpoint for getting the user's data.
+ */
+service.get("/profile", (req, res) => {
+    const username = req.get(CELLERY_USER_HEADER);
+    callCustomersService(`/customers/${username}`, "GET", req)
+        .then((data) => {
+            handleSuccess(res, {
+                profile: data
             });
         })
         .catch((error) => {

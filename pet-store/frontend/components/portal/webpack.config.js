@@ -23,7 +23,7 @@ const path = require("path");
 const appConfig = {
     mode: process.env.NODE_ENV,
     entry: {
-        index: "./src/index.js"
+        index: "./src/index.jsx"
     },
     output: {
         filename: "[name].bundle.js",
@@ -34,7 +34,7 @@ const appConfig = {
     watch: false,
     devtool: "source-map",
     resolve: {
-        extensions: [".js"]
+        extensions: [".js", ".jsx"]
     },
     optimization: {
         splitChunks: {

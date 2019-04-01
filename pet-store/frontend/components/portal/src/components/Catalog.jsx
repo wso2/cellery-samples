@@ -21,6 +21,7 @@ import classNames from "classnames";
 import {withRouter} from "react-router-dom";
 import {withStyles} from "@material-ui/core/styles";
 import {Button, Card, CardContent, CardMedia, Grid, Typography} from "@material-ui/core";
+import * as PropTypes from "prop-types";
 
 const styles = (theme) => ({
     grow: {
@@ -82,8 +83,7 @@ const Catalog = ({catalog, user, classes}) => (
                             user
                                 ? (
                                     <Button variant="contained" color="primary" onClick={() => {
-                                        window.location.href = (window.__BASE_PATH__ ? window.__BASE_PATH__ : "")
-                                            + "/orders";
+                                        window.location.href = `${window.__BASE_PATH__}/orders`;
                                     }}>
                                         Check My Orders
                                     </Button>
@@ -106,7 +106,7 @@ const Catalog = ({catalog, user, classes}) => (
                                             <CardMedia
                                                 className={classes.cardMedia}
                                                 image={"./app/assets/default-accessory.svg"}
-                                                title={item.item}
+                                                title={item.name}
                                             />
                                             <CardContent className={classes.cardContent}>
                                                 <Typography gutterBottom variant="h5" component="h2">
@@ -152,5 +152,19 @@ const Catalog = ({catalog, user, classes}) => (
         </div>
     </div>
 );
+
+Catalog.propTypes = {
+    user: PropTypes.string.isRequired,
+    classes: PropTypes.object.isRequired,
+    catalog: PropTypes.shape({
+        accessories: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            description: PropTypes.string.isRequired,
+            unitPrice: PropTypes.number.isRequired,
+            inStock: PropTypes.number.isRequired
+        })).isRequired
+    })
+};
 
 export default withStyles(styles)(withRouter(Catalog));

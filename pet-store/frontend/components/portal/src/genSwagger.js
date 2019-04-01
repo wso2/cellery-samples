@@ -16,6 +16,10 @@
  * under the License.
  */
 
+/* eslint-env node */
+/* eslint "import/no-extraneous-dependencies": ["error", {"devDependencies": true}] */
+/* eslint "no-sync": "off"  */
+
 const swaggerGen = require("swagger-es6");
 const petStoreSwagger = require("../resources/pet-store.swagger");
 const fs = require("fs");

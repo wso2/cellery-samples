@@ -16,10 +16,12 @@
  * under the License.
  */
 
-/* eslint-env node */
-/* eslint "no-process-env": "off" */
+/*
+ * This is used for sharing the routes for the App
+ */
 
-import createServer from "./server/app";
-
-const webPortalPort = process.env.PORTAL_PORT || 3000;
-createServer(webPortalPort);
+export default [
+    "/",
+    "/sign-in",
+    "/orders"
+];
