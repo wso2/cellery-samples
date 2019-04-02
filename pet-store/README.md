@@ -41,11 +41,11 @@ This contains of a single component which serves the Portal. The Portal is expos
 1. Build the pet-be Cell.
    ```
    cd <SAMPLES_ROOT>/pet-store/backend
-   cellery build pet-be.bal my-org/pet-be:0.1.0
+   cellery build pet-be.bal cellery-samples/pet-be:0.1.0
    ```
 2. Deploy the pet-be Cell with instance name `pet-be-inst`.
    ```
-   cellery run my-org/pet-be:0.1.0 -n pet-be-inst
+   cellery run cellery-samples/pet-be:0.1.0 -n pet-be-inst
    ```
 3. Check the running Cell.
    ```
@@ -59,11 +59,11 @@ This contains of a single component which serves the Portal. The Portal is expos
 1. Build the pet-fe Cell.
    ```
    cd <SAMPLES_ROOT>/pet-store/frontend
-   cellery build pet-fe.bal my-org/pet-fe:0.1.0
+   cellery build pet-fe.bal cellery-samples/pet-fe:0.1.0
    ```
 2. Deploy the pet-fe Cell with instance name `pet-fe-inst`.
    ```
-   cellery run my-org/pet-fe:0.1.0 -n pet-fe-inst -l pet-be:pet-be-inst
+   cellery run cellery-samples/pet-fe:0.1.0 -n pet-fe-inst -l pet-be:pet-be-inst
    ```
 3. Check the running Cell.
    ```

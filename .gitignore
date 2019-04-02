@@ -34,3 +34,6 @@ hs_err_pid*
 # NPM
 *node_modules
 *build
+
+# Cellery
+*target
