@@ -19,8 +19,8 @@ DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
 
 SAMPLE := hello-world
-CELLS := hello
-HELLO_COMPONENT := hello
+CELL := hello
+COMPONENT := hello
 
 all: clean build docker
 
@@ -38,10 +38,10 @@ clean:
 
 .PHONY: docker
 docker:
-	cd $(CELLS)/components/$(HELLO_COMPONENT); \
-	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(HELLO_COMPONENT):${DOCKER_IMAGE_TAG} .; \
+	cd $(CELL)/components/$(COMPONENT); \
+	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} .; \
 
 .PHONY: docker-push
 docker-push:
-	cd $(CELLS)/components/$(HELLO_COMPONENT); \
-	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(HELLO_COMPONENT):${DOCKER_IMAGE_TAG}
+	cd $(CELL)/components/$(COMPONENT); \
+	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG}

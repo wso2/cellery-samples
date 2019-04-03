@@ -54,8 +54,6 @@ This contains of a single component which serves the Portal. The Portal is expos
 
 ### Running the Frontend Cell
 
-**Note** : The Web cell is still under development.
-
 1. Build the pet-fe Cell.
    ```
    cd <SAMPLES_ROOT>/pet-store/frontend

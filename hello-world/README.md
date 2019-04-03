@@ -1,13 +1,14 @@
 Hello World
 =========
 
-Hello World is a simple static website that serves Hello World on top of NGINX
+Hello World is a simple static website that serves Hello World on top of Cellery.
 
 ![Hello World Cell Architecture Diagram](../docs/images/hello-world-architecture.jpg)
 
 ## Hello-World Cell
 
-This contains of a single component which serves the HTML web page. The web page runs on top of NGINX and its exposed through a web cell
+This contains a single component which serves the HTML web page. The web page runs on top of NGINX and its exposed through a web cell.
+
 ## Getting Started
 
 ### Checkout the Sample
@@ -20,13 +21,11 @@ This contains of a single component which serves the HTML web page. The web page
 
 ### Running the Frontend Cell
 
-**Note** : The Web cell is still under development.
-
-1. Build the hello Cell.
+1. Build the hello-world Cell.
    ```
    cellery build hello-world.bal wso2cellery/hello-world:0.1.0
    ```
-2. Deploy the Hello world Cell
+2. Deploy the hello-world Cell
    ```
    cellery run wso2cellery/hello-world:0.1.0 -n hello-world-inst
    ```
@@ -71,5 +70,5 @@ If you wish to change the Hello World Sample and play around with Cellery, you c
    ```
    make docker-push
    ```
-6. Update the `<SAMPLES_ROOT>/hello-world/hello.bal` file and set the newly created image names for the Component source.
+6. Update the `<SAMPLES_ROOT>/hello-world/hello/hello-world.bal` file and set the newly created image names for the Component source.
 7. [Build and run](#getting-started) the Cells.

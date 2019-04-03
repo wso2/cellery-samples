@@ -18,7 +18,7 @@ PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
 
-SAMPLES := pet-store
+SAMPLES := pet-store hello-world
 
 CLEAN_TARGETS := $(addprefix clean., $(SAMPLES))
 CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES))
