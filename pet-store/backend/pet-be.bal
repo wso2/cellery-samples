@@ -22,6 +22,11 @@ cellery:Component ordersComponent = {
     name: "orders",
     source: {
         image: "wso2cellery/samples-pet-store-orders"
+    },
+    ingresses: {
+        orders: <cellery:HttpApiIngress>{
+            port: 80
+        }
     }
 };
 
@@ -31,6 +36,11 @@ cellery:Component customersComponent = {
     name: "customers",
     source: {
         image: "wso2cellery/samples-pet-store-customers"
+    },
+    ingresses: {
+        customers: <cellery:HttpApiIngress>{
+            port: 80
+        }
     }
 };
 
@@ -40,6 +50,11 @@ cellery:Component catalogComponent = {
     name: "catalog",
     source: {
         image: "wso2cellery/samples-pet-store-catalog"
+    },
+    ingresses: {
+        catalog: <cellery:HttpApiIngress>{
+            port: 80
+        }
     }
 };
 
@@ -55,7 +70,6 @@ cellery:Component controllerComponent = {
         controller: <cellery:HttpApiIngress>{
             port: 80,
             context: "controller",
-            definition: (),
             expose: "local"
         }
     },
