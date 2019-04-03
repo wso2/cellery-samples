@@ -24,7 +24,7 @@ cellery:Component helloComponent = {
     },
     ingresses: {
         webUI: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
-            port: 8080,
+            port: 80,
             gatewayConfig: {
                 vhost: "hello-world.com",
                 context: "/"
