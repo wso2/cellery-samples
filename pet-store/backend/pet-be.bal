@@ -22,6 +22,11 @@ cellery:Component ordersComponent = {
     name: "orders",
     source: {
         image: "wso2cellery/samples-pet-store-orders"
+    },
+    ingresses: {
+        orders: <cellery:HttpApiIngress>{
+            port: 80
+        }
     }
 };
 
@@ -31,6 +36,11 @@ cellery:Component customersComponent = {
     name: "customers",
     source: {
         image: "wso2cellery/samples-pet-store-customers"
+    },
+    ingresses: {
+        customers: <cellery:HttpApiIngress>{
+            port: 80
+        }
     }
 };
 
@@ -40,6 +50,11 @@ cellery:Component catalogComponent = {
     name: "catalog",
     source: {
         image: "wso2cellery/samples-pet-store-catalog"
+    },
+    ingresses: {
+        catalog: <cellery:HttpApiIngress>{
+            port: 80
+        }
     }
 };
 
@@ -55,7 +70,6 @@ cellery:Component controllerComponent = {
         controller: <cellery:HttpApiIngress>{
             port: 80,
             context: "controller",
-            definition: (),
             expose: "local"
         }
     },
@@ -80,10 +94,10 @@ cellery:CellImage petStoreBackendCell = {
     }
 };
 
-# The Cellery Lifecycle Build method which is invoked for building the Cell Image.
-#
-# + iName - The Image name
-# + return - The created Cell Image
+// The Cellery Lifecycle Build method which is invoked for building the Cell Image
+//
+// iName - The Image name
+// return - The created Cell Image
 public function build(cellery:ImageName iName) returns error? {
     cellery:ApiDefinition controllerApiDef = (<cellery:ApiDefinition>cellery:readSwaggerFile(
         "./components/controller/resources/pet-store.swagger.json"));
@@ -93,11 +107,11 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(petStoreBackendCell, iName);
 }
 
-# The Cellery Lifecycle Run method which is invoked for creating a Cell Instance.
-#
-# + iName - The Image name
-# + instances - The map dependency instances of the Cell instance to be created
-# + return - The Cell instance
+// The Cellery Lifecycle Run method which is invoked for creating a Cell Instance.
+//
+// iName - The Image name
+// instances - The map dependency instances of the Cell instance to be created
+// return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     petStoreBackendCell.components.controller.envVars.CATALOG_HOST.value = cellery:getHost(untaint iName.instanceName, catalogComponent);
     petStoreBackendCell.components.controller.envVars.ORDER_HOST.value = cellery:getHost(untaint iName.instanceName, ordersComponent);
