@@ -24,21 +24,33 @@ cellery:Component portalComponent = {
         image: "wso2cellery/samples-pet-store-portal"
     },
     ingresses: {
-        portal: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
+        portal: <cellery:WebIngress>{
             port: 80,
             gatewayConfig: {
                 vhost: "pet-store.com",
-                context: "/portal"
+                context: "/",
+                oidc: {
+                    nonSecurePaths: ["/", "/app/*"],
+                    discoveryUrl: "https://idp.cellery-system/oauth2/token",
+                    clientId: "petstoreapplicationcelleryizza",
+                    clientSecret: {
+                        dcrUser: "admin",
+                        dcrPassword: "admin"
+                    },
+                    redirectUrl: "http://pet-store.com/_auth/callback",
+                    baseUrl: "http://pet-store.com/",
+                    subjectClaim: "given_name"
+                }
             }
         }
     },
     envVars: {
         PET_STORE_CELL_URL: {value: ""},
         PORTAL_PORT: {value: 80},
-        BASE_PATH: {value: "/portal"}
+        BASE_PATH: {value: "."}
     },
     dependencies: {
-        petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be", ver: "0.1.0" }
+        petStoreBackend: <cellery:ImageName>{ org: "myorg", name: "pet-be", ver: "1.0.0" }
     }
 };
 
@@ -64,7 +76,7 @@ public function build(cellery:ImageName iName) returns error? {
 # + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     cellery:Reference petStoreBackendRef = check cellery:getReferenceRecord(instances.petStoreBackend);
-    petStoreFrontendCell.components.controller.envVars.PET_STORE_CELL_URL.value = <string>petStoreBackendRef.controller_api_url;
+    portalComponent.envVars.PET_STORE_CELL_URL.value = <string>petStoreBackendRef.controller_api_url;
 
     return cellery:createInstance(petStoreFrontendCell, iName);
 }
