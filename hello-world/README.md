@@ -2,6 +2,9 @@ Hello World
 =========
 
 Hello World is a simple static website that serves Hello World on top of NGINX
+
+![Hello World Cell Architecture Diagram](../docs/images/hello-world-architecture.jpg)
+
 ## Hello-World Cell
 
 This contains of a single component which serves the HTML web page. The web page runs on top of NGINX and its exposed through a web cell

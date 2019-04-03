@@ -16,7 +16,7 @@ This sample is structured into two Cells.
 * [pet-be Cell](#pet-be-cell)
 * [pet-fe Cell](#pet-fe-cell)
 
-![Pet Store Cell Architecture Diagram](../docs/images/architecture.jpg)
+![Pet Store Cell Architecture Diagram](../docs/images/pet-store-architecture.jpg)
 
 ## pet-be Cell
 
