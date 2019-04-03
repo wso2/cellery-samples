@@ -15,6 +15,7 @@
 // This Cell encompasses the component which exposes the Pet Store portal
 
 import celleryio/cellery;
+import ballerina/config;
 
 // Portal Component
 // This is the Component which exposes the Pet Store portal
@@ -31,11 +32,11 @@ cellery:Component portalComponent = {
                 context: "/",
                 oidc: {
                     nonSecurePaths: ["/", "/app/*"],
-                    discoveryUrl: "https://idp.cellery-system/oauth2/token",
-                    clientId: "petstoreapplicationcelleryizza",
+                    providerUrl: "",
+                    clientId: "",
                     clientSecret: {
-                        dcrUser: "admin",
-                        dcrPassword: "admin"
+                        dcrUser: "",
+                        dcrPassword: ""
                     },
                     redirectUrl: "http://pet-store.com/_auth/callback",
                     baseUrl: "http://pet-store.com/",
@@ -75,8 +76,17 @@ public function build(cellery:ImageName iName) returns error? {
 # + instances - The map dependency instances of the Cell instance to be created
 # + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
-    cellery:Reference petStoreBackendRef = check cellery:getReferenceRecord(instances.petStoreBackend);
+    cellery:Reference petStoreBackendRef = check cellery:getReference(instances.petStoreBackend);
     portalComponent.envVars.PET_STORE_CELL_URL.value = <string>petStoreBackendRef.controller_api_url;
+
+    cellery:WebIngress portalIngress = <cellery:WebIngress> portalComponent.ingresses.portal;
+    portalIngress.gatewayConfig.oidc.providerUrl = config:getAsString("providerUrl", default = "https://idp.cellery-system/oauth2/token");
+    portalIngress.gatewayConfig.oidc.clientId = config:getAsString("clientId", default = "petstoreapplication");
+    cellery:DCR dcrConfig = {
+            dcrUser: config:getAsString("dcrUser", default = "admin"),
+            dcrPassword: config:getAsString("dcrPassword", default = "admin")
+    };
+    portalIngress.gatewayConfig.oidc.clientSecret = dcrConfig;
 
     return cellery:createInstance(petStoreFrontendCell, iName);
 }
