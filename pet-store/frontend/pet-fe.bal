@@ -24,7 +24,7 @@ cellery:Component portalComponent = {
         image: "wso2cellery/samples-pet-store-portal"
     },
     ingresses: {
-        portal: <cellery:WebIngress>{
+        portal: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
             port: 80,
             gatewayConfig: {
                 vhost: "pet-store.com",
@@ -38,7 +38,7 @@ cellery:Component portalComponent = {
         BASE_PATH: {value: "/portal"}
     },
     dependencies: {
-        petStoreBackend: <cellery:ImageName>{ org: "cellery-samples", name: "pet-be", ver: "0.1.0" }
+        petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be", ver: "0.1.0" }
     }
 };
 
