@@ -105,7 +105,7 @@ const Catalog = ({catalog, user, classes}) => (
                                         <Card className={classes.card}>
                                             <CardMedia
                                                 className={classes.cardMedia}
-                                                image={"./app/assets/default-accessory.svg"}
+                                                image={`./app/assets/catalog/${item.name.replace(/\s+/g, '-').toLowerCase()}.svg`}
                                                 title={item.name}
                                             />
                                             <CardContent className={classes.cardContent}>
