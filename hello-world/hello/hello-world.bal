@@ -13,6 +13,7 @@
 
 
 // Cell file for Hello world Sample
+import ballerina/config;
 import celleryio/cellery;
 
 // Hello Component
@@ -20,26 +21,28 @@ import celleryio/cellery;
 cellery:Component helloComponent = {
     name: "hello",
     source: {
-        image: "wso2cellery/samples-hello-world-hello"
+        image: "wso2cellery/samples-hello-world-webapp"
     },
     ingresses: {
-        webUI: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
+        webUI: <cellery:WebIngress> { // Web ingress will be always exposed globally.
             port: 80,
             gatewayConfig: {
                 vhost: "hello-world.com",
                 context: "/"
             }
         }
+    },
+    envVars: {
+        HELLO_NAME: {value: "Cellery"}
     }
 };
 
 // Cell Initialization
 cellery:CellImage helloCell = {
     components: {
-        webComp: helloComponent
+        helloComp: helloComponent
     }
 };
-
 
 # The Cellery Lifecycle Build method which is invoked for building the Cell Image.
 #
@@ -54,6 +57,16 @@ public function build(cellery:ImageName iName) returns error? {
 # + iName - The Image name
 # + instances - The map dependency instances of the Cell instance to be created
 # + return - The Cell instance
-public function run(cellery:ImageName iName, map<string> instances) returns error? {
+public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+    string VHostName = config:getAsString("VHOST_NAME");
+    if (VHostName !== ""){
+        cellery:WebIngress web=<cellery:WebIngress>helloCell.components.helloComp.ingresses.webUI;
+        web.gatewayConfig.vhost = VHostName;
+    }
+
+    string HelloName = config:getAsString("HELLO_NAME");
+    if (HelloName !== ""){
+        helloCell.components.helloComp.envVars.HELLO_NAME.value = HelloName;
+    }
     return cellery:createInstance(helloCell, iName);
 }
