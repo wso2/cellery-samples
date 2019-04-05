@@ -16,5 +16,21 @@
 #
 # ------------------------------------------------------------------------
 
-FROM nginx:alpine
-COPY index.html /usr/share/nginx/html/index.html
+FROM node:11.2.0-slim
+LABEL maintainer="dev@wso2.org"
+
+ARG SERVICE_PORT=80
+ARG APP_DIR=/webapp
+
+WORKDIR ${APP_DIR}
+
+COPY package*.json ${APP_DIR}/
+COPY serve.js ${APP_DIR}/
+
+RUN npm ci
+
+ENV SERVICE_PORT=${SERVICE_PORT}
+
+EXPOSE ${SERVICE_PORT}
+
+ENTRYPOINT ["node", "serve.js"]

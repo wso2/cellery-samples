@@ -20,7 +20,7 @@ DOCKER_IMAGE_TAG ?= latest
 
 SAMPLE := hello-world
 CELL := hello
-COMPONENT := hello
+COMPONENT := webapp
 
 all: clean build docker
 
@@ -34,7 +34,9 @@ build:
 
 .PHONY: check-style
 clean:
-	@:
+	cd $(CELL)/components/$(COMPONENT); \
+	npm ci; \
+	npm run lint
 
 .PHONY: docker
 docker:

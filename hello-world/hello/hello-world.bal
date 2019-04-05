@@ -14,22 +14,26 @@
 
 // Cell file for Hello world Sample
 import celleryio/cellery;
+import ballerina/system;
 
 // Hello Component
 // This Components exposes the HTML hello world page
 cellery:Component helloComponent = {
     name: "hello",
     source: {
-        image: "wso2cellery/samples-hello-world-hello"
+        image: "wso2cellery/samples-hello-world-webapp"
     },
     ingresses: {
         webUI: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
             port: 80,
             gatewayConfig: {
-                vhost: "hello-world.com",
+                vhost: config:getAsString("VHOST_NAME", default = "hello-world.com"),
                 context: "/"
             }
         }
+    },
+    envVars: {
+        HELLO_NAME: {value: "Cellery"}
     }
 };
 
