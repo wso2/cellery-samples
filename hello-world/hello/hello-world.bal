@@ -58,15 +58,15 @@ public function build(cellery:ImageName iName) returns error? {
 # + instances - The map dependency instances of the Cell instance to be created
 # + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
-    string VHostName = config:getAsString("VHOST_NAME");
-    if (VHostName !== ""){
-        cellery:WebIngress web=<cellery:WebIngress>helloCell.components.helloComp.ingresses.webUI;
-        web.gatewayConfig.vhost = VHostName;
+    string vhostName = config:getAsString("VHOST_NAME");
+    if (vhostName !== ""){
+        cellery:WebIngress web = <cellery:WebIngress> helloComponent.ingresses.webUI;
+        web.gatewayConfig.vhost = vhostName;
     }
 
-    string HelloName = config:getAsString("HELLO_NAME");
-    if (HelloName !== ""){
-        helloCell.components.helloComp.envVars.HELLO_NAME.value = HelloName;
+    string helloName = config:getAsString("HELLO_NAME");
+    if (helloName !== ""){
+        helloComponent.envVars.HELLO_NAME.value = helloName;
     }
     return cellery:createInstance(helloCell, iName);
 }
