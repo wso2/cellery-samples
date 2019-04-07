@@ -2,11 +2,18 @@
 import axios from 'axios'
 import qs from 'qs'
 let domain = ''
+let axiosInstance = axios.create()
 export const getDomain = () => {
   return domain
 }
 export const setDomain = ($domain) => {
   domain = $domain
+}
+export const getAxiosInstance = () => {
+  return axiosInstance
+}
+export const setAxiosInstance = ($axiosInstance) => {
+  axiosInstance = $axiosInstance
 }
 export const request = (method, url, body, queryParameters, form, config) => {
   method = method.toLowerCase()
@@ -17,11 +24,11 @@ export const request = (method, url, body, queryParameters, form, config) => {
   }
   // let queryUrl = url+(keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
   if (body) {
-    return axios[method](queryUrl, body, config)
+    return axiosInstance[method](queryUrl, body, config)
   } else if (method === 'get' || method === 'delete' || method === 'head' || method === 'option') {
-    return axios[method](queryUrl, config)
+    return axiosInstance[method](queryUrl, config)
   } else {
-    return axios[method](queryUrl, qs.stringify(form), config)
+    return axiosInstance[method](queryUrl, qs.stringify(form), config)
   }
 }
 /*==========================================================
@@ -101,6 +108,88 @@ export const getOrdersURL = function(parameters = {}) {
   let queryParameters = {}
   const domain = parameters.$domain ? parameters.$domain : getDomain()
   let path = '/orders'
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    })
+  }
+  let keys = Object.keys(queryParameters)
+  return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
+}
+/**
+ * Get the profile of the currently logged in user
+ * request: getProfile
+ * url: getProfileURL
+ * method: getProfile_TYPE
+ * raw_url: getProfile_RAW_URL
+ */
+export const getProfile = function(parameters = {}) {
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  const config = parameters.$config || {
+    headers: {}
+  }
+  let path = '/profile'
+  let body
+  let queryParameters = {}
+  let form = {}
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    });
+  }
+  return request('get', domain + path, body, queryParameters, form, config)
+}
+export const getProfile_RAW_URL = function() {
+  return '/profile'
+}
+export const getProfile_TYPE = function() {
+  return 'get'
+}
+export const getProfileURL = function(parameters = {}) {
+  let queryParameters = {}
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  let path = '/profile'
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    })
+  }
+  let keys = Object.keys(queryParameters)
+  return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
+}
+/**
+ * Create a user profile for the user
+ * request: createProfile
+ * url: createProfileURL
+ * method: createProfile_TYPE
+ * raw_url: createProfile_RAW_URL
+ */
+export const createProfile = function(parameters = {}) {
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  const config = parameters.$config || {
+    headers: {}
+  }
+  let path = '/profile'
+  let body
+  let queryParameters = {}
+  let form = {}
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    });
+  }
+  return request('post', domain + path, body, queryParameters, form, config)
+}
+export const createProfile_RAW_URL = function() {
+  return '/profile'
+}
+export const createProfile_TYPE = function() {
+  return 'post'
+}
+export const createProfileURL = function(parameters = {}) {
+  let queryParameters = {}
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  let path = '/profile'
   if (parameters.$queryParameters) {
     Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
       queryParameters[parameterName] = parameters.$queryParameters[parameterName]

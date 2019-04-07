@@ -115,47 +115,48 @@ const callAPI = (config, req) => new Promise((resolve, reject) => {
 /**
  * Call an API in the Catalog Service.
  *
- * @param endpoint The endpoint to call in the service
- * @param method The HTTP method to use
+ * @param config The axios configuration with the endpoint as the URL
  * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callCatalogService = (endpoint, method, req) => callAPI({
-        url: CATALOG_SERVICE_URL + endpoint,
-        method: method
+const callCatalogService = (config, req) => callAPI({
+        ...config,
+        url: CATALOG_SERVICE_URL + config.url
     }, req);
 
 /**
  * Call an API in the Customers Service.
  *
- * @param endpoint The endpoint to call in the service
- * @param method The HTTP method to use
+ * @param config The axios configuration with the endpoint as the URL
  * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callCustomersService = (endpoint, method, req) => callAPI({
-        url: CUSTOMERS_SERVICE_URL + endpoint,
-        method: method
+const callCustomersService = (config, req) => callAPI({
+        ...config,
+        url: CUSTOMERS_SERVICE_URL + config.url
     }, req);
 
 /**
  * Call an API in the Orders Service.
  *
- * @param endpoint The endpoint to call in the service
- * @param method The HTTP method to use
+ * @param config The axios configuration with the endpoint as the URL
  * @param req The received request object
  * @return {Promise<any>} The promise for the data fetch request
  */
-const callOrdersService = (endpoint, method, req) => callAPI({
-        url: ORDERS_SERVICE_URL + endpoint,
-        method: method
+const callOrdersService = (config, req) => callAPI({
+        ...config,
+        url: ORDERS_SERVICE_URL + config.url
     }, req);
 
 /*
  * API endpoint for getting a list of accessories available in the catalog.
  */
 service.get("/catalog", (req, res) => {
-    callCatalogService("/accessories", "GET", req)
+    const config = {
+        url: "/accessories",
+        method: "GET"
+    };
+    callCatalogService(config, req)
         .then((data) => {
             handleSuccess(res, {
                 accessories: data
@@ -170,9 +171,17 @@ service.get("/catalog", (req, res) => {
  * API endpoint for getting a list of accessories available in the catalog.
  */
 service.get("/orders", (req, res) => {
+    const ordersCallConfig = {
+        url: "/orders",
+        method: "GET"
+    };
+    const catalogCallConfig = {
+        url: "/accessories",
+        method: "GET"
+    };
     Promise.all([
-        callOrdersService("/orders", "GET", req),
-        callCatalogService("/accessories", "GET", req)
+        callOrdersService(ordersCallConfig, req),
+        callCatalogService(catalogCallConfig, req)
     ])
         .then((data) => {
             const orders = data[0];
@@ -190,18 +199,44 @@ service.get("/orders", (req, res) => {
 });
 
 /*
- * API endpoint for getting the user's data.
+ * API endpoint for getting the user profile.
  */
 service.get("/profile", (req, res) => {
     const username = req.get(CELLERY_USER_HEADER);
-    callCustomersService(`/customers/${username}`, "GET", req)
+    const config = {
+        url: `/customers/${username}`,
+        method: "GET"
+    };
+    callCustomersService(config, req)
         .then((data) => {
             handleSuccess(res, {
                 profile: data
             });
         })
         .catch((error) => {
-            handleError(res, "Failed to fetch orders data due to " + error);
+            handleError(res, "Failed to fetch profile due to " + error);
+        });
+});
+
+/*
+ * API endpoint for creating the user profile.
+ */
+service.post("/profile", (req, res) => {
+    const username = req.get(CELLERY_USER_HEADER);
+    const config = {
+        url: `/customers/${username}`,
+        method: "POST",
+        data: {
+            ...req.body,
+            username: username
+        }
+    };
+    callCustomersService(config, req)
+        .then(() => {
+            handleSuccess(res);
+        })
+        .catch((error) => {
+            handleError(res, "Failed to create profile due to " + error);
         });
 });
 

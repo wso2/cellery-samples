@@ -19,7 +19,11 @@ const fs = require("fs");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3002;
-const customersDataFile = "data/customers.json";
+const customerDataDir = "data";
+const customersDataFile = `${customerDataDir}/customers.json`;
+
+fs.mkdirSync(customerDataDir); // eslint-disable-line no-sync
+fs.writeFileSync(customersDataFile, "[]", "utf8"); // eslint-disable-line no-sync
 
 service.use(express.json());
 
@@ -84,19 +88,20 @@ service.get("/customers", (req, res) => {
  */
 service.post("/customers/:username", (req, res) => {
     fs.readFile(customersDataFile, "utf8", function (err, data) {
+        const customers = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + customersDataFile + " due to " + err);
         } else {
             // Creating the new customer data.
-            const match = data.filter((customer) => customer.name === req.params.username);
+            const match = customers.filter((customer) => customer.name === req.params.username);
             if (match.length === 0) {
-                data.push({
+                customers.push({
                     ...req.body,
                     name: req.params.username
                 });
 
                 // Creating the new customer
-                fs.writeFile(customersDataFile, data, "utf8", function (err) {
+                fs.writeFile(customersDataFile, JSON.stringify(customers), "utf8", function (err) {
                     if (err) {
                         handleError(res, "Failed to create new customer due to " + err)
                     } else {
@@ -115,14 +120,15 @@ service.post("/customers/:username", (req, res) => {
  */
 service.get("/customers/:username", (req, res) => {
     fs.readFile(customersDataFile, "utf8", function (err, data) {
+        const customers = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + customersDataFile + " due to " + err);
         } else {
-            let match = JSON.parse(data).filter((customer) => customer.username === req.params.username);
+            let match = customers.filter((customer) => customer.username === req.params.username);
             if (match.length === 1) {
                 handleSuccess(res, match[0]);
             } else {
-                handleNotFound("Customer not available");
+                handleSuccess(res, null);
             }
         }
     });
@@ -133,16 +139,17 @@ service.get("/customers/:username", (req, res) => {
  */
 service.put("/customers/:username", (req, res) => {
     fs.readFile(customersDataFile, "utf8", function (err, data) {
+        const customers = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + customersDataFile + " due to " + err);
         } else {
-            const match = data.filter((customer) => customer.username === req.params.username);
+            const match = customers.filter((customer) => customer.username === req.params.username);
 
             if (match.length === 1) {
                 Object.assign(match[0], req.body);
 
                 // Updating the customer
-                fs.writeFile(customersDataFile, data, "utf8", function (err) {
+                fs.writeFile(customersDataFile, JSON.stringify(customers), "utf8", function (err) {
                     if (err) {
                         handleError(res, "Failed to update customer " + req.params.username + " due to " + err)
                     } else {
@@ -161,16 +168,17 @@ service.put("/customers/:username", (req, res) => {
  */
 service.delete("/customers/:username", (req, res) => {
     fs.readFile(customersDataFile, "utf8", function (err, data) {
+        const customers = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + customersDataFile + " due to " + err);
         } else {
-            const newData = data.filter((customer) => customer.username !== req.params.username);
+            const newCustomers = customers.filter((customer) => customer.username !== req.params.username);
 
-            if (newData.length === data.length) {
+            if (newCustomers.length === customers.length) {
                 handleNotFound("Customer not available");
             } else {
                 // Deleting the customer
-                fs.writeFile(customersDataFile, newData, "utf8", function (err) {
+                fs.writeFile(customersDataFile, JSON.stringify(newCustomers), "utf8", function (err) {
                     if (err) {
                         handleError(res, "Failed to delete customer " + req.params.username + " due to " + err);
                     } else {

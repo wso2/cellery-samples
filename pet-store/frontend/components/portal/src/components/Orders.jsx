@@ -17,6 +17,7 @@
  */
 
 import {ExpandMore} from "@material-ui/icons";
+import Notification from "./common/Notification";
 import React from "react";
 import classNames from "classnames";
 import {withStyles} from "@material-ui/core/styles";
@@ -88,9 +89,22 @@ class Orders extends React.Component {
 
         this.state = {
             orders: [],
-            expanded: null
+            expanded: null,
+            notification: {
+                open: false,
+                message: ""
+            }
         };
     }
+
+    handleNotificationClose = () => {
+        this.setState({
+            notification: {
+                open: false,
+                message: ""
+            }
+        });
+    };
 
     /**
      * Handle changes in the expansion panels expaneded status.
@@ -111,16 +125,24 @@ class Orders extends React.Component {
             method: "GET"
         };
         utils.callApi(config)
-            .then((data) => {
+            .then((response) => {
                 self.setState({
-                    orders: data
+                    orders: response.data
+                });
+            })
+            .catch(() => {
+                self.setState({
+                    notification: {
+                        open: true,
+                        message: "Failed to fetch orders"
+                    }
                 });
             });
     }
 
     render = () => {
         const {classes} = this.props;
-        const {expanded, orders} = this.state;
+        const {expanded, notification, orders} = this.state;
         return (
             <div className={classes.titleUnit}>
                 <div className={classes.titleContent}>
@@ -239,6 +261,8 @@ class Orders extends React.Component {
                             )
                     }
                 </div>
+                <Notification open={notification.open} onClose={this.handleNotificationClose}
+                    message={notification.message}/>
             </div>
         );
     }

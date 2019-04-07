@@ -56,7 +56,7 @@ const renderApp = (req, res, initialState, basePath) => {
             <MuiThemeProvider theme={generateTheme()} sheetsManager={sheetsManager}>
                 <CssBaseline/>
                 <StaticRouter context={context} location={req.url}>
-                    <App initialState={initialState} isSSR={true}/>
+                    <App initialState={initialState}/>
                 </StaticRouter>
             </MuiThemeProvider>
         </JssProvider>

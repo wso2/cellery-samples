@@ -19,6 +19,8 @@
 import Catalog from "./Catalog";
 import Orders from "./Orders";
 import React from "react";
+import SignIn from "./user/SignIn";
+import SignUp from "./user/SignUp";
 import {withStyles} from "@material-ui/core/styles";
 import {AccountCircle, Pets} from "@material-ui/icons";
 import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
@@ -77,7 +79,7 @@ class App extends React.Component {
     };
 
     render() {
-        const {classes, initialState, isSSR} = this.props;
+        const {classes, initialState} = this.props;
         const {accountPopoverElement} = this.state;
         const isAccountPopoverOpen = Boolean(accountPopoverElement);
 
@@ -133,12 +135,8 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path={"/"} render={() => <Catalog catalog={initialState.catalog}
                             user={initialState.user}/>}/>
-                        <Route exact path={"/sign-in"} render={() => {
-                            if (!isSSR) {
-                                window.location.href = window.__BASE_PATH__;
-                            }
-                            return null;
-                        }}/>
+                        <Route exact path={"/sign-in"} component={SignIn}/>
+                        <Route exact path={"/sign-up"} component={SignUp}/>
                         {
                             initialState.user
                                 ? <Route exact path={"/orders"} component={Orders}/>
@@ -155,10 +153,9 @@ class App extends React.Component {
 
 App.propTypes = {
     classes: PropTypes.string.isRequired,
-    isSSR: PropTypes.bool.isRequired,
     initialState: PropTypes.shape({
         catalog: PropTypes.object
     }).isRequired
 };
 
-export default withStyles(styles, {withTheme: true})(withRouter(App));
+export default withStyles(styles)(withRouter(App));
