@@ -20,6 +20,7 @@
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "express": "^4.16.4",
+    "express-http-proxy": "^1.5.1",
     "jss": "^9.8.7",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

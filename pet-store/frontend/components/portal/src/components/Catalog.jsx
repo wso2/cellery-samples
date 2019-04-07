@@ -67,7 +67,7 @@ const styles = (theme) => ({
     }
 });
 
-const Catalog = ({catalog, user, classes}) => (
+const Catalog = ({catalog, user, classes, history}) => (
     <div className={classes.titleUnit}>
         <div className={classes.titleContent}>
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -83,7 +83,7 @@ const Catalog = ({catalog, user, classes}) => (
                             user
                                 ? (
                                     <Button variant="contained" color="primary" onClick={() => {
-                                        window.location.href = `${window.__BASE_PATH__}/orders`;
+                                        history.push("/orders");
                                     }}>
                                         Check My Orders
                                     </Button>
@@ -105,7 +105,8 @@ const Catalog = ({catalog, user, classes}) => (
                                         <Card className={classes.card}>
                                             <CardMedia
                                                 className={classes.cardMedia}
-                                                image={`./app/assets/catalog/${item.name.replace(/\s+/g, '-').toLowerCase()}.svg`}
+                                                image={"./app/assets/catalog/"
+                                                    + `${item.name.replace(/\s+/g, "-").toLowerCase()}.svg`}
                                                 title={item.name}
                                             />
                                             <CardContent className={classes.cardContent}>
@@ -156,6 +157,9 @@ const Catalog = ({catalog, user, classes}) => (
 Catalog.propTypes = {
     user: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired,
     catalog: PropTypes.shape({
         accessories: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number.isRequired,

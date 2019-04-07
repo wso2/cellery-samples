@@ -25,6 +25,7 @@ import {
     Typography
 } from "@material-ui/core";
 import * as PropTypes from "prop-types";
+import * as utils from "../utils";
 
 const styles = (theme) => ({
     titleUnit: {
@@ -86,7 +87,7 @@ class Orders extends React.Component {
         super(props);
 
         this.state = {
-            orders: props.orders,
+            orders: [],
             expanded: null
         };
     }
@@ -102,6 +103,20 @@ class Orders extends React.Component {
             expanded: expanded ? orderId : false
         });
     };
+
+    componentDidMount() {
+        const self = this;
+        const config = {
+            url: "/orders",
+            method: "GET"
+        };
+        utils.callApi(config)
+            .then((data) => {
+                self.setState({
+                    orders: data
+                });
+            });
+    }
 
     render = () => {
         const {classes} = this.props;
@@ -231,15 +246,7 @@ class Orders extends React.Component {
 }
 
 Orders.propTypes = {
-    classes: PropTypes.object.isRequired,
-    orders: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        customer: PropTypes.string.isRequired,
-        items: PropTypes.arrayOf(PropTypes.number).isRequired,
-        orderDate: PropTypes.string.isRequired,
-        deliveryDate: PropTypes.string.isRequired,
-        deliveryAddress: PropTypes.string.isRequired
-    }))
+    classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Orders);

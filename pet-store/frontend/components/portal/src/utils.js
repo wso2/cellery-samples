@@ -17,6 +17,7 @@
  */
 
 import {createMuiTheme} from "@material-ui/core/styles";
+import * as axios from "axios";
 
 const generateTheme = () => createMuiTheme({
     typography: {
@@ -54,7 +55,51 @@ const renderFullPage = (css, content, initialState, basePath) => (
     + "</html>"
 );
 
+/**
+ * Call a API in the portal component.
+ *
+ * @param {Object} axiosConfig The axios config to use
+ * @returns {Promise} The promise which will be resolved or rejected after the API request.
+ */
+const callApi = (axiosConfig) => new Promise((resolve, reject) => {
+    if (!axiosConfig.headers) {
+        axiosConfig.headers = {};
+    }
+    if (!axiosConfig.headers.Accept) {
+        axiosConfig.headers.Accept = "application/json";
+    }
+    if (!axiosConfig.headers["Content-Type"]) {
+        axiosConfig.headers["Content-Type"] = "application/json";
+    }
+    if (!axiosConfig.data && (axiosConfig.method === "POST" || axiosConfig.method === "PUT"
+        || axiosConfig.method === "PATCH")) {
+        axiosConfig.data = {};
+    }
+    axiosConfig.url = `${window.__BASE_PATH__}/api${axiosConfig.url}`;
+
+    axios(axiosConfig)
+        .then((response) => {
+            if (response.status >= 200 && response.status < 400) {
+                resolve(response.data);
+            } else {
+                reject(response.data);
+            }
+        })
+        .catch((error) => {
+            if (error.response) {
+                const errorResponse = error.response;
+                if (errorResponse.status === 401) {
+                    window.location.href = `${window.__BASE_PATH__}/sign-in`;
+                }
+                reject(new Error(errorResponse.data));
+            } else {
+                reject(error);
+            }
+        });
+});
+
 export {
     generateTheme,
-    renderFullPage
+    renderFullPage,
+    callApi
 };

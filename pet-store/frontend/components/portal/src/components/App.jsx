@@ -19,7 +19,6 @@
 import Catalog from "./Catalog";
 import Orders from "./Orders";
 import React from "react";
-import routes from "../routes";
 import {withStyles} from "@material-ui/core/styles";
 import {AccountCircle, Pets} from "@material-ui/icons";
 import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
@@ -70,7 +69,7 @@ class App extends React.Component {
     };
 
     signIn = () => {
-        window.location.href = window.__BASE_PATH__ + routes[1];
+        window.location.href = `${window.__BASE_PATH__}/sign-in`;
     };
 
     signOut = () => {
@@ -132,9 +131,9 @@ class App extends React.Component {
                 </AppBar>
                 <main>
                     <Switch>
-                        <Route exact path={routes[0]} render={() => <Catalog catalog={initialState.catalog}
+                        <Route exact path={"/"} render={() => <Catalog catalog={initialState.catalog}
                             user={initialState.user}/>}/>
-                        <Route exact path={routes[1]} render={() => {
+                        <Route exact path={"/sign-in"} render={() => {
                             if (!isSSR) {
                                 window.location.href = window.__BASE_PATH__;
                             }
@@ -142,7 +141,7 @@ class App extends React.Component {
                         }}/>
                         {
                             initialState.user
-                                ? <Route exact path={routes[2]} render={() => <Orders orders={initialState.orders}/>}/>
+                                ? <Route exact path={"/orders"} component={Orders}/>
                                 : null
                         }
                         <Redirect from={"*"} to={"/"}/>
@@ -158,8 +157,7 @@ App.propTypes = {
     classes: PropTypes.string.isRequired,
     isSSR: PropTypes.bool.isRequired,
     initialState: PropTypes.shape({
-        catalog: PropTypes.object,
-        orders: PropTypes.object
+        catalog: PropTypes.object
     }).isRequired
 };
 
