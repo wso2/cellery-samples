@@ -46,9 +46,9 @@ cellery:Component portalComponent = {
         }
     },
     envVars: {
-        PET_STORE_CELL_URL: {value: ""},
-        PORTAL_PORT: {value: 80},
-        BASE_PATH: {value: "."}
+        PET_STORE_CELL_URL: { value: "" },
+        PORTAL_PORT: { value: 80 },
+        BASE_PATH: { value: "." }
     },
     dependencies: {
         petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be", ver: "0.1.0" }
@@ -76,15 +76,24 @@ public function build(cellery:ImageName iName) returns error? {
 # + instances - The map dependency instances of the Cell instance to be created
 # + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+    string vhostName = config:getAsString("VHOST_NAME");
+    if (vhostName !== "") {
+        cellery:WebIngress web = <cellery:WebIngress>portalComponent.ingresses.portal;
+        web.gatewayConfig.vhost = vhostName;
+        web.gatewayConfig.oidc.redirectUrl = "http://" + vhostName + "/_auth/callback";
+        web.gatewayConfig.oidc.baseUrl = "http://" + vhostName + "/";
+    }
+
     cellery:Reference petStoreBackendRef = check cellery:getReference(instances.petStoreBackend);
     portalComponent.envVars.PET_STORE_CELL_URL.value = <string>petStoreBackendRef.controller_api_url;
 
-    cellery:WebIngress portalIngress = <cellery:WebIngress> portalComponent.ingresses.portal;
-    portalIngress.gatewayConfig.oidc.providerUrl = config:getAsString("providerUrl", default = "https://idp.cellery-system/oauth2/token");
+    cellery:WebIngress portalIngress = <cellery:WebIngress>portalComponent.ingresses.portal;
+    portalIngress.gatewayConfig.oidc.providerUrl = config:getAsString("providerUrl", default =
+        "https://idp.cellery-system/oauth2/token");
     portalIngress.gatewayConfig.oidc.clientId = config:getAsString("clientId", default = "petstoreapplication");
     cellery:DCR dcrConfig = {
-            dcrUser: config:getAsString("dcrUser", default = "admin"),
-            dcrPassword: config:getAsString("dcrPassword", default = "admin")
+        dcrUser: config:getAsString("dcrUser", default = "admin"),
+        dcrPassword: config:getAsString("dcrPassword", default = "admin")
     };
     portalIngress.gatewayConfig.oidc.clientSecret = dcrConfig;
 
