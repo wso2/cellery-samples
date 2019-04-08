@@ -117,7 +117,7 @@ class SignUp extends React.Component {
         ];
         return (
             <Grid container justify={"center"}>
-                <Grid item lg={4} md={8} xs={12} >
+                <Grid item lg={4} md={8} xs={12}>
                     <Stepper activeStep={activeStep} orientation={"vertical"}>
                         <Step>
                             <StepLabel>Personal Information</StepLabel>

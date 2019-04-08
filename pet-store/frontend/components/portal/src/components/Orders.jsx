@@ -29,7 +29,7 @@ import * as PropTypes from "prop-types";
 import * as utils from "../utils";
 
 const styles = (theme) => ({
-    titleUnit: {
+    root: {
         backgroundColor: theme.palette.background.paper
     },
     titleContent: {
@@ -127,7 +127,7 @@ class Orders extends React.Component {
         utils.callApi(config)
             .then((response) => {
                 self.setState({
-                    orders: response.data
+                    orders: response.data.orders
                 });
             })
             .catch(() => {
@@ -144,7 +144,7 @@ class Orders extends React.Component {
         const {classes} = this.props;
         const {expanded, notification, orders} = this.state;
         return (
-            <div className={classes.titleUnit}>
+            <div className={classes.root}>
                 <div className={classes.titleContent}>
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Orders

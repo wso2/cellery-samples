@@ -18,6 +18,7 @@
 
 import App from "./components/App";
 import {BrowserRouter} from "react-router-dom";
+import {CartProvider} from "./components/cart/context";
 import {CssBaseline} from "@material-ui/core";
 import {JssProvider} from "react-jss";
 import React from "react";
@@ -57,7 +58,9 @@ ReactDOM.hydrate((
         <MuiThemeProvider theme={generateTheme()}>
             <CssBaseline/>
             <BrowserRouter basename={window.__BASE_PATH__}>
-                <Main/>
+                <CartProvider>
+                    <Main/>
+                </CartProvider>
             </BrowserRouter>
         </MuiThemeProvider>
     </JssProvider>
