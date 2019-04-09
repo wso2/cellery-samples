@@ -18,7 +18,7 @@ PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
 
-SAMPLE := hello-world
+SAMPLE := hello-world-web
 CELL := hello
 COMPONENT := webapp
 
