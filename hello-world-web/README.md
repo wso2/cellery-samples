@@ -154,7 +154,7 @@ and pass `my-hello-world.com` for `VHOST_NAME`, and your name for `HELLO_NAME` a
     ```
     $ cellery view <DOCKER_HUB_ORG>/hello-world-cell:1.0.0
     ```
-    ![hello world cell view](docs/images/hello-web-cell.png)
+    ![hello world cell view](../docs/images/hello-world-web/hello-web-cell.png)
     
 5. Access url [http://my-hello-world.com/](http://my-hello-world.com/) from browser. You will see updated web page with greeting param you passed for HELLO_NAME in step-2.
 
