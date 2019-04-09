@@ -19,10 +19,10 @@ const fs = require("fs");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3002;
-const customerDataDir = "data";
-const customersDataFile = `${customerDataDir}/customers.json`;
+const customersDataDir = "data";
+const customersDataFile = `${customersDataDir}/customers.json`;
 
-fs.mkdirSync(customerDataDir); // eslint-disable-line no-sync
+fs.mkdirSync(customersDataDir); // eslint-disable-line no-sync
 fs.writeFileSync(customersDataFile, "[]", "utf8"); // eslint-disable-line no-sync
 
 service.use(express.json());
@@ -86,7 +86,7 @@ service.get("/customers", (req, res) => {
 /*
  * API endpoint for creating a new customer.
  */
-service.post("/customers/:username", (req, res) => {
+service.post("/customers", (req, res) => {
     fs.readFile(customersDataFile, "utf8", function (err, data) {
         const customers = JSON.parse(data);
         if (err) {
@@ -96,12 +96,11 @@ service.post("/customers/:username", (req, res) => {
             const match = customers.filter((customer) => customer.name === req.params.username);
             if (match.length === 0) {
                 customers.push({
-                    ...req.body,
-                    name: req.params.username
+                    ...req.body
                 });
 
                 // Creating the new customer
-                fs.writeFile(customersDataFile, JSON.stringify(customers), "utf8", function (err) {
+                fs.writeFile(customersDataFile, customers, "utf8", function (err) {
                     if (err) {
                         handleError(res, "Failed to create new customer due to " + err)
                     } else {
@@ -109,7 +108,7 @@ service.post("/customers/:username", (req, res) => {
                     }
                 });
             } else {
-                handleError(res, "Customer " + req.params.username + " already exists");
+                handleError(res, "Customer " + req.body.name + " already exists");
             }
         }
     });

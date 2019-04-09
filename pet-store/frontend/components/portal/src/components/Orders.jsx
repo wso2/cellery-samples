@@ -156,20 +156,21 @@ class Orders extends React.Component {
                             ? (
                                 <div className={classes.orderPanelsContainer}>
                                     {
-                                        orders.map((order) => (
-                                            <ExpansionPanel key={order.id} expanded={expanded === order.id}
-                                                onChange={this.handlePanelExpansionChange(order.id)}>
+                                        orders.map((orderDatum) => (
+                                            <ExpansionPanel key={orderDatum.id} expanded={expanded === orderDatum.id}
+                                                onChange={this.handlePanelExpansionChange(orderDatum.id)}>
                                                 <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
                                                     <Typography className={classes.orderId}>
-                                                        Order {order.id}
+                                                        Order {orderDatum.id}
                                                     </Typography>
                                                     <Typography className={classes.itemCount} align={"right"}>
-                                                        {order.items.length} Items
+                                                        {orderDatum.order.length} Items
                                                     </Typography>
                                                     <Typography className={classes.price} align={"right"}>
                                                         $ {
-                                                            order.items.reduce((acc, item) => acc + item.unitPrice, 0)
-                                                                .toFixed(2)
+                                                            orderDatum.order.reduce(
+                                                                (acc, orderItem) => acc + orderItem.item.unitPrice, 0
+                                                            ).toFixed(2)
                                                         }
                                                     </Typography>
                                                 </ExpansionPanelSummary>
@@ -185,7 +186,7 @@ class Orders extends React.Component {
                                                                     </td>
                                                                     <td className={classes.orderDescriptionItem}>
                                                                         <Typography color={"textSecondary"}>
-                                                                            {order.orderDate}
+                                                                            {orderDatum.orderDate}
                                                                         </Typography>
                                                                     </td>
                                                                 </tr>
@@ -198,8 +199,8 @@ class Orders extends React.Component {
                                                                     <td className={classes.orderDescriptionItem}>
                                                                         <Typography color={"textSecondary"}>
                                                                             {
-                                                                                order.deliveryDate
-                                                                                    ? order.deliveryDate
+                                                                                orderDatum.deliveryDate
+                                                                                    ? orderDatum.deliveryDate
                                                                                     : "Undelivered"
                                                                             }
                                                                         </Typography>
@@ -213,7 +214,7 @@ class Orders extends React.Component {
                                                                     </td>
                                                                     <td className={classes.orderDescriptionItem}>
                                                                         <Typography color={"textSecondary"}>
-                                                                            {order.deliveryAddress}
+                                                                            {orderDatum.deliveryAddress}
                                                                         </Typography>
                                                                     </td>
                                                                 </tr>
@@ -231,14 +232,18 @@ class Orders extends React.Component {
                                                                 <Table>
                                                                     <TableBody>
                                                                         {
-                                                                            order.items.map((item) => (
-                                                                                <TableRow key={item.id}>
+                                                                            orderDatum.order.map((orderItem) => (
+                                                                                <TableRow key={orderItem.item.id}>
                                                                                     <TableCell component="th"
                                                                                         scope="row">
-                                                                                        {item.name}
+                                                                                        {orderItem.item.name}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th"
+                                                                                        scope="row">
+                                                                                        {orderItem.item.name}
                                                                                     </TableCell>
                                                                                     <TableCell align="right">
-                                                                                        $ {item.unitPrice}
+                                                                                        $ {orderItem.item.unitPrice}
                                                                                     </TableCell>
                                                                                 </TableRow>
                                                                             ))

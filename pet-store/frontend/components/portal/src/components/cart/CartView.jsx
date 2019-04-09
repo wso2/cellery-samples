@@ -18,6 +18,7 @@
 
 import Cart from "./cart";
 import {Check} from "@material-ui/icons";
+import Notification from "../common/Notification";
 import React from "react";
 import withCart from "./context";
 import {withStyles} from "@material-ui/core/styles";
@@ -36,13 +37,44 @@ const styles = (theme) => ({
 });
 
 class CartView extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            cartItems: props.cart.getItems(),
+            notification: {
+                open: false,
+                message: ""
+            }
+        };
+    }
+
     handleCheckout = () => {
+        const self = this;
         const {cart} = this.props;
-        cart.checkout();
+        cart.checkout()
+            .then((response) => {
+                self.setState({
+                    cartItems: cart.getItems(),
+                    notification: {
+                        open: true,
+                        message: `Order ${response.data.id} Placed`
+                    }
+                });
+            })
+            .catch(() => {
+                self.setState({
+                    notification: {
+                        open: true,
+                        message: "Failed to place order"
+                    }
+                });
+            });
     };
 
     render() {
-        const {cart, classes} = this.props;
+        const {classes} = this.props;
+        const {cartItems, notification} = this.state;
         return (
             <Grid container justify={"center"}>
                 <Grid item lg={8} md={10} xs={12} justify={"center"}>
@@ -52,23 +84,23 @@ class CartView extends React.Component {
                         </Typography>
                     </div>
                     {
-                        cart.getItems().length > 0
+                        cartItems.length > 0
                             ? (
                                 <React.Fragment>
                                     <Table>
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell align="right">Item</TableCell>
+                                                <TableCell align="right">Item ID</TableCell>
                                                 <TableCell align="right">Amount</TableCell>
-                                                <TableCell align="right">Price</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                cart.getItems().map((cartItem) => (
+                                                cartItems.map((cartItem) => (
                                                     <TableRow key={cartItem.id}>
-                                                        <TableCell component="th" scope="row">{cartItem.itemId}</TableCell>
-                                                        <TableCell align="right">{cartItem.itemId}</TableCell>
+                                                        <TableCell component="th" scope="row">
+                                                            {cartItem.itemId}
+                                                        </TableCell>
                                                         <TableCell align="right">{cartItem.amount}</TableCell>
                                                     </TableRow>
                                                 ))
@@ -76,9 +108,9 @@ class CartView extends React.Component {
                                         </TableBody>
                                     </Table>
                                     <Grid container direction={"row"} className={classes.checkoutButton}
-                                          justify={"flex-end"} alignItems={"flex-end"}>
-                                        <Button color={"primary"} variant={"contained"}
-                                                size={"small"} onClick={this.handleCheckout()}>
+                                        justify={"flex-end"} alignItems={"flex-end"}>
+                                        <Button color={"primary"} variant={"contained"} size={"small"}
+                                            onClick={this.handleCheckout}>
                                             <Check/> Checkout
                                         </Button>
                                     </Grid>
@@ -90,6 +122,8 @@ class CartView extends React.Component {
                                 </Typography>
                             )
                     }
+                    <Notification open={notification.open} onClose={this.handleNotificationClose}
+                        message={notification.message}/>
                 </Grid>
             </Grid>
         );

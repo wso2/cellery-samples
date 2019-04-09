@@ -16,25 +16,28 @@
  * under the License.
  */
 
+import * as utils from "../../utils";
+
 /**
  * Instance of the shopping cart of the current user.
  */
 class Cart {
+
     /**
      * @private
      */
-    cart = [];
+    items = [];
 
     /**
      * Add an item to the cart.
      *
      * @param {number} itemId The ID of the item
      * @param {number} amount The amount of items to be purchased
-     * @return {number} The cart item ID
+     * @returns {number} The cart item ID
      */
     addItem(itemId, amount) {
-        const id = this.cart.reduce((cartItem, acc) => cartItem.id > acc ? cartItem.id : acc, []) + 1;
-        this.cart.push({
+        const id = this.items.reduce((acc, cartItem) => (cartItem.id > acc ? cartItem.id : acc), []) + 1;
+        this.items.push({
             id: id,
             itemId: itemId,
             amount: amount
@@ -48,26 +51,48 @@ class Cart {
      * @param {number} id The ID of the cart item to be removed
      */
     removeItem(id) {
-        const cartItemIndex = this.cart.indexOf((cartItem) => cartItem.id === id);
-        this.cart.splice(cartItemIndex, 1);
+        const cartItemIndex = this.items.indexOf((cartItem) => cartItem.id === id);
+        this.items.splice(cartItemIndex, 1);
     }
 
     /**
      * Get the current Cart of the user.
      *
-     * @return {Array<{id: number, itemId: number, amount: number}>} The items array in the cart.
+     * @returns {Array<{id: number, itemId: number, amount: number}>} The items array in the cart.
      */
     getItems() {
-        return [...this.cart];
+        return [...this.items];
     }
 
     /**
      * Checkout the cart and place an order.
+     *
+     * @returns {Promise} Promise for resolve/reject upon checkout
      */
     checkout() {
-        console.log("Checkout");
-        console.log(this.cart);
+        const self = this;
+        const config = {
+            url: "/orders",
+            method: "POST",
+            data: {
+                order: self.items.map((cartItem) => ({
+                    id: cartItem.itemId,
+                    amount: cartItem.amount
+                }))
+            }
+        };
+        return new Promise((resolve, reject) => {
+            utils.callApi(config)
+                .then((data) => {
+                    self.items = [];
+                    resolve(data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
+
 }
 
 export default Cart;

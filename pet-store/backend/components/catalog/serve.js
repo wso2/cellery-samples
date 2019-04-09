@@ -84,18 +84,19 @@ service.get("/accessories", (req, res) => {
  */
 service.post("/accessories", (req, res) => {
   fs.readFile(catalogDataFile, "utf8", function (err, data) {
+    const accessories = JSON.parse(data);
     if (err) {
       handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
     } else {
       // Creating the new accessory data.
-      const maxId = data.reduce((accessory, acc) => accessory.id > acc ? accessory.id : acc, 0);
-      data.push({
+      const maxId = accessories.reduce((acc, accessory) => accessory.id > acc ? accessory.id : acc, 0);
+      accessories.push({
         ...req.body,
-        id: maxId
+        id: maxId + 1
       });
 
       // Creating the new accessory
-      fs.writeFile(catalogDataFile, data, "utf8", function (err) {
+      fs.writeFile(catalogDataFile, accessories, "utf8", function (err) {
         if (err) {
           handleError(res, "Failed to create new accessory due to " + err)
         } else {
@@ -113,10 +114,11 @@ service.post("/accessories", (req, res) => {
  */
 service.get("/accessories/:id", (req, res) => {
   fs.readFile(catalogDataFile, "utf8", function (err, data) {
+    const accessories = JSON.parse(data);
     if (err) {
       handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
     } else {
-      let match = JSON.parse(data).filter((accessory) => accessory.id === req.params.id);
+      let match = accessories.filter((accessory) => accessory.id === req.params.id);
       if (match.length === 1) {
         handleSuccess(res, match[0]);
       } else {
@@ -131,16 +133,17 @@ service.get("/accessories/:id", (req, res) => {
  */
 service.put("/accessories/:id", (req, res) => {
   fs.readFile(catalogDataFile, "utf8", function (err, data) {
+    const accessories = JSON.parse(data);
     if (err) {
       handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
     } else {
-      const match = data.filter((accessory) => accessory.id === req.params.id);
+      const match = accessories.filter((accessory) => accessory.id === req.params.id);
 
       if (match.length === 1) {
         Object.assign(match[0], req.body);
 
         // Updating the accessory
-        fs.writeFile(catalogDataFile, data, "utf8", function (err) {
+        fs.writeFile(catalogDataFile, accessories, "utf8", function (err) {
           if (err) {
             handleError(res, "Failed to update accessory " + req.params.id + " due to " + err)
           } else {
@@ -159,16 +162,17 @@ service.put("/accessories/:id", (req, res) => {
  */
 service.delete("/accessories/:id", (req, res) => {
   fs.readFile(catalogDataFile, "utf8", function (err, data) {
+    const accessories = JSON.parse(data);
     if (err) {
       handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
     } else {
-      const newData = data.filter((accessory) => accessory.id !== req.params.id);
+      const newAccessories = accessories.filter((accessory) => accessory.id !== req.params.id);
 
-      if (newData.length === data.length) {
+      if (newAccessories.length === accessories.length) {
         handleNotFound("Accessory not available");
       } else {
         // Deleting the accessory
-        fs.writeFile(catalogDataFile, newData, "utf8", function (err) {
+        fs.writeFile(catalogDataFile, newAccessories, "utf8", function (err) {
           if (err) {
             handleError(res, "Failed to delete accessory " + req.params.id + " due to " + err)
           } else {

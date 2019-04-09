@@ -79,6 +79,31 @@
             "description": "Server Error Occurred"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "order",
+          "create"
+        ],
+        "summary": "Place a new order",
+        "operationId": "createOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully placed the order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server Error Occurred"
+          }
+        }
       }
     },
     "/profile": {
@@ -111,6 +136,9 @@
         ],
         "summary": "Create a user profile for the user",
         "operationId": "createProfile",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],

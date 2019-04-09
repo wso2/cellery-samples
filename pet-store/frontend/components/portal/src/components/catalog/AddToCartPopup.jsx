@@ -88,7 +88,7 @@ class AddToCartPopup extends React.Component {
                             </tr>
                         </table>
                         <TextField id={"amount"} label={"Amount"} type={"number"} value={amount} margin={"normal"}
-                            onChange={this.handleAmountChange}
+                            min={1} onChange={this.handleAmountChange}
                             InputLabelProps={{
                                 shrink: true
                             }}/>

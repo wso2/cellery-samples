@@ -186,8 +186,11 @@ service.get("/orders", (req, res) => {
         .then((data) => {
             const orders = data[0];
             const accessories = data[1];
-            orders.forEach((order) => {
-                order.items = accessories.filter((accessory) => order.items.includes(accessory.id));
+            orders.forEach((orderDatum) => {
+                orderDatum.order = orderDatum.order.map((datum) => ({
+                    item: accessories.find((accessory) => datum.id === accessory.id),
+                    amount: datum.amount
+                }));
             });
             handleSuccess(res, {
                 orders: orders
@@ -195,6 +198,24 @@ service.get("/orders", (req, res) => {
         })
         .catch((error) => {
             handleError(res, "Failed to fetch orders data due to " + error);
+        });
+});
+
+/*
+ * API endpoint for getting a list of accessories available in the catalog.
+ */
+service.post("/orders", (req, res) => {
+    const config = {
+        url: "/orders",
+        method: "POST",
+        data: req.body
+    };
+    callOrdersService(config, req)
+        .then((data) => {
+            handleSuccess(res, data);
+        })
+        .catch((error) => {
+            handleError(res, "Failed to place order due to " + error);
         });
 });
 
@@ -224,11 +245,11 @@ service.get("/profile", (req, res) => {
 service.post("/profile", (req, res) => {
     const username = req.get(CELLERY_USER_HEADER);
     const config = {
-        url: `/customers/${username}`,
+        url: "/customers",
         method: "POST",
         data: {
             ...req.body,
-            username: username
+            name: username
         }
     };
     callCustomersService(config, req)

@@ -117,6 +117,47 @@ export const getOrdersURL = function(parameters = {}) {
   return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
 }
 /**
+ * Place a new order
+ * request: createOrder
+ * url: createOrderURL
+ * method: createOrder_TYPE
+ * raw_url: createOrder_RAW_URL
+ */
+export const createOrder = function(parameters = {}) {
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  const config = parameters.$config || {
+    headers: {}
+  }
+  let path = '/orders'
+  let body
+  let queryParameters = {}
+  let form = {}
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    });
+  }
+  return request('post', domain + path, body, queryParameters, form, config)
+}
+export const createOrder_RAW_URL = function() {
+  return '/orders'
+}
+export const createOrder_TYPE = function() {
+  return 'post'
+}
+export const createOrderURL = function(parameters = {}) {
+  let queryParameters = {}
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  let path = '/orders'
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    })
+  }
+  let keys = Object.keys(queryParameters)
+  return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
+}
+/**
  * Get the profile of the currently logged in user
  * request: getProfile
  * url: getProfileURL
