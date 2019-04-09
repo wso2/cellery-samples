@@ -3,7 +3,7 @@ Hello world web cell
 
 Hello World is a simple static website that serves Hello World on top of Cellery.
 
-![Hello World Cell Architecture Diagram](../docs/images/hello-world/hello-world-architecture.jpg)
+![Hello World Cell Architecture Diagram](../docs/images/hello-world-web/hello-world-architecture.jpg)
 
 This contains a single component which serves the HTML web page. The web page runs on top of NGINX and its exposed through a web cell.
 
