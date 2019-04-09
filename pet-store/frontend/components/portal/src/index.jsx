@@ -18,11 +18,11 @@
 
 import App from "./components/App";
 import {BrowserRouter} from "react-router-dom";
-import {CartProvider} from "./components/cart/context";
 import {CssBaseline} from "@material-ui/core";
 import {JssProvider} from "react-jss";
 import React from "react";
 import ReactDOM from "react-dom";
+import {StateProvider} from "./components/common/state";
 import {generateTheme} from "./utils";
 import {MuiThemeProvider, createGenerateClassName} from "@material-ui/core/styles";
 
@@ -48,7 +48,7 @@ class Main extends React.Component {
     }
 
     render() {
-        return <App initialState={initialState}/>;
+        return <App/>;
     }
 
 }
@@ -58,9 +58,9 @@ ReactDOM.hydrate((
         <MuiThemeProvider theme={generateTheme()}>
             <CssBaseline/>
             <BrowserRouter basename={window.__BASE_PATH__}>
-                <CartProvider>
+                <StateProvider catalog={initialState.catalog} user={initialState.user}>
                     <Main/>
-                </CartProvider>
+                </StateProvider>
             </BrowserRouter>
         </MuiThemeProvider>
     </JssProvider>

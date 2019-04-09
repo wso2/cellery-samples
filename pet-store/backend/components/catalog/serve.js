@@ -96,7 +96,7 @@ service.post("/accessories", (req, res) => {
       });
 
       // Creating the new accessory
-      fs.writeFile(catalogDataFile, accessories, "utf8", function (err) {
+      fs.writeFile(catalogDataFile, JSON.stringify(accessories), "utf8", function (err) {
         if (err) {
           handleError(res, "Failed to create new accessory due to " + err)
         } else {
@@ -143,7 +143,7 @@ service.put("/accessories/:id", (req, res) => {
         Object.assign(match[0], req.body);
 
         // Updating the accessory
-        fs.writeFile(catalogDataFile, accessories, "utf8", function (err) {
+        fs.writeFile(catalogDataFile, JSON.stringify(accessories), "utf8", function (err) {
           if (err) {
             handleError(res, "Failed to update accessory " + req.params.id + " due to " + err)
           } else {
@@ -172,7 +172,7 @@ service.delete("/accessories/:id", (req, res) => {
         handleNotFound("Accessory not available");
       } else {
         // Deleting the accessory
-        fs.writeFile(catalogDataFile, newAccessories, "utf8", function (err) {
+        fs.writeFile(catalogDataFile, JSON.stringify(newAccessories), "utf8", function (err) {
           if (err) {
             handleError(res, "Failed to delete accessory " + req.params.id + " due to " + err)
           } else {

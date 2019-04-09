@@ -101,7 +101,7 @@ service.post("/orders", (req, res) => {
         } else {
             // Creating the new order data
             const user = req.get(CELLERY_USER_HEADER);
-            const maxId = orders.reduce((acc, order) => order.id > acc ? order.id : acc, 1);
+            const maxId = orders.reduce((acc, order) => order.id > acc ? order.id : acc, 0);
             orders.push({
                 ...req.body,
                 customer: user,

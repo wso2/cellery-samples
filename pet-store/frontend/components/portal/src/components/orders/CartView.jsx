@@ -20,7 +20,8 @@ import Cart from "./cart";
 import {Check} from "@material-ui/icons";
 import Notification from "../common/Notification";
 import React from "react";
-import withCart from "./context";
+import {withRouter} from "react-router-dom";
+import withState from "../common/state";
 import {withStyles} from "@material-ui/core/styles";
 import {Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@material-ui/core";
 import * as PropTypes from "prop-types";
@@ -51,7 +52,7 @@ class CartView extends React.Component {
 
     handleCheckout = () => {
         const self = this;
-        const {cart} = this.props;
+        const {cart, history} = this.props;
         cart.checkout()
             .then((response) => {
                 self.setState({
@@ -61,6 +62,7 @@ class CartView extends React.Component {
                         message: `Order ${response.data.id} Placed`
                     }
                 });
+                history.push("/");
             })
             .catch(() => {
                 self.setState({
@@ -133,7 +135,10 @@ class CartView extends React.Component {
 
 CartView.propTypes = {
     classes: PropTypes.object.isRequired,
-    cart: PropTypes.instanceOf(Cart).isRequired
+    cart: PropTypes.instanceOf(Cart).isRequired,
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired
 };
 
-export default withStyles(styles)(withCart(CartView));
+export default withStyles(styles)(withState(withRouter(CartView)));

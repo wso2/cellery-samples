@@ -21,6 +21,7 @@ import AddToCartPopup from "./AddToCartPopup";
 import React from "react";
 import classNames from "classnames";
 import {withRouter} from "react-router-dom";
+import withState from "../common/state";
 import {withStyles} from "@material-ui/core/styles";
 import {Button, Card, CardContent, CardMedia, Grid, Typography} from "@material-ui/core";
 import * as PropTypes from "prop-types";
@@ -234,4 +235,4 @@ Catalog.propTypes = {
     })
 };
 
-export default withStyles(styles)(withRouter(Catalog));
+export default withStyles(styles)(withRouter(withState(Catalog)));

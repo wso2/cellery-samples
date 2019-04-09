@@ -18,21 +18,39 @@
 
 /* eslint react/prefer-stateless-function: ["off"] */
 
-import Cart from "./cart";
+import Cart from "../orders/cart";
 import React from "react";
 import * as PropTypes from "prop-types";
 
 // Creating a context that can be accessed
-const CartContext = React.createContext({});
+const StateContext = React.createContext({
+    cart: null,
+    catalog: null,
+    user: null
+});
 
-const CartProvider = ({children}) => (
-    <CartContext.Provider value={new Cart()}>
+const StateProvider = ({catalog, children, user}) => (
+    <StateContext.Provider value={{
+        cart: new Cart(),
+        catalog: catalog,
+        user: user
+    }}>
         {children}
-    </CartContext.Provider>
+    </StateContext.Provider>
 );
 
-CartProvider.propTypes = {
-    children: PropTypes.any.isRequired
+StateProvider.propTypes = {
+    children: PropTypes.any.isRequired,
+    catalog: PropTypes.shape({
+        accessories: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            description: PropTypes.string.isRequired,
+            unitPrice: PropTypes.number.isRequired,
+            inStock: PropTypes.number.isRequired
+        })).isRequired
+    }),
+    user: PropTypes.string.isRequired
 };
 
 /**
@@ -41,27 +59,27 @@ CartProvider.propTypes = {
  * @param {React.ComponentType} Component component which needs access to the cart.
  * @returns {React.ComponentType} The new HOC with access to the cart.
  */
-const withCart = (Component) => {
-    class CartConsumer extends React.Component {
+const withState = (Component) => {
+    class StateConsumer extends React.Component {
 
         render = () => {
             const {forwardedRef, ...otherProps} = this.props;
 
             return (
-                <CartContext.Consumer>
-                    {(cart) => <Component cart={cart} ref={forwardedRef} {...otherProps}/>}
-                </CartContext.Consumer>
+                <StateContext.Consumer>
+                    {(state) => <Component ref={forwardedRef} {...otherProps} {...state}/>}
+                </StateContext.Consumer>
             );
         };
 
     }
 
-    CartConsumer.propTypes = {
+    StateConsumer.propTypes = {
         forwardedRef: PropTypes.any
     };
 
-    return React.forwardRef((props, ref) => <CartConsumer {...props} forwardedRef={ref} />);
+    return React.forwardRef((props, ref) => <StateConsumer {...props} forwardedRef={ref} />);
 };
 
-export default withCart;
-export {CartProvider};
+export default withState;
+export {StateProvider};

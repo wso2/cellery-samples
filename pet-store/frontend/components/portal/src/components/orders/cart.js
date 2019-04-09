@@ -36,7 +36,7 @@ class Cart {
      * @returns {number} The cart item ID
      */
     addItem(itemId, amount) {
-        const id = this.items.reduce((acc, cartItem) => (cartItem.id > acc ? cartItem.id : acc), []) + 1;
+        const id = this.items.reduce((acc, cartItem) => (cartItem.id > acc ? cartItem.id : acc), 0) + 1;
         this.items.push({
             id: id,
             itemId: itemId,

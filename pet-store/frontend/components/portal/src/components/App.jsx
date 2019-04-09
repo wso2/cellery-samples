@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import CartView from "./cart/CartView";
+import CartView from "./orders/CartView";
 import Catalog from "./catalog/Catalog";
-import Orders from "./Orders";
+import Orders from "./orders/Orders";
 import React from "react";
 import SignIn from "./user/SignIn";
 import SignUp from "./user/SignUp";
+import withState from "./common/state";
 import {withStyles} from "@material-ui/core/styles";
 import {AccountCircle, ArrowBack, Pets, ShoppingCart} from "@material-ui/icons";
 import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
@@ -33,10 +34,12 @@ const styles = (theme) => ({
         position: "relative"
     },
     logo: {
-        marginRight: theme.spacing.unit * 2
+        marginRight: theme.spacing.unit * 2,
+        cursor: "pointer"
     },
     title: {
-        flexGrow: 1
+        flexGrow: 1,
+        cursor: "pointer"
     },
     userAvatarContainer: {
         marginBottom: theme.spacing.unit * 2,
@@ -80,7 +83,7 @@ class App extends React.Component {
     };
 
     render() {
-        const {classes, initialState, history, location} = this.props;
+        const {classes, history, location, user} = this.props;
         const {accountPopoverElement} = this.state;
 
         const isAccountPopoverOpen = Boolean(accountPopoverElement);
@@ -99,12 +102,13 @@ class App extends React.Component {
                                     </IconButton>
                                 )
                         }
-                        <Pets className={classes.logo}/>
-                        <Typography variant="h6" color="inherit" noWrap className={classes.title}>
+                        <Pets className={classes.logo} onClick={() => history.push("/")}/>
+                        <Typography variant="h6" color="inherit" noWrap className={classes.title}
+                            onClick={() => history.push("/")}>
                             Pet Store
                         </Typography>
                         {
-                            initialState.user
+                            user
                                 ? (
                                     <div>
                                         <Button color={"inherit"} onClick={() => history.push("/cart")}>
@@ -130,9 +134,9 @@ class App extends React.Component {
                                             <MenuItem onClick={this.handleAccountPopoverClose}
                                                 className={classes.userAvatarContainer}>
                                                 <Avatar className={classes.userAvatar}>
-                                                    {initialState.user.substr(0, 1).toUpperCase()}
+                                                    {user.substr(0, 1).toUpperCase()}
                                                 </Avatar>
-                                                {initialState.user}
+                                                {user}
                                             </MenuItem>
                                             <MenuItem onClick={this.signOut}>
                                                 Sign Out
@@ -148,13 +152,12 @@ class App extends React.Component {
                 </AppBar>
                 <main>
                     <Switch>
-                        <Route exact path={"/"} render={() => <Catalog catalog={initialState.catalog}
-                            user={initialState.user}/>}/>
+                        <Route exact path={"/"} component={Catalog}/>
                         <Route exact path={"/cart"} component={CartView}/>
                         <Route exact path={"/sign-in"} component={SignIn}/>
                         <Route exact path={"/sign-up"} component={SignUp}/>
                         {
-                            initialState.user
+                            user
                                 ? <Route exact path={"/orders"} component={Orders}/>
                                 : null
                         }
@@ -169,15 +172,13 @@ class App extends React.Component {
 
 App.propTypes = {
     classes: PropTypes.string.isRequired,
-    initialState: PropTypes.shape({
-        catalog: PropTypes.object
-    }).isRequired,
     location: PropTypes.shape({
         pathname: PropTypes.string.isRequired
     }).isRequired,
     history: PropTypes.shape({
         goBack: PropTypes.func.isRequired
-    }).isRequired
+    }).isRequired,
+    user: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(withRouter(App));
+export default withStyles(styles)(withRouter(withState(App)));
