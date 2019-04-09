@@ -162,16 +162,19 @@ As `/` is configured to be as unsecured context as described [here](pet-fe-cell-
 
 5. Click on `sign in`, and you will be directed to the default IDP installed within cellery runtime. You can sign in as user alice (Username: alice, Password: alice123), 
 and fill the customer information form. This operation will invoke the controller and customer micro-services from the pet store portal web application.
+
 ![customer info](../docs/images/pet-store/customer-info.png)
 
 ![pet preference info](../docs/images/pet-store/pet-preference.png)
 
 6. Once you logged in to the portal application, you can add items to the cart. And then click on the cart to checkout the items. This operation will invoke controller and catalog micro-services.
+
 ![add to cart](../docs/images/pet-store/add-to-cart.png)
 
 ![checkout](../docs/images/pet-store/checkout.png)
 
 7. Return to the home page and click on the orders button which will show the orders placed by that user. 
+
 ![orders](../docs/images/pet-store/orders.png)
 
 8. You can logout from pet-store as alice user, and you can login as different user admin (Username: admin, Password:admin), and check for orders, which will 
@@ -184,12 +187,15 @@ If you have installed complete setup or basic setup with observability enabled, 
 
 1) Go to [http://cellery-dashboard](http://cellery-dashboard) and you will land in the over view page of the cellery dashboard. 
 This will show the overall health of the cells and the system, and the dependencies between the cells.
+
 ![cellery overview](../docs/images/pet-store/cellery-observabiltiy-overview.png)
 
 2) You can click on a cell, and inspect the components of cell. For example, the pet-be cell's components and metrics overview is shown below.
+
 ![cellery components overview](../docs/images/pet-store/observe-overview-comp.png)
 
 3) Now go you can go into the details of a component `gateway` within the pet-be cell, and it will show the dependency diagram within cell, kubernetes pods, and metrics of the component.
+
 ![cellery gateway component overview](../docs/images/pet-store/gateway-comp-overview.png)
 
 ![cellery kubernetes pods](../docs/images/pet-store/kubernetes-pods.png)
@@ -200,6 +206,7 @@ This will show the overall health of the cells and the system, and the dependenc
 ![cellery distributed tracing](../docs/images/pet-store/distributed-trace-search.png)
 
 5) Each trace in the tracing view has timeline view, sequence diagram, and dependency digram view. 
+
 ![cellery timeline view](../docs/images/pet-store/timeline-trace.png)
 
 ![cellery sequence diagram view](../docs/images/pet-store/sequence-diagram-1.png)
@@ -222,7 +229,7 @@ You do not need to build the Components if you just wish to deploy the Cells. Th
 
 If you wish to change the Pet Store Sample and play around with Cellery, you can follow this section to rebuild the Components.
 
-1. [Checkout](#checkout-the-sample) the Sample
+1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
 2. Set the following environment variables for customizing the build.
 
    | Environment Variable  |                                                                       |
