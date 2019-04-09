@@ -27,7 +27,7 @@ are not exposed outside the pet-be cell, and only catalog micro service exposed 
 ## [pet-fe cell](pet-fe-cell-description.md)
 This contains of a single component which serves the portal. The portal is exposed through a web cell which is able to provide SSO and web content delivery features.
 
-## Try Petstore sample
+## Try Pet store sample
 
 ### 1. Checkout the Sample
 
