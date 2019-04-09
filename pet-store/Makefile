@@ -19,7 +19,9 @@ DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
 
 SAMPLE := pet-store
-CELLS := backend frontend
+BACKEND_CELL := backend
+FRONTEND_CELL := frontend
+CELLS := $(BACKEND_CELL) $(FRONTEND_CELL)
 BACKEND_COMPONENTS := catalog customers orders controller
 FRONTEND_COMPONENTS := portal
 
@@ -29,16 +31,16 @@ CELL_BUILD_TARGETS := $(addprefix build., $(CELLS))
 CELL_DOCKER_TARGETS := $(addprefix docker., $(CELLS))
 CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(CELLS))
 
-BACKEND_CELL_CLEAN_TARGETS := $(addprefix clean.backend., $(BACKEND_COMPONENTS))
-BACKEND_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.backend., $(BACKEND_COMPONENTS))
-BACKEND_CELL_BUILD_TARGETS := $(addprefix build.backend., $(BACKEND_COMPONENTS))
-BACKEND_CELL_DOCKER_TARGETS := $(addprefix docker.backend., $(BACKEND_COMPONENTS))
-BACKEND_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push.backend., $(BACKEND_COMPONENTS))
-FRONTEND_CELL_CLEAN_TARGETS := $(addprefix clean.frontend., $(FRONTEND_COMPONENTS))
-FRONTEND_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.frontend., $(FRONTEND_COMPONENTS))
-FRONTEND_CELL_BUILD_TARGETS := $(addprefix build.frontend., $(FRONTEND_COMPONENTS))
-FRONTEND_CELL_DOCKER_TARGETS := $(addprefix docker.frontend., $(FRONTEND_COMPONENTS))
-FRONTEND_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push.frontend., $(FRONTEND_COMPONENTS))
+BACKEND_CELL_CLEAN_TARGETS := $(addprefix clean.$(BACKEND_CELL)., $(BACKEND_COMPONENTS))
+BACKEND_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.$(BACKEND_CELL)., $(BACKEND_COMPONENTS))
+BACKEND_CELL_BUILD_TARGETS := $(addprefix build.$(BACKEND_CELL)., $(BACKEND_COMPONENTS))
+BACKEND_CELL_DOCKER_TARGETS := $(addprefix docker.$(BACKEND_CELL)., $(BACKEND_COMPONENTS))
+BACKEND_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push.$(BACKEND_CELL)., $(BACKEND_COMPONENTS))
+FRONTEND_CELL_CLEAN_TARGETS := $(addprefix clean.$(FRONTEND_CELL)., $(FRONTEND_COMPONENTS))
+FRONTEND_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.$(FRONTEND_CELL)., $(FRONTEND_COMPONENTS))
+FRONTEND_CELL_BUILD_TARGETS := $(addprefix build.$(FRONTEND_CELL)., $(FRONTEND_COMPONENTS))
+FRONTEND_CELL_DOCKER_TARGETS := $(addprefix docker.$(FRONTEND_CELL)., $(FRONTEND_COMPONENTS))
+FRONTEND_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push.$(FRONTEND_CELL)., $(FRONTEND_COMPONENTS))
 
 COMPONENT_CLEAN_TARGETS := $(BACKEND_CELL_CLEAN_TARGETS) $(FRONTEND_CELL_CLEAN_TARGETS)
 COMPONENT_CHECK_STYLE_TARGETS := $(BACKEND_CELL_CHECK_STYLE_TARGETS) $(FRONTEND_CELL_CHECK_STYLE_TARGETS)
@@ -107,15 +109,22 @@ $(BACKEND_CELL_CLEAN_TARGETS):
 
 .PHONY: $(FRONTEND_CELL_CLEAN_TARGETS)
 $(FRONTEND_CELL_CLEAN_TARGETS):
-	$(eval COMPONENT=$(patsubst clean.frontend.%,%,$@))
-	cd  $(CELL)/components/$(COMPONENT); \
+	$(eval COMPONENT=$(patsubst clean.$(FRONTEND_CELL).%,%,$@))
+	cd  $(FRONTEND_CELL)/components/$(COMPONENT); \
 	npm ci; \
 	npm run clean
 
-.PHONY: $(COMPONENT_CHECK_STYLE_TARGETS)
-$(COMPONENT_CHECK_STYLE_TARGETS):
-	$(eval COMPONENT=$(patsubst check-style.$(CELL).%,%,$@))
-	cd  $(CELL)/components/$(COMPONENT); \
+.PHONY: $(BACKEND_CELL_CHECK_STYLE_TARGETS)
+$(BACKEND_CELL_CHECK_STYLE_TARGETS):
+	$(eval COMPONENT=$(patsubst check-style.$(BACKEND_CELL).%,%,$@))
+	cd  $(BACKEND_CELL)/components/$(COMPONENT); \
+	npm ci; \
+	npm run lint
+
+.PHONY: $(FRONTEND_CELL_CHECK_STYLE_TARGETS)
+$(FRONTEND_CELL_CHECK_STYLE_TARGETS):
+	$(eval COMPONENT=$(patsubst check-style.$(FRONTEND_CELL).%,%,$@))
+	cd  $(FRONTEND_CELL)/components/$(COMPONENT); \
 	npm ci; \
 	npm run lint
 
@@ -125,17 +134,27 @@ $(BACKEND_CELL_BUILD_TARGETS):
 
 .PHONY: $(FRONTEND_CELL_BUILD_TARGETS)
 $(FRONTEND_CELL_BUILD_TARGETS):
-	$(eval COMPONENT=$(patsubst build.frontend.%,%,$@))
-	cd  $(CELL)/components/$(COMPONENT); \
+	$(eval COMPONENT=$(patsubst build.$(FRONTEND_CELL).%,%,$@))
+	cd  $(FRONTEND_CELL)/components/$(COMPONENT); \
 	npm ci; \
 	npm run build
 
-.PHONY: $(COMPONENT_DOCKER_TARGETS)
-$(COMPONENT_DOCKER_TARGETS): $($(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]')_CELL_BUILD_TARGETS)
-	$(eval COMPONENT=$(patsubst docker.$(CELL).%,%,$@))
-	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(CELL)/components/$(COMPONENT)
+.PHONY: $(BACKEND_CELL_DOCKER_TARGETS)
+$(BACKEND_CELL_DOCKER_TARGETS):
+	$(eval COMPONENT=$(patsubst docker.$(BACKEND_CELL).%,%,$@))
+	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(BACKEND_CELL)/components/$(COMPONENT)
 
-.PHONY: $(COMPONENT_DOCKER_PUSH_TARGETS)
-$(COMPONENT_DOCKER_PUSH_TARGETS):
-	$(eval COMPONENT=$(patsubst docker-push.$(CELL).%,%,$@))
+.PHONY: $(FRONTEND_CELL_DOCKER_TARGETS)
+$(FRONTEND_CELL_DOCKER_TARGETS):
+	$(eval COMPONENT=$(patsubst docker.$(FRONTEND_CELL).%,%,$@))
+	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(FRONTEND_CELL)/components/$(COMPONENT)
+
+.PHONY: $(BACKEND_CELL_DOCKER_PUSH_TARGETS)
+$(BACKEND_CELL_DOCKER_PUSH_TARGETS):
+	$(eval COMPONENT=$(patsubst docker-push.$(BACKEND_CELL).%,%,$@))
+	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG}
+
+.PHONY: $(FRONTEND_CELL_DOCKER_PUSH_TARGETS)
+$(FRONTEND_CELL_DOCKER_PUSH_TARGETS):
+	$(eval COMPONENT=$(patsubst docker-push.$(FRONTEND_CELL).%,%,$@))
 	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG}

@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import Catalog from "./Catalog";
+import CartView from "./cart/CartView";
+import Catalog from "./catalog/Catalog";
 import Orders from "./Orders";
 import React from "react";
-import routes from "../routes";
+import SignIn from "./user/SignIn";
+import SignUp from "./user/SignUp";
 import {withStyles} from "@material-ui/core/styles";
-import {AccountCircle, Pets} from "@material-ui/icons";
+import {AccountCircle, ArrowBack, Pets, ShoppingCart} from "@material-ui/icons";
 import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import * as PropTypes from "prop-types";
@@ -70,7 +72,7 @@ class App extends React.Component {
     };
 
     signIn = () => {
-        window.location.href = window.__BASE_PATH__ + routes[1];
+        window.location.href = `${window.__BASE_PATH__}/sign-in`;
     };
 
     signOut = () => {
@@ -78,14 +80,25 @@ class App extends React.Component {
     };
 
     render() {
-        const {classes, initialState, isSSR} = this.props;
+        const {classes, initialState, history, location} = this.props;
         const {accountPopoverElement} = this.state;
-        const isAccountPopoverOpen = Boolean(accountPopoverElement);
 
+        const isAccountPopoverOpen = Boolean(accountPopoverElement);
+        const backButtonHiddenRoutes = ["/", "/sign-up", "/sign-in"];
         return (
             <div className={classes.root}>
                 <AppBar position="static" className={classes.appBar}>
                     <Toolbar>
+                        {
+                            history.length <= 1 || backButtonHiddenRoutes.includes(location.pathname)
+                                ? null
+                                : (
+                                    <IconButton color={"inherit"} aria-label={"Back"}
+                                        onClick={() => history.goBack()}>
+                                        <ArrowBack/>
+                                    </IconButton>
+                                )
+                        }
                         <Pets className={classes.logo}/>
                         <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                             Pet Store
@@ -94,9 +107,12 @@ class App extends React.Component {
                             initialState.user
                                 ? (
                                     <div>
+                                        <Button color={"inherit"} onClick={() => history.push("/cart")}>
+                                            <ShoppingCart/> Cart
+                                        </Button>
                                         <IconButton
                                             aria-owns={isAccountPopoverOpen ? "user-info-appbar" : undefined}
-                                            color="inherit" aria-haspopup="true"
+                                            color={"inherit"} aria-haspopup={"true"}
                                             onClick={this.handleAccountPopoverOpen}>
                                             <AccountCircle/>
                                         </IconButton>
@@ -132,17 +148,14 @@ class App extends React.Component {
                 </AppBar>
                 <main>
                     <Switch>
-                        <Route exact path={routes[0]} render={() => <Catalog catalog={initialState.catalog}
+                        <Route exact path={"/"} render={() => <Catalog catalog={initialState.catalog}
                             user={initialState.user}/>}/>
-                        <Route exact path={routes[1]} render={() => {
-                            if (!isSSR) {
-                                window.location.href = window.__BASE_PATH__;
-                            }
-                            return null;
-                        }}/>
+                        <Route exact path={"/cart"} component={CartView}/>
+                        <Route exact path={"/sign-in"} component={SignIn}/>
+                        <Route exact path={"/sign-up"} component={SignUp}/>
                         {
                             initialState.user
-                                ? <Route exact path={routes[2]} render={() => <Orders orders={initialState.orders}/>}/>
+                                ? <Route exact path={"/orders"} component={Orders}/>
                                 : null
                         }
                         <Redirect from={"*"} to={"/"}/>
@@ -156,11 +169,15 @@ class App extends React.Component {
 
 App.propTypes = {
     classes: PropTypes.string.isRequired,
-    isSSR: PropTypes.bool.isRequired,
     initialState: PropTypes.shape({
-        catalog: PropTypes.object,
-        orders: PropTypes.object
+        catalog: PropTypes.object
+    }).isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired
+    }).isRequired,
+    history: PropTypes.shape({
+        goBack: PropTypes.func.isRequired
     }).isRequired
 };
 
-export default withStyles(styles, {withTheme: true})(withRouter(App));
+export default withStyles(styles)(withRouter(App));
