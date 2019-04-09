@@ -3,7 +3,7 @@ Hello World
 
 Hello World is a simple static website that serves Hello World on top of Cellery.
 
-![Hello World Cell Architecture Diagram](../docs/images/hello-world-architecture.jpg)
+![Hello World Cell Architecture Diagram](../docs/images/hello-world/hello-world-architecture.jpg)
 
 ## Hello-World Cell
 
