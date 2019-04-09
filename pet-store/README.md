@@ -149,24 +149,50 @@ start dependent cell instance if it is not available in the runtime.
      portal    Up for 4 minutes 49 seconds
      sts       Up for 4 minutes 55 seconds
    ```
-4. Access the petstore add via accessing [http://pet-store.com/](http://pet-store.com/), and this will redirect to 
-login page at the default Identity Provider in the cellery runtime. 
+4. Access the petstore add via accessing [http://pet-store.com/](http://pet-store.com/). You will be landed in the home page of cellery. 
+As `/` is configured to be as unsecured context as described [here](pet-fe-cell-description.md), you can see the content of home page without logging in. 
 
-5. You can sign into the pet-store as user alice (Username: alice, Password: alice123), check for orders, and logout. 
-Alice will be having two orders placed in the pet-store by default. 
+5. Click on `sign in`, and you will be directed to the default IDP installed within cellery runtime. You can sign in as user alice (Username: alice, Password: alice123), 
+and fill the customer information form. This operation will invoke the controller and customer micro-services from the pet store portal web application.
+![customer info](../docs/images/pet-store/customer-info.png)
+![pet preference info](../docs/images/pet-store/pet-preference.png)
 
-6. You can sign in to the pet-store application as user admin (Username: admin, Password:admin), and check for orders. 
-In this case, Admin user will not have any orders. 
+6. Once you logged in to the portal application, you can add items to the cart. And then click on the cart to checkout the items. This operation will invoke controller and catalog micro-services.
+![add to cart](../docs/images/pet-store/add-to-cart.png)
+![checkout](../docs/images/pet-store/checkout.png)
 
-Please feel free to checkout this repository and play around with the sample.
+7. Return to the home page and click on the orders button which will show the orders placed by that user. 
+![orders](../docs/images/pet-store/orders.png)
+
+8. You can logout from pet-store as alice user, and you can login as different user admin (Username: admin, Password:admin), and check for orders, which will 
+return a empty orders as admin user hasn't placed any order. Therefore, you can realize the pet-store application user specific information.  
+
+Checkout the source of the [front end](frontend/components/portal) and [backend components](backend/components), and feel free to play around the source code. 
 
 ## Observability 
 If you have installed complete setup or basic setup with observability enabled, you can follow below steps to view the cellery observability.
 
-1) Go to [http://cellery-dashboard](http://cellery-dashboard) 
+1) Go to [http://cellery-dashboard](http://cellery-dashboard) and you will land in the over view page of the cellery dashboard. 
+This will show the overall health of the cells and the system, and the dependencies between the cells.
+![cellery overview](../docs/images/pet-store/cellery-observabiltiy-overview.png)
 
+2) You can click on a cell, and inspect the components of cell. For example, the pet-be cell's components and metrics overview is shown below.
+![cellery components overview](../docs/images/pet-store/observe-overview-comp.png)
 
+3) Now go you can go into the details of a component `gateway` within the pet-be cell, and it will show the dependency diagram within cell, kubernetes pods, and metrics of the component.
+![cellery gateway component overview](../docs/images/pet-store/gateway-comp-overview.png)
+![cellery kubernetes pods](../docs/images/pet-store/kubernetes-pods.png)
+![cellery component metrics](../docs/images/pet-store/comp-metrics.png)
 
+4) You can also trace the each requests that come into the system. 
+![cellery distributed tracing](../docs/images/pet-store/distributed-trace-search.png)
+
+5) Each trace in the tracing view has timeline view, sequence diagram, and dependency digram view. 
+![cellery timeline view](../docs/images/pet-store/timeline-trace.png)
+![cellery sequence diagram view](../docs/images/pet-store/sequence-diagram-1.png)
+![cellery sequence diagram view](../docs/images/pet-store/sequence-diagram-2.png)
+![cellery dependency graph view](../docs/images/pet-store/dependency-diagram-tarce.png)
+ 
 ## Building the Components from Source
 
 You do not need to build the Components if you just wish to deploy the Cells. This should only be done if you wish to change the Pet Store sample and play around with it.
