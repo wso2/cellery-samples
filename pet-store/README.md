@@ -24,12 +24,12 @@ This sample is structured into two Cells.
 This contains the four components which involves with working with the Pet Store data and business logic. Catalog, customer, and order micro services
 are not exposed outside the pet-be cell, and only catalog micro service exposed as cell API which is used by pet-fe cell. 
 
-## [pet-fe Cell](pet-fe-cell-description.md)
+## [pet-fe cell](pet-fe-cell-description.md)
 This contains of a single component which serves the portal. The portal is exposed through a web cell which is able to provide SSO and web content delivery features.
 
-## Getting Started
+## Try Petstore sample
 
-### Checkout the Sample
+### 1. Checkout the Sample
 
 1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
 2. Navigate to the pet-store Sample.
@@ -37,7 +37,7 @@ This contains of a single component which serves the portal. The portal is expos
    cd <SAMPLES_ROOT>/pet-store
    ```
 
-### Build backed cell
+### 2. Build backed cell
 1.  Build the pet-be Cell by executing `cellery build` command as shown below. 
    ```
    $ cd <SAMPLES_ROOT>/pet-store/backend
@@ -66,7 +66,7 @@ the component and dependency details of the cell.
     ```
     ![pet fe view](../docs/images/pet-store/pet-be-view.png)
     
-### Running the Frontend Cell
+### 3. Running the Frontend Cell
 1. Build the pet-fe cell by executing the `cellery build` command.
    ```
    $ cd <SAMPLES_ROOT>/pet-store/frontend
