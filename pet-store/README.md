@@ -203,6 +203,7 @@ This will show the overall health of the cells and the system, and the dependenc
 ![cellery component metrics](../docs/images/pet-store/comp-metrics.png)
 
 4) You can also trace the each requests that come into the system. 
+
 ![cellery distributed tracing](../docs/images/pet-store/distributed-trace-search.png)
 
 5) Each trace in the tracing view has timeline view, sequence diagram, and dependency digram view. 
