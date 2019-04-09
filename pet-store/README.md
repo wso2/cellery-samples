@@ -163,10 +163,12 @@ As `/` is configured to be as unsecured context as described [here](pet-fe-cell-
 5. Click on `sign in`, and you will be directed to the default IDP installed within cellery runtime. You can sign in as user alice (Username: alice, Password: alice123), 
 and fill the customer information form. This operation will invoke the controller and customer micro-services from the pet store portal web application.
 ![customer info](../docs/images/pet-store/customer-info.png)
+
 ![pet preference info](../docs/images/pet-store/pet-preference.png)
 
 6. Once you logged in to the portal application, you can add items to the cart. And then click on the cart to checkout the items. This operation will invoke controller and catalog micro-services.
 ![add to cart](../docs/images/pet-store/add-to-cart.png)
+
 ![checkout](../docs/images/pet-store/checkout.png)
 
 7. Return to the home page and click on the orders button which will show the orders placed by that user. 
@@ -189,7 +191,9 @@ This will show the overall health of the cells and the system, and the dependenc
 
 3) Now go you can go into the details of a component `gateway` within the pet-be cell, and it will show the dependency diagram within cell, kubernetes pods, and metrics of the component.
 ![cellery gateway component overview](../docs/images/pet-store/gateway-comp-overview.png)
+
 ![cellery kubernetes pods](../docs/images/pet-store/kubernetes-pods.png)
+
 ![cellery component metrics](../docs/images/pet-store/comp-metrics.png)
 
 4) You can also trace the each requests that come into the system. 
@@ -197,8 +201,11 @@ This will show the overall health of the cells and the system, and the dependenc
 
 5) Each trace in the tracing view has timeline view, sequence diagram, and dependency digram view. 
 ![cellery timeline view](../docs/images/pet-store/timeline-trace.png)
+
 ![cellery sequence diagram view](../docs/images/pet-store/sequence-diagram-1.png)
+
 ![cellery sequence diagram view](../docs/images/pet-store/sequence-diagram-2.png)
+
 ![cellery dependency graph view](../docs/images/pet-store/dependency-diagram-tarce.png)
  
 ## Building the Components from Source
