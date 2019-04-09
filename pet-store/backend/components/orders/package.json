@@ -10,7 +10,8 @@
     "lint:fix": "eslint --color --fix serve.js"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0"

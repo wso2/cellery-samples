@@ -17,6 +17,7 @@
  */
 
 import {ExpandMore} from "@material-ui/icons";
+import Notification from "./common/Notification";
 import React from "react";
 import classNames from "classnames";
 import {withStyles} from "@material-ui/core/styles";
@@ -25,9 +26,10 @@ import {
     Typography
 } from "@material-ui/core";
 import * as PropTypes from "prop-types";
+import * as utils from "../utils";
 
 const styles = (theme) => ({
-    titleUnit: {
+    root: {
         backgroundColor: theme.palette.background.paper
     },
     titleContent: {
@@ -86,10 +88,23 @@ class Orders extends React.Component {
         super(props);
 
         this.state = {
-            orders: props.orders,
-            expanded: null
+            orders: [],
+            expanded: null,
+            notification: {
+                open: false,
+                message: ""
+            }
         };
     }
+
+    handleNotificationClose = () => {
+        this.setState({
+            notification: {
+                open: false,
+                message: ""
+            }
+        });
+    };
 
     /**
      * Handle changes in the expansion panels expaneded status.
@@ -103,11 +118,33 @@ class Orders extends React.Component {
         });
     };
 
+    componentDidMount() {
+        const self = this;
+        const config = {
+            url: "/orders",
+            method: "GET"
+        };
+        utils.callApi(config)
+            .then((response) => {
+                self.setState({
+                    orders: response.data.orders
+                });
+            })
+            .catch(() => {
+                self.setState({
+                    notification: {
+                        open: true,
+                        message: "Failed to fetch orders"
+                    }
+                });
+            });
+    }
+
     render = () => {
         const {classes} = this.props;
-        const {expanded, orders} = this.state;
+        const {expanded, notification, orders} = this.state;
         return (
-            <div className={classes.titleUnit}>
+            <div className={classes.root}>
                 <div className={classes.titleContent}>
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Orders
@@ -119,20 +156,21 @@ class Orders extends React.Component {
                             ? (
                                 <div className={classes.orderPanelsContainer}>
                                     {
-                                        orders.map((order) => (
-                                            <ExpansionPanel key={order.id} expanded={expanded === order.id}
-                                                onChange={this.handlePanelExpansionChange(order.id)}>
+                                        orders.map((orderDatum) => (
+                                            <ExpansionPanel key={orderDatum.id} expanded={expanded === orderDatum.id}
+                                                onChange={this.handlePanelExpansionChange(orderDatum.id)}>
                                                 <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
                                                     <Typography className={classes.orderId}>
-                                                        Order {order.id}
+                                                        Order {orderDatum.id}
                                                     </Typography>
                                                     <Typography className={classes.itemCount} align={"right"}>
-                                                        {order.items.length} Items
+                                                        {orderDatum.order.length} Items
                                                     </Typography>
                                                     <Typography className={classes.price} align={"right"}>
                                                         $ {
-                                                            order.items.reduce((acc, item) => acc + item.unitPrice, 0)
-                                                                .toFixed(2)
+                                                            orderDatum.order.reduce(
+                                                                (acc, orderItem) => acc + orderItem.item.unitPrice, 0
+                                                            ).toFixed(2)
                                                         }
                                                     </Typography>
                                                 </ExpansionPanelSummary>
@@ -148,7 +186,7 @@ class Orders extends React.Component {
                                                                     </td>
                                                                     <td className={classes.orderDescriptionItem}>
                                                                         <Typography color={"textSecondary"}>
-                                                                            {order.orderDate}
+                                                                            {orderDatum.orderDate}
                                                                         </Typography>
                                                                     </td>
                                                                 </tr>
@@ -161,8 +199,8 @@ class Orders extends React.Component {
                                                                     <td className={classes.orderDescriptionItem}>
                                                                         <Typography color={"textSecondary"}>
                                                                             {
-                                                                                order.deliveryDate
-                                                                                    ? order.deliveryDate
+                                                                                orderDatum.deliveryDate
+                                                                                    ? orderDatum.deliveryDate
                                                                                     : "Undelivered"
                                                                             }
                                                                         </Typography>
@@ -176,7 +214,7 @@ class Orders extends React.Component {
                                                                     </td>
                                                                     <td className={classes.orderDescriptionItem}>
                                                                         <Typography color={"textSecondary"}>
-                                                                            {order.deliveryAddress}
+                                                                            {orderDatum.deliveryAddress}
                                                                         </Typography>
                                                                     </td>
                                                                 </tr>
@@ -194,14 +232,18 @@ class Orders extends React.Component {
                                                                 <Table>
                                                                     <TableBody>
                                                                         {
-                                                                            order.items.map((item) => (
-                                                                                <TableRow key={item.id}>
+                                                                            orderDatum.order.map((orderItem) => (
+                                                                                <TableRow key={orderItem.item.id}>
                                                                                     <TableCell component="th"
                                                                                         scope="row">
-                                                                                        {item.name}
+                                                                                        {orderItem.item.name}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th"
+                                                                                        scope="row">
+                                                                                        {orderItem.item.name}
                                                                                     </TableCell>
                                                                                     <TableCell align="right">
-                                                                                        $ {item.unitPrice}
+                                                                                        $ {orderItem.item.unitPrice}
                                                                                     </TableCell>
                                                                                 </TableRow>
                                                                             ))
@@ -224,6 +266,8 @@ class Orders extends React.Component {
                             )
                     }
                 </div>
+                <Notification open={notification.open} onClose={this.handleNotificationClose}
+                    message={notification.message}/>
             </div>
         );
     }
@@ -231,15 +275,7 @@ class Orders extends React.Component {
 }
 
 Orders.propTypes = {
-    classes: PropTypes.object.isRequired,
-    orders: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        customer: PropTypes.string.isRequired,
-        items: PropTypes.arrayOf(PropTypes.number).isRequired,
-        orderDate: PropTypes.string.isRequired,
-        deliveryDate: PropTypes.string.isRequired,
-        deliveryAddress: PropTypes.string.isRequired
-    }))
+    classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Orders);

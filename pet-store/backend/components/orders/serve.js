@@ -16,12 +16,18 @@
 
 const express = require("express");
 const fs = require("fs");
+const moment = require("moment");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3003;
-const ordersDataFile = "data/orders.json";
+const ordersDataDir = "data";
+const ordersDataFile = `${ordersDataDir}/orders.json`;
 
+const DATE_FORMAT = "DD-MM-YYYY";
 const CELLERY_USER_HEADER = "x-cellery-auth-subject";
+
+fs.mkdirSync(ordersDataDir); // eslint-disable-line no-sync
+fs.writeFileSync(ordersDataFile, "[]", "utf8"); // eslint-disable-line no-sync
 
 service.use(express.json());
 
@@ -73,11 +79,12 @@ const handleNotFound = (res, message) => {
  */
 service.get("/orders", (req, res) => {
     fs.readFile(ordersDataFile, "utf8", function (err, data) {
+        const orders = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
             const user = req.get(CELLERY_USER_HEADER);
-            const orderList = JSON.parse(data).filter((order) => order.customer === user);
+            const orderList = orders.filter((order) => order.customer === user);
             handleSuccess(res, orderList);
         }
     });
@@ -88,20 +95,22 @@ service.get("/orders", (req, res) => {
  */
 service.post("/orders", (req, res) => {
     fs.readFile(ordersDataFile, "utf8", function (err, data) {
+        const orders = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
             // Creating the new order data
             const user = req.get(CELLERY_USER_HEADER);
-            const maxId = data.reduce((order, acc) => order.id > acc ? order.id : acc, 0);
-            data.push({
+            const maxId = orders.reduce((acc, order) => order.id > acc ? order.id : acc, 1);
+            orders.push({
                 ...req.body,
                 customer: user,
-                id: maxId
+                id: maxId + 1,
+                orderDate: moment().format(DATE_FORMAT)
             });
 
             // Creating the new order
-            fs.writeFile(ordersDataFile, data, "utf8", function (err) {
+            fs.writeFile(ordersDataFile, JSON.stringify(orders), "utf8", function (err) {
                 if (err) {
                     handleError(res, "Failed to create new order due to " + err)
                 } else {
@@ -119,11 +128,12 @@ service.post("/orders", (req, res) => {
  */
 service.get("/orders/:id", (req, res) => {
     fs.readFile(ordersDataFile, "utf8", function (err, data) {
+        const orders = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
             const user = req.get(CELLERY_USER_HEADER);
-            let match = JSON.parse(data).filter((order) => order.id === req.params.id && order.customer === user);
+            let match = orders.filter((order) => order.id === req.params.id && order.customer === user);
             if (match.length === 1) {
                 handleSuccess(res, match[0]);
             } else {
@@ -138,17 +148,18 @@ service.get("/orders/:id", (req, res) => {
  */
 service.put("/orders/:id", (req, res) => {
     fs.readFile(ordersDataFile, "utf8", function (err, data) {
+        const orders = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
             const user = req.get(CELLERY_USER_HEADER);
-            const match = data.filter((order) => order.id === req.params.id && order.customer === user);
+            const match = orders.filter((order) => order.id === req.params.id && order.customer === user);
 
             if (match.length === 1) {
                 Object.assign(match[0], req.body);
 
                 // Updating the order
-                fs.writeFile(ordersDataFile, data, "utf8", function (err) {
+                fs.writeFile(ordersDataFile, JSON.stringify(orders), "utf8", function (err) {
                     if (err) {
                         handleError(res, "Failed to update order " + req.params.id + " due to " + err)
                     } else {
@@ -167,17 +178,18 @@ service.put("/orders/:id", (req, res) => {
  */
 service.delete("/orders/:id", (req, res) => {
     fs.readFile(ordersDataFile, "utf8", function (err, data) {
+        const orders = JSON.parse(data);
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
             const user = req.get(CELLERY_USER_HEADER);
-            const newData = data.filter((order) => order.id !== req.params.id || order.customer !== user);
+            const newOrders = orders.filter((order) => order.id !== req.params.id || order.customer !== user);
 
-            if (newData.length === data.length) {
+            if (newOrders.length === orders.length) {
                 handleNotFound("Order not available");
             } else {
                 // Deleting the order
-                fs.writeFile(ordersDataFile, newData, "utf8", function (err) {
+                fs.writeFile(ordersDataFile, JSON.stringify(newOrders), "utf8", function (err) {
                     if (err) {
                         handleError(res, "Failed to delete order " + req.params.id + " due to " + err)
                     } else {
