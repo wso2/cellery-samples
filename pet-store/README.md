@@ -65,8 +65,16 @@ the component and dependency details of the cell.
     $ cellery view wso2cellery/pet-be:0.1.0
     ```
     ![pet fe view](../docs/images/pet-store/pet-be-view.png)
+
+3. Execute `cellery list ingress` to see the list ingress suppported by the pet-be cell, and you can see only `controller` component is exposing the API. 
+    ```
+    $ cellery list ingress wso2cellery/pet-be:0.1.0
+      COMPONENT    INGRESS TYPE   INGRESS CONTEXT   INGRESS PORT   GLOBALLY EXPOSED
+     ------------ -------------- ----------------- -------------- ------------------
+      controller   HTTP           controller        80             False
+    ```
     
-### 3. Running the Frontend Cell
+### 3. Build and run frontend cell
 1. Build the pet-fe cell by executing the `cellery build` command.
    ```
    $ cd <SAMPLES_ROOT>/pet-store/frontend
