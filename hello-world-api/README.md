@@ -61,7 +61,7 @@ public function build(cellery:ImageName iName) returns error? {
 }
 ```
 
-Follow below instructions to build, run and push the hello world api cell.
+#### Follow below instructions to build and run the hello world api cell.
 
 1. Build the cellery image for hello world project by executing the cellery build command as shown below. Note `DOCKER_HUB_ORG` is your organization name in docker hub.
     ```
@@ -130,6 +130,7 @@ Follow below instructions to build, run and push the hello world api cell.
     ![hello world api cell view](../docs/images/hello-world-api/hello-world-cell-api-docs-view.png)
     
 ### 3. Obtain access token and invoke API
+
 Since the hello-world-api is exposed via the global gateway, the request can go through the global API gateway to the hello world service. 
 And, by default all the APIs are secured, therefore we need to obtain a token to invoke the API. The below provided steps explains the process to obtain the token and invoke the API.
        
