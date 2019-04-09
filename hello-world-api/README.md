@@ -3,6 +3,8 @@ Hello World API
 
 Hello World API sample is a simple rest API that returns the text 'Hello World!' as a response to a GET request.
 
+![Hello World API Cell Architecture Diagram](../docs/images/hello-world-api-architecture.jpg)
+
 ## Getting Started
 
 ##### Note: To run this sample, a full Cellery deployment which includes API Manager component is required.
