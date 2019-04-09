@@ -5,6 +5,8 @@ Hello World API sample is a simple rest API that returns the text 'Hello World!'
 
 ## Getting Started
 
+##### Note: To run this sample, a full Cellery deployment which includes API Manager component is required.
+
 ### Checkout the Sample
 
 1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository.

@@ -23,21 +23,6 @@ COMPONENT := hello-service
 
 all: clean build docker
 
-.PHONY: clean.$(SAMPLE)
-clean.$(SAMPLE): clean
-
-.PHONY: check-style.$(SAMPLE)
-check-style.$(SAMPLE): check-style
-
-.PHONY: build.$(SAMPLE)
-build.$(SAMPLE): build
-
-.PHONY: docker.$(SAMPLE)
-docker.$(SAMPLE): docker
-
-.PHONY: docker-push.$(SAMPLE)
-docker-push.$(SAMPLE): docker-push
-
 .PHONY: clean
 clean:
 	cd components/$(COMPONENT); \
@@ -47,7 +32,7 @@ clean:
 check-style:
 	@:
 
-PHONY: build
+.PHONY: build
 build:
 	cd components/$(COMPONENT); \
 	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o hello-service hello-service.go
