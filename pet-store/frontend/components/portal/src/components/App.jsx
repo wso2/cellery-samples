@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Cart from "./orders/cart";
 import CartView from "./orders/CartView";
 import Catalog from "./catalog/Catalog";
 import Orders from "./orders/Orders";
@@ -25,7 +26,7 @@ import SignUp from "./user/SignUp";
 import withState from "./common/state";
 import {withStyles} from "@material-ui/core/styles";
 import {AccountCircle, ArrowBack, Pets, ShoppingCart} from "@material-ui/icons";
-import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Avatar, Badge, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import * as PropTypes from "prop-types";
 
@@ -40,6 +41,15 @@ const styles = (theme) => ({
     title: {
         flexGrow: 1,
         cursor: "pointer"
+    },
+    badge: {
+        top: "15%",
+        right: -25,
+        marginRight: theme.spacing.unit * 3
+    },
+    cartButtonContainer: {
+        display: "inline",
+        marginRight: theme.spacing.unit * 3
     },
     userAvatarContainer: {
         marginBottom: theme.spacing.unit * 2,
@@ -58,9 +68,26 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            accountPopoverElement: null
+            accountPopoverElement: null,
+            cartItemsCount: props.cart.getItems().length
         };
     }
+
+    componentDidMount = () => {
+        const {cart} = this.props;
+        cart.addListener(this.handleCartUpdates);
+    };
+
+    componentWillUnmount = () => {
+        const {cart} = this.props;
+        cart.removeListener(this.handleCartUpdates);
+    };
+
+    handleCartUpdates = (items) => {
+        this.setState({
+            cartItemsCount: items.length
+        });
+    };
 
     handleAccountPopoverOpen = (event) => {
         this.setState({
@@ -84,13 +111,13 @@ class App extends React.Component {
 
     render() {
         const {classes, history, location, user} = this.props;
-        const {accountPopoverElement} = this.state;
+        const {accountPopoverElement, cartItemsCount} = this.state;
 
         const isAccountPopoverOpen = Boolean(accountPopoverElement);
         const backButtonHiddenRoutes = ["/", "/sign-up", "/sign-in"];
         return (
             <div className={classes.root}>
-                <AppBar position="static" className={classes.appBar}>
+                <AppBar position={"static"} className={classes.appBar}>
                     <Toolbar>
                         {
                             history.length <= 1 || backButtonHiddenRoutes.includes(location.pathname)
@@ -103,7 +130,7 @@ class App extends React.Component {
                                 )
                         }
                         <Pets className={classes.logo} onClick={() => history.push("/")}/>
-                        <Typography variant="h6" color="inherit" noWrap className={classes.title}
+                        <Typography variant={"h6"} color={"inherit"} noWrap className={classes.title}
                             onClick={() => history.push("/")}>
                             Pet Store
                         </Typography>
@@ -111,16 +138,21 @@ class App extends React.Component {
                             user
                                 ? (
                                     <div>
-                                        <Button color={"inherit"} onClick={() => history.push("/cart")}>
-                                            <ShoppingCart/> Cart
-                                        </Button>
+                                        <div className={classes.cartButtonContainer}>
+                                            <Badge color={"secondary"} badgeContent={cartItemsCount}
+                                                classes={{badge: classes.badge}}>
+                                                <Button color={"inherit"} onClick={() => history.push("/cart")}>
+                                                    <ShoppingCart/> Cart
+                                                </Button>
+                                            </Badge>
+                                        </div>
                                         <IconButton
                                             aria-owns={isAccountPopoverOpen ? "user-info-appbar" : undefined}
                                             color={"inherit"} aria-haspopup={"true"}
                                             onClick={this.handleAccountPopoverOpen}>
                                             <AccountCircle/>
                                         </IconButton>
-                                        <Menu id="user-info-appbar" anchorEl={accountPopoverElement}
+                                        <Menu id={"user-info-appbar"} anchorEl={accountPopoverElement}
                                             anchorOrigin={{
                                                 vertical: "top",
                                                 horizontal: "right"
@@ -172,6 +204,7 @@ class App extends React.Component {
 
 App.propTypes = {
     classes: PropTypes.string.isRequired,
+    cart: PropTypes.instanceOf(Cart),
     location: PropTypes.shape({
         pathname: PropTypes.string.isRequired
     }).isRequired,

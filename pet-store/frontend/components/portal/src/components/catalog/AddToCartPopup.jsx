@@ -63,8 +63,9 @@ class AddToCartPopup extends React.Component {
     };
 
     handleAmountChange = () => {
+        const {item} = this.props;
         const value = parseInt(event.target.value, 10);
-        if (value > 0) {
+        if (value > 0 && value <= item.inStock) {
             this.setState({
                 amount: value
             });
