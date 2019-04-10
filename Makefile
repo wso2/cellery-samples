@@ -28,6 +28,7 @@ BUILD_TARGETS := $(addprefix build., $(SAMPLES))
 DOCKER_TARGETS := $(addprefix docker., $(SAMPLES))
 DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(SAMPLES))
 CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(SAMPLES))
+CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(SAMPLES))
 
 
 all: clean build docker
@@ -49,6 +50,9 @@ docker-push: $(DOCKER_PUSH_TARGETS)
 
 .PHONY: cellery-build
 cellery-build: $(CELLERY_BUILD_TARGETS)
+
+.PHONY: cellery-push
+cellery-push: $(CELLERY_PUSH_TARGETS)
 
 
 ## Sample Level Targets
@@ -88,3 +92,9 @@ $(CELLERY_BUILD_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-build.%,%,$@))
 	@cd $(SAMPLE); \
 	$(MAKE) cellery-build
+
+.PHONY: $(CELLERY_PUSH_TARGETS)
+$(CELLERY_PUSH_TARGETS):
+	$(eval SAMPLE=$(patsubst cellery-push.%,%,$@))
+	@cd $(SAMPLE); \
+	$(MAKE) cellery-push

@@ -44,7 +44,7 @@ build:
 .PHONY: docker
 docker:
 	cd components/$(COMPONENT); \
-	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE):${DOCKER_IMAGE_TAG} .
+	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} .
 
 .PHONY: docker-push
 docker-push:
@@ -54,3 +54,7 @@ docker-push:
 .PHONY: cellery-build
 cellery-build:
 	cellery build $(CELL).bal $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)
+
+.PHONY: cellery-push
+cellery-push:
+	cellery push $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)

@@ -33,6 +33,7 @@ CELL_BUILD_TARGETS := $(addprefix build., $(CELLS))
 CELL_DOCKER_TARGETS := $(addprefix docker., $(CELLS))
 CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(CELLS))
 CELL_CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(CELLS))
+CELL_CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(CELLS))
 
 PET_BE_CELL_CLEAN_TARGETS := $(addprefix clean.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
 PET_BE_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
@@ -72,6 +73,9 @@ docker-push: $(CELL_DOCKER_PUSH_TARGETS)
 
 .PHONY: cellery-build
 cellery-build: $(CELL_CELLERY_BUILD_TARGETS)
+
+.PHONY: cellery-push
+cellery-push: $(CELL_CELLERY_PUSH_TARGETS)
 
 
 ## Cell Level Targets
@@ -115,6 +119,16 @@ cellery-build.$(PET_BE_CELL):
 cellery-build.$(PET_FE_CELL):
 	cd  $(PET_FE_CELL); \
 	cellery build $(PET_FE_CELL).bal $(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)
+
+.PHONY: cellery-push.$(PET_BE_CELL)
+cellery-push.$(PET_BE_CELL):
+	cd  $(PET_BE_CELL); \
+	cellery push $(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)
+
+.PHONY: cellery-push.$(PET_FE_CELL)
+cellery-push.$(PET_FE_CELL):
+	cd  $(PET_FE_CELL); \
+	cellery push $(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)
 
 
 ## Component Level Targets
