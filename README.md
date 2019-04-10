@@ -12,8 +12,7 @@ Cellery Samples contains various samples that can be deployed in a Cellery Runti
 
 Once you have set-up the Cellery CLI and Runtime you can proceed with deploying the samples provided here. You can find the following samples in this repository.
 
-
-* [Hello World Web](hello-world-web)
+* [Hello World](hello-world)
 * [Hello World Api](hello-world-api)
 * [Pet Store](pet-store)
 
