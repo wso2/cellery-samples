@@ -1,4 +1,4 @@
-## Pet store backend cell
+## Pet store pet-be cell
 
 This pet store backend cell consists of 4 microservices.
 
@@ -11,7 +11,7 @@ All 4 micro services are implemented in [node.js](https://nodejs.org/en/).
 
 
 ### Pet-be cell
-The below shown is the cell file for the pet-be cell which is in [pet-be.bal](backend/pet-be.bal).
+The below shown is the cell file for the pet-be cell which is in [pet-be.bal](pet-be/pet-be.bal).
 
 ```
 import celleryio/cellery;
@@ -122,14 +122,14 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
 ```
 
 - There are four components defined to deploy four micro-services (catalog, orders, customers, and controller), and all four components have HTTP ingress to receive the external requests. 
-- Only `controller` component has defined `expose` parameter to `local` in the [HttpAPIIngress](https://github.com/wso2-cellery/spec), 
+- Only `controller` component has defined `expose` parameter to `local` in the [HttpAPIIngress](https://github.com/wso2-cellery/spec#1-http-ingresses), 
 and therefore only `controller` component is exposed as cell API, and all other three components are only accessible within the cell and not from other cells. 
 - The `controller` component cell has defined `envVars` to get the runtime value of host and ports for other components catalog, customer, and orders. 
 - All four components are defined included in the cell during `petStoreBackendCell` initialization.
 
 ### Build method 
 - The `build` method will be executed when `cellery build` is performed, and user can pass the `cellery:ImageName iName` as a parameter during cellery build.
-- The API definition of the controller micro service is defined in the swagger file [pet-store.swagger.json](backend/components/controller/resources/pet-store.swagger.json). 
+- The API definition of the controller micro service is defined in the swagger file [pet-store.swagger.json](pet-be/components/controller/resources/pet-store.swagger.json). 
 And therefore the controller component's HttpAPIIngress's API definition is updated by reading the swagger file in the `build` method.
 - Finally, the method `cellery:createImage` within the `build` method will create the cell image.
 
