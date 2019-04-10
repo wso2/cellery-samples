@@ -93,7 +93,7 @@ service.post("/customers", (req, res) => {
             handleError(res, "Failed to read data file " + customersDataFile + " due to " + err);
         } else {
             // Creating the new customer data.
-            const match = customers.filter((customer) => customer.name === req.params.username);
+            const match = customers.filter((customer) => customer.username === req.body.username);
             if (match.length === 0) {
                 customers.push({
                     ...req.body
@@ -108,7 +108,7 @@ service.post("/customers", (req, res) => {
                     }
                 });
             } else {
-                handleError(res, "Customer " + req.body.name + " already exists");
+                handleError(res, "Customer " + req.body.username + " already exists");
             }
         }
     });
