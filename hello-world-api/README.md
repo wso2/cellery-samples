@@ -184,8 +184,8 @@ If you wish to change the Hello World API Sample and play around with Cellery, y
 6. Update the `<SAMPLES_ROOT>/hello-world-api/hello-world-api.bal` file and set the newly created image names for the component source.
 7. [Build and run](#2.-build-and-run-hello-world-web-cell) the Cells.
 
-### Did you try? 
+## Did you try? 
 1. [Hello world](../hello-world)
 
-### What's Next? 
-2. [Try pet store](../pet-store)
+## What's Next? 
+1. [Try pet store](../pet-store)

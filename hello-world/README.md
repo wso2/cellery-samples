@@ -7,8 +7,6 @@ Hello World is a simple static website that serves Hello World on top of Cellery
 
 This contains a single component which serves the HTML web page. The web page runs on top of NGINX and its exposed through a web cell.
 
-## Getting Started
-
 ## Try hello world sample
 
 ### 1. Checkout the Sample
@@ -220,6 +218,6 @@ If you wish to change the Hello World Sample and play around with Cellery, you c
 7. [Build and run](#2.-build,-run-and-push-hello-world-cell) the Cells.
 
 
-### What's Next? 
+## What's Next? 
 1. [Try hello world Api](../hello-world-api)
 2. [Try pet store](../pet-store)
