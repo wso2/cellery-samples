@@ -52,4 +52,4 @@ docker-push:
 
 .PHONY: cellery-build
 cellery-build:
-	cellery build hello-world.bal $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)
+	cellery build $(CELL).bal $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)
