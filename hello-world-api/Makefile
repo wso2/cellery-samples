@@ -16,9 +16,9 @@
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= latest
+DOCKER_IMAGE_TAG ?= 0.2.0
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= 0.1.0
+CELLERY_VERSION ?= 0.2.0
 
 SAMPLE := hello-world-api
 CELL := hello-world-api
@@ -49,8 +49,8 @@ docker:
 .PHONY: docker-push
 docker-push:
 	cd components/$(COMPONENT); \
-	docker push ${DOCKER_REPO}/samples-$(SAMPLE):${DOCKER_IMAGE_TAG}
+	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG}
 
 .PHONY: cellery-build
 cellery-build:
-	cellery build hello-world-api.bal $(CELLERY_ORG)/$(CELL):$(CELLERY_VERSION)
+	cellery build hello-world-api.bal $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)

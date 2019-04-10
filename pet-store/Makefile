@@ -16,9 +16,9 @@
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= latest
+DOCKER_IMAGE_TAG ?= 0.2.0
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= 0.1.0
+CELLERY_VERSION ?= 0.2.0
 
 SAMPLE := pet-store
 BACKEND_CELL := backend
@@ -109,12 +109,12 @@ $(CELL_DOCKER_PUSH_TARGETS):
 .PHONY: cellery-build.$(BACKEND_CELL)
 cellery-build.$(BACKEND_CELL):
 	cd  $(BACKEND_CELL); \
-	cellery build pet-be.bal $(CELLERY_ORG)/pet-be:$(CELLERY_VERSION)
+	cellery build pet-be.bal $(CELLERY_ORG)/pet-be-cell:$(CELLERY_VERSION)
 
 .PHONY: cellery-build.$(FRONTEND_CELL)
 cellery-build.$(FRONTEND_CELL):
 	cd  $(FRONTEND_CELL); \
-	cellery build pet-fe.bal $(CELLERY_ORG)/pet-fe:$(CELLERY_VERSION)
+	cellery build pet-fe.bal $(CELLERY_ORG)/pet-fe-cell:$(CELLERY_VERSION)
 
 
 ## Component Level Targets

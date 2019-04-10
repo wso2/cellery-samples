@@ -23,7 +23,7 @@ import celleryio/cellery;
 cellery:Component helloComponent = {
     name: "hello-api",
     source: {
-        image: "docker.io/wso2cellery/samples-hello-world-api"
+        image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:0.2.0"
     },
     ingresses: {
         helloApi: <cellery:HttpApiIngress>{ port: 9090,
