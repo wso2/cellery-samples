@@ -1,0 +1,21 @@
+dist: xenial
+node_js:
+  - 9.11.2
+go:
+  - 1.11.x
+services:
+  - docker
+cache:
+  directories:
+    - .autoconf
+    - $HOME/.m2
+before_install:
+  - wget https://wso2.org/jenkins/view/cellery/job/cellery/job/sdk/lastSuccessfulBuild/artifact/installers/ubuntu-x64/target/*zip*/target.zip
+  - unzip target.zip
+  - sudo dpkg -i target/*.deb
+  - npm i -g npm
+  - mkdir -p $HOME/gopath/src/github.com/cellery-io
+  - mv ${TRAVIS_BUILD_DIR} $GOPATH/src/github.com/cellery-io/samples
+  - export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/cellery-io/samples
+  - cd $HOME/gopath/src/github.com/cellery-io/samples
+script: make clean check-style build docker cellery-build

@@ -32,12 +32,13 @@ clean:
 
 .PHONY: check-style
 check-style:
-	@:
+	cd components/$(COMPONENT); \
+	test -z "$$(goimports -l . | tee /dev/stderr)"
 
 .PHONY: build
 build:
 	cd components/$(COMPONENT); \
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o hello-service hello-service.go
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o build/hello-service hello-service.go
 
 .PHONY: docker
 docker:
