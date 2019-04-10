@@ -17,6 +17,8 @@
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
+CELLERY_ORG ?= wso2cellery
+CELLERY_VERSION ?= 0.1.0
 
 SAMPLE := pet-store
 BACKEND_CELL := backend
@@ -30,6 +32,7 @@ CELL_CHECK_STYLE_TARGETS := $(addprefix check-style., $(CELLS))
 CELL_BUILD_TARGETS := $(addprefix build., $(CELLS))
 CELL_DOCKER_TARGETS := $(addprefix docker., $(CELLS))
 CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(CELLS))
+CELL_CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(CELLS))
 
 BACKEND_CELL_CLEAN_TARGETS := $(addprefix clean.$(BACKEND_CELL)., $(BACKEND_COMPONENTS))
 BACKEND_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.$(BACKEND_CELL)., $(BACKEND_COMPONENTS))
@@ -67,6 +70,9 @@ docker: $(CELL_DOCKER_TARGETS)
 .PHONY: docker-push
 docker-push: $(CELL_DOCKER_PUSH_TARGETS)
 
+.PHONY: cellery-build
+cellery-build: $(CELL_CELLERY_BUILD_TARGETS)
+
 
 ## Cell Level Targets
 
@@ -99,6 +105,16 @@ $(CELL_DOCKER_PUSH_TARGETS):
 	$(eval CELL=$(patsubst docker-push.%,%,$@))
 	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
 	@CELL=$(CELL) $(MAKE) $(addprefix docker-push.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
+
+.PHONY: cellery-build.$(BACKEND_CELL)
+cellery-build.$(BACKEND_CELL):
+	cd  $(BACKEND_CELL); \
+	cellery build pet-be.bal $(CELLERY_ORG)/pet-be:$(CELLERY_VERSION)
+
+.PHONY: cellery-build.$(FRONTEND_CELL)
+cellery-build.$(FRONTEND_CELL):
+	cd  $(FRONTEND_CELL); \
+	cellery build pet-fe.bal $(CELLERY_ORG)/pet-fe:$(CELLERY_VERSION)
 
 
 ## Component Level Targets

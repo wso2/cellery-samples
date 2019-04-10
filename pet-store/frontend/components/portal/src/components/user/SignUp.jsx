@@ -61,8 +61,9 @@ class SignUp extends React.Component {
     };
 
     handleFinish = () => {
-        const {history} = this.props;
-        const {profile} = this.state;
+        const self = this;
+        const {history} = self.props;
+        const {profile} = self.state;
         const config = {
             url: "/profile",
             method: "POST",
@@ -71,6 +72,12 @@ class SignUp extends React.Component {
         utils.callApi(config)
             .then(() => {
                 history.replace("/");
+                self.setState({
+                    notification: {
+                        open: true,
+                        message: "Successfully created your profile"
+                    }
+                });
             })
             .catch(() => {
                 self.setState({

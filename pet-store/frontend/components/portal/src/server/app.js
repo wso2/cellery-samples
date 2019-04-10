@@ -21,12 +21,12 @@
 /* eslint no-console: "off" */
 
 import App from "../components/App";
-import {CartProvider} from "../components/cart/context";
 import {CssBaseline} from "@material-ui/core";
 import {JssProvider} from "react-jss";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import {SheetsRegistry} from "jss";
+import {StateProvider} from "../components/common/state";
 import {StaticRouter} from "react-router-dom";
 import {MuiThemeProvider, createGenerateClassName} from "@material-ui/core/styles";
 import {generateTheme, renderFullPage} from "../utils";
@@ -57,9 +57,9 @@ const renderApp = (req, res, initialState, basePath) => {
             <MuiThemeProvider theme={generateTheme()} sheetsManager={sheetsManager}>
                 <CssBaseline/>
                 <StaticRouter context={context} location={req.url}>
-                    <CartProvider>
-                        <App initialState={initialState}/>
-                    </CartProvider>
+                    <StateProvider catalog={initialState.catalog} user={initialState.user}>
+                        <App/>
+                    </StateProvider>
                 </StaticRouter>
             </MuiThemeProvider>
         </JssProvider>

@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import Cart from "../cart/cart";
+import Cart from "../orders/cart";
 import {Check} from "@material-ui/icons";
+import Notification from "../common/Notification";
 import React from "react";
-import withCart from "../cart/context";
+import withState from "../common/state";
 import {withStyles} from "@material-ui/core/styles";
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, Zoom
@@ -44,15 +45,31 @@ class AddToCartPopup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            amount: 1
+            amount: 1,
+            notification: {
+                open: false,
+                message: ""
+            }
         };
     }
 
-    handleAmountChange = () => {
-        const value = event.target.value;
+    handleNotificationClose = () => {
         this.setState({
-            amount: value
+            notification: {
+                open: false,
+                message: ""
+            }
         });
+    };
+
+    handleAmountChange = () => {
+        const {item} = this.props;
+        const value = parseInt(event.target.value, 10);
+        if (value > 0 && value <= item.inStock) {
+            this.setState({
+                amount: value
+            });
+        }
     };
 
     handleAddToCart = () => {
@@ -60,56 +77,67 @@ class AddToCartPopup extends React.Component {
         const {amount} = this.state;
         cart.addItem(item.id, amount);
         onClose();
+        this.setState({
+            notification: {
+                open: true,
+                message: `Added ${item.name} to the Cart`
+            }
+        });
     };
 
     render() {
         const {classes, item, onClose, open} = this.props;
-        const {amount} = this.state;
+        const {amount, notification} = this.state;
         return (
-            <Dialog maxWidth={"sm"} open={open} onClose={onClose} TransitionComponent={Zoom}
-                aria-labelledby={"add-to-cart-dialog"}>
-                <DialogTitle id={"add-to-cart-dialog"}>Add To Cart</DialogTitle>
-                <DialogContent>
-                    <div>
-                        <Typography variant={"h5"} color={"textPrimary"}>{item.name}</Typography>
-                        <Typography className={classes.description} variant={"body1"} color={"textSecondary"}>
-                            {item.description}
-                        </Typography>
-                        <table>
-                            <tr>
-                                <td><Typography variant={"body2"} color={"textPrimary"}>In Stock</Typography></td>
-                                <td><Typography variant={"body2"} color={"textPrimary"}>:</Typography></td>
-                                <td><Typography color={"textSecondary"}>{item.inStock}</Typography></td>
-                            </tr>
-                            <tr>
-                                <td><Typography variant={"body2"} color={"textPrimary"}>Unit Price</Typography></td>
-                                <td><Typography variant={"body2"} color={"textPrimary"}>:</Typography></td>
-                                <td><Typography color={"textSecondary"}>$ {item.unitPrice}</Typography></td>
-                            </tr>
-                        </table>
-                        <TextField id={"amount"} label={"Amount"} type={"number"} value={amount} margin={"normal"}
-                            min={1} onChange={this.handleAmountChange}
-                            InputLabelProps={{
-                                shrink: true
-                            }}/>
-                        <div className={classes.totalAmountContainer}>
-                            <Typography className={classes.totalAmountItems} variant={"body2"} color={"textPrimary"}>
-                                Total:
+            <React.Fragment>
+                <Dialog maxWidth={"sm"} open={open} onClose={onClose} TransitionComponent={Zoom}
+                    aria-labelledby={"add-to-cart-dialog"}>
+                    <DialogTitle id={"add-to-cart-dialog"}>Add To Cart</DialogTitle>
+                    <DialogContent>
+                        <div>
+                            <Typography variant={"h5"} color={"textPrimary"}>{item.name}</Typography>
+                            <Typography className={classes.description} variant={"body1"} color={"textSecondary"}>
+                                {item.description}
                             </Typography>
-                            <Typography className={classes.totalAmountItems} color={"textSecondary"}>
-                                $ {item.unitPrice * amount}
-                            </Typography>
+                            <table>
+                                <tr>
+                                    <td><Typography variant={"body2"} color={"textPrimary"}>In Stock</Typography></td>
+                                    <td><Typography variant={"body2"} color={"textPrimary"}>:</Typography></td>
+                                    <td><Typography color={"textSecondary"}>{item.inStock}</Typography></td>
+                                </tr>
+                                <tr>
+                                    <td><Typography variant={"body2"} color={"textPrimary"}>Unit Price</Typography></td>
+                                    <td><Typography variant={"body2"} color={"textPrimary"}>:</Typography></td>
+                                    <td><Typography color={"textSecondary"}>$ {item.unitPrice}</Typography></td>
+                                </tr>
+                            </table>
+                            <TextField id={"amount"} label={"Amount"} type={"number"} value={amount} margin={"normal"}
+                                onChange={this.handleAmountChange}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}/>
+                            <div className={classes.totalAmountContainer}>
+                                <Typography className={classes.totalAmountItems} variant={"body2"}
+                                    color={"textPrimary"}>
+                                    Total:
+                                </Typography>
+                                <Typography className={classes.totalAmountItems} color={"textSecondary"}>
+                                    $ {item.unitPrice * amount}
+                                </Typography>
+                            </div>
                         </div>
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose} size={"small"}>Cancel</Button>
-                    <Button disabled={amount === 0} variant={"contained"} color={"primary"} size={"small"}
-                        onClick={this.handleAddToCart}>
-                        <Check/> Add to Cart
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={onClose} size={"small"}>Cancel</Button>
+                        <Button disabled={amount === 0} variant={"contained"} color={"primary"} size={"small"}
+                            onClick={this.handleAddToCart}>
+                            <Check/> Add to Cart
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Notification open={notification.open} onClose={this.handleNotificationClose}
+                    message={notification.message}/>
+            </React.Fragment>
         );
     }
 
@@ -129,4 +157,4 @@ AddToCartPopup.propTypes = {
     }.inStock
 };
 
-export default withStyles(styles)(withCart(AddToCartPopup));
+export default withStyles(styles)(withState(AddToCartPopup));

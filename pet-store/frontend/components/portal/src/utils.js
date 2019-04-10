@@ -31,7 +31,7 @@ const generateTheme = () => createMuiTheme({
             dark: "#3c40a1"
         },
         secondary: {
-            main: "#424245"
+            main: "#828ff5"
         }
     }
 });

@@ -100,7 +100,7 @@ service.post("/customers", (req, res) => {
                 });
 
                 // Creating the new customer
-                fs.writeFile(customersDataFile, customers, "utf8", function (err) {
+                fs.writeFile(customersDataFile, JSON.stringify(customers), "utf8", function (err) {
                     if (err) {
                         handleError(res, "Failed to create new customer due to " + err)
                     } else {

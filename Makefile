@@ -17,14 +17,17 @@
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
+CELLERY_ORG ?= wso2cellery
+CELLERY_VERSION ?= 0.1.0
 
-SAMPLES := pet-store hello-world hello-world-api
+SAMPLES := pet-store hello-world-web hello-world-api
 
 CLEAN_TARGETS := $(addprefix clean., $(SAMPLES))
 CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES))
 BUILD_TARGETS := $(addprefix build., $(SAMPLES))
 DOCKER_TARGETS := $(addprefix docker., $(SAMPLES))
 DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(SAMPLES))
+CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(SAMPLES))
 
 
 all: clean build docker
@@ -43,6 +46,9 @@ docker: $(DOCKER_TARGETS)
 
 .PHONY: docker-push
 docker-push: $(DOCKER_PUSH_TARGETS)
+
+.PHONY: cellery-build
+cellery-build: $(CELLERY_BUILD_TARGETS)
 
 
 ## Sample Level Targets
@@ -76,3 +82,9 @@ $(DOCKER_PUSH_TARGETS):
 	$(eval SAMPLE=$(patsubst docker-push.%,%,$@))
 	@cd $(SAMPLE); \
 	$(MAKE) docker-push
+
+.PHONY: $(CELLERY_BUILD_TARGETS)
+$(CELLERY_BUILD_TARGETS):
+	$(eval SAMPLE=$(patsubst cellery-build.%,%,$@))
+	@cd $(SAMPLE); \
+	$(MAKE) cellery-build

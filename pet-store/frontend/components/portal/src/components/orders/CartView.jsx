@@ -17,12 +17,15 @@
  */
 
 import Cart from "./cart";
-import {Check} from "@material-ui/icons";
 import Notification from "../common/Notification";
 import React from "react";
-import withCart from "./context";
+import {withRouter} from "react-router-dom";
+import withState from "../common/state";
 import {withStyles} from "@material-ui/core/styles";
-import {Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@material-ui/core";
+import {
+    Button, Grid, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography
+} from "@material-ui/core";
+import {Check, DeleteForever} from "@material-ui/icons";
 import * as PropTypes from "prop-types";
 
 const styles = (theme) => ({
@@ -49,18 +52,39 @@ class CartView extends React.Component {
         };
     }
 
+    componentDidMount = () => {
+        const {cart} = this.props;
+        cart.addListener(this.handleCartUpdates);
+    };
+
+    componentWillUnmount = () => {
+        const {cart} = this.props;
+        cart.removeListener(this.handleCartUpdates);
+    };
+
+    handleCartUpdates = (items) => {
+        this.setState({
+            cartItems: items
+        });
+    };
+
+    handleRemoveItem = (id) => () => {
+        const {cart} = this.props;
+        cart.removeItem(id);
+    };
+
     handleCheckout = () => {
         const self = this;
-        const {cart} = this.props;
+        const {cart, history} = this.props;
         cart.checkout()
             .then((response) => {
                 self.setState({
-                    cartItems: cart.getItems(),
                     notification: {
                         open: true,
                         message: `Order ${response.data.id} Placed`
                     }
                 });
+                history.push("/");
             })
             .catch(() => {
                 self.setState({
@@ -73,8 +97,16 @@ class CartView extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {catalog, classes} = this.props;
         const {cartItems, notification} = this.state;
+
+        const cartItemData = cartItems.map((cartItem) => {
+            const item = catalog.accessories.find((accessory) => accessory.id === cartItem.itemId);
+            return {
+                ...cartItem,
+                item: item
+            };
+        });
         return (
             <Grid container justify={"center"}>
                 <Grid item lg={8} md={10} xs={12} justify={"center"}>
@@ -84,27 +116,46 @@ class CartView extends React.Component {
                         </Typography>
                     </div>
                     {
-                        cartItems.length > 0
+                        cartItemData.length > 0
                             ? (
                                 <React.Fragment>
                                     <Table>
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell align="right">Item ID</TableCell>
+                                                <TableCell>Item</TableCell>
                                                 <TableCell align="right">Amount</TableCell>
+                                                <TableCell align="right">Price</TableCell>
+                                                <TableCell/>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                cartItems.map((cartItem) => (
-                                                    <TableRow key={cartItem.id}>
+                                                cartItemData.map((cartItemDatum) => (
+                                                    <TableRow key={cartItemDatum.id}>
                                                         <TableCell component="th" scope="row">
-                                                            {cartItem.itemId}
+                                                            {cartItemDatum.item.name}
                                                         </TableCell>
-                                                        <TableCell align="right">{cartItem.amount}</TableCell>
+                                                        <TableCell align="right">{cartItemDatum.amount}</TableCell>
+                                                        <TableCell align="right">
+                                                            $ {cartItemDatum.amount * cartItemDatum.item.unitPrice}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <IconButton size={"small"} color={"inherit"}
+                                                                onClick={this.handleRemoveItem(cartItemDatum.id)}>
+                                                                <DeleteForever/>
+                                                            </IconButton>
+                                                        </TableCell>
                                                     </TableRow>
                                                 ))
                                             }
+                                            <TableRow>
+                                                <TableCell colSpan={2}>Total</TableCell>
+                                                <TableCell align="right">
+                                                    $ {cartItemData.reduce(
+                                                        (acc, datum) => acc + (datum.amount * datum.item.unitPrice), 0)}
+                                                </TableCell>
+                                                <TableCell/>
+                                            </TableRow>
                                         </TableBody>
                                     </Table>
                                     <Grid container direction={"row"} className={classes.checkoutButton}
@@ -133,7 +184,19 @@ class CartView extends React.Component {
 
 CartView.propTypes = {
     classes: PropTypes.object.isRequired,
-    cart: PropTypes.instanceOf(Cart).isRequired
+    cart: PropTypes.instanceOf(Cart).isRequired,
+    catalog: PropTypes.shape({
+        accessories: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            description: PropTypes.string.isRequired,
+            unitPrice: PropTypes.number.isRequired,
+            inStock: PropTypes.number.isRequired
+        })).isRequired
+    }),
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired
 };
 
-export default withStyles(styles)(withCart(CartView));
+export default withStyles(styles)(withState(withRouter(CartView)));

@@ -29,6 +29,11 @@ class Cart {
     items = [];
 
     /**
+     * @private
+     */
+    listeners = [];
+
+    /**
      * Add an item to the cart.
      *
      * @param {number} itemId The ID of the item
@@ -36,12 +41,13 @@ class Cart {
      * @returns {number} The cart item ID
      */
     addItem(itemId, amount) {
-        const id = this.items.reduce((acc, cartItem) => (cartItem.id > acc ? cartItem.id : acc), []) + 1;
+        const id = this.items.reduce((acc, cartItem) => (cartItem.id > acc ? cartItem.id : acc), 0) + 1;
         this.items.push({
             id: id,
             itemId: itemId,
             amount: amount
         });
+        this.notify();
         return id;
     }
 
@@ -53,6 +59,7 @@ class Cart {
     removeItem(id) {
         const cartItemIndex = this.items.indexOf((cartItem) => cartItem.id === id);
         this.items.splice(cartItemIndex, 1);
+        this.notify();
     }
 
     /**
@@ -85,12 +92,50 @@ class Cart {
             utils.callApi(config)
                 .then((data) => {
                     self.items = [];
+                    self.notify();
                     resolve(data);
                 })
                 .catch((error) => {
                     reject(error);
                 });
         });
+    }
+
+    /**
+     * Add a new cart listener.
+     *
+     * @param {Function} callback The callback to be called upon cart changes
+     */
+    addListener(callback) {
+        for (let i = 0; i < this.listeners.length; i++) {
+            if (this.listeners[i] === callback) {
+                throw Error("Listener is already registered");
+            }
+        }
+        this.listeners.push(callback);
+    }
+
+    /**
+     * Remove a cart listener.
+     *
+     * @param {Function} callback The callback to be removed from the listeners list
+     */
+    removeListener(callback) {
+        const removeIndex = this.listeners.indexOf(callback);
+        if (removeIndex >= 0) {
+            this.listeners.splice(removeIndex, 1);
+        } else {
+            throw Error("Listener to be removed is not registered");
+        }
+    }
+
+    /**
+     * Notify the registered callbacks.
+     */
+    notify() {
+        for (let i = 0; i < this.listeners.length; i++) {
+            this.listeners[i](this.getItems());
+        }
     }
 
 }

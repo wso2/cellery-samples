@@ -16,15 +16,17 @@
  * under the License.
  */
 
-import CartView from "./cart/CartView";
+import Cart from "./orders/cart";
+import CartView from "./orders/CartView";
 import Catalog from "./catalog/Catalog";
-import Orders from "./Orders";
+import Orders from "./orders/Orders";
 import React from "react";
 import SignIn from "./user/SignIn";
 import SignUp from "./user/SignUp";
+import withState from "./common/state";
 import {withStyles} from "@material-ui/core/styles";
 import {AccountCircle, ArrowBack, Pets, ShoppingCart} from "@material-ui/icons";
-import {AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Avatar, Badge, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import * as PropTypes from "prop-types";
 
@@ -33,10 +35,21 @@ const styles = (theme) => ({
         position: "relative"
     },
     logo: {
-        marginRight: theme.spacing.unit * 2
+        marginRight: theme.spacing.unit * 2,
+        cursor: "pointer"
     },
     title: {
-        flexGrow: 1
+        flexGrow: 1,
+        cursor: "pointer"
+    },
+    badge: {
+        top: "15%",
+        right: -25,
+        marginRight: theme.spacing.unit * 3
+    },
+    cartButtonContainer: {
+        display: "inline",
+        marginRight: theme.spacing.unit * 3
     },
     userAvatarContainer: {
         marginBottom: theme.spacing.unit * 2,
@@ -55,9 +68,26 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            accountPopoverElement: null
+            accountPopoverElement: null,
+            cartItemsCount: props.cart.getItems().length
         };
     }
+
+    componentDidMount = () => {
+        const {cart} = this.props;
+        cart.addListener(this.handleCartUpdates);
+    };
+
+    componentWillUnmount = () => {
+        const {cart} = this.props;
+        cart.removeListener(this.handleCartUpdates);
+    };
+
+    handleCartUpdates = (items) => {
+        this.setState({
+            cartItemsCount: items.length
+        });
+    };
 
     handleAccountPopoverOpen = (event) => {
         this.setState({
@@ -80,14 +110,14 @@ class App extends React.Component {
     };
 
     render() {
-        const {classes, initialState, history, location} = this.props;
-        const {accountPopoverElement} = this.state;
+        const {classes, history, location, user} = this.props;
+        const {accountPopoverElement, cartItemsCount} = this.state;
 
         const isAccountPopoverOpen = Boolean(accountPopoverElement);
         const backButtonHiddenRoutes = ["/", "/sign-up", "/sign-in"];
         return (
             <div className={classes.root}>
-                <AppBar position="static" className={classes.appBar}>
+                <AppBar position={"static"} className={classes.appBar}>
                     <Toolbar>
                         {
                             history.length <= 1 || backButtonHiddenRoutes.includes(location.pathname)
@@ -99,24 +129,30 @@ class App extends React.Component {
                                     </IconButton>
                                 )
                         }
-                        <Pets className={classes.logo}/>
-                        <Typography variant="h6" color="inherit" noWrap className={classes.title}>
+                        <Pets className={classes.logo} onClick={() => history.push("/")}/>
+                        <Typography variant={"h6"} color={"inherit"} noWrap className={classes.title}
+                            onClick={() => history.push("/")}>
                             Pet Store
                         </Typography>
                         {
-                            initialState.user
+                            user
                                 ? (
                                     <div>
-                                        <Button color={"inherit"} onClick={() => history.push("/cart")}>
-                                            <ShoppingCart/> Cart
-                                        </Button>
+                                        <div className={classes.cartButtonContainer}>
+                                            <Badge color={"secondary"} badgeContent={cartItemsCount}
+                                                classes={{badge: classes.badge}}>
+                                                <Button color={"inherit"} onClick={() => history.push("/cart")}>
+                                                    <ShoppingCart/> Cart
+                                                </Button>
+                                            </Badge>
+                                        </div>
                                         <IconButton
                                             aria-owns={isAccountPopoverOpen ? "user-info-appbar" : undefined}
                                             color={"inherit"} aria-haspopup={"true"}
                                             onClick={this.handleAccountPopoverOpen}>
                                             <AccountCircle/>
                                         </IconButton>
-                                        <Menu id="user-info-appbar" anchorEl={accountPopoverElement}
+                                        <Menu id={"user-info-appbar"} anchorEl={accountPopoverElement}
                                             anchorOrigin={{
                                                 vertical: "top",
                                                 horizontal: "right"
@@ -130,9 +166,9 @@ class App extends React.Component {
                                             <MenuItem onClick={this.handleAccountPopoverClose}
                                                 className={classes.userAvatarContainer}>
                                                 <Avatar className={classes.userAvatar}>
-                                                    {initialState.user.substr(0, 1).toUpperCase()}
+                                                    {user.substr(0, 1).toUpperCase()}
                                                 </Avatar>
-                                                {initialState.user}
+                                                {user}
                                             </MenuItem>
                                             <MenuItem onClick={this.signOut}>
                                                 Sign Out
@@ -148,13 +184,12 @@ class App extends React.Component {
                 </AppBar>
                 <main>
                     <Switch>
-                        <Route exact path={"/"} render={() => <Catalog catalog={initialState.catalog}
-                            user={initialState.user}/>}/>
+                        <Route exact path={"/"} component={Catalog}/>
                         <Route exact path={"/cart"} component={CartView}/>
                         <Route exact path={"/sign-in"} component={SignIn}/>
                         <Route exact path={"/sign-up"} component={SignUp}/>
                         {
-                            initialState.user
+                            user
                                 ? <Route exact path={"/orders"} component={Orders}/>
                                 : null
                         }
@@ -169,15 +204,14 @@ class App extends React.Component {
 
 App.propTypes = {
     classes: PropTypes.string.isRequired,
-    initialState: PropTypes.shape({
-        catalog: PropTypes.object
-    }).isRequired,
+    cart: PropTypes.instanceOf(Cart),
     location: PropTypes.shape({
         pathname: PropTypes.string.isRequired
     }).isRequired,
     history: PropTypes.shape({
         goBack: PropTypes.func.isRequired
-    }).isRequired
+    }).isRequired,
+    user: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(withRouter(App));
+export default withStyles(styles)(withRouter(withState(App)));

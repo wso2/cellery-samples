@@ -17,7 +17,7 @@
  */
 
 import {ExpandMore} from "@material-ui/icons";
-import Notification from "./common/Notification";
+import Notification from "../common/Notification";
 import React from "react";
 import classNames from "classnames";
 import {withStyles} from "@material-ui/core/styles";
@@ -26,7 +26,7 @@ import {
     Typography
 } from "@material-ui/core";
 import * as PropTypes from "prop-types";
-import * as utils from "../utils";
+import * as utils from "../../utils";
 
 const styles = (theme) => ({
     root: {
@@ -164,12 +164,15 @@ class Orders extends React.Component {
                                                         Order {orderDatum.id}
                                                     </Typography>
                                                     <Typography className={classes.itemCount} align={"right"}>
-                                                        {orderDatum.order.length} Items
+                                                        {orderDatum.order.reduce(
+                                                            (acc, orderItem) => acc + orderItem.amount, 0)} Items
                                                     </Typography>
                                                     <Typography className={classes.price} align={"right"}>
                                                         $ {
                                                             orderDatum.order.reduce(
-                                                                (acc, orderItem) => acc + orderItem.item.unitPrice, 0
+                                                                (acc, orderItem) => acc
+                                                                    + (orderItem.item.unitPrice * orderItem.amount),
+                                                                0
                                                             ).toFixed(2)
                                                         }
                                                     </Typography>
@@ -234,16 +237,14 @@ class Orders extends React.Component {
                                                                         {
                                                                             orderDatum.order.map((orderItem) => (
                                                                                 <TableRow key={orderItem.item.id}>
-                                                                                    <TableCell component="th"
-                                                                                        scope="row">
-                                                                                        {orderItem.item.name}
+                                                                                    <TableCell component={"th"}
+                                                                                        scope={"row"}>
+                                                                                        {orderItem.item.name} x {
+                                                                                            orderItem.amount}
                                                                                     </TableCell>
-                                                                                    <TableCell component="th"
-                                                                                        scope="row">
-                                                                                        {orderItem.item.name}
-                                                                                    </TableCell>
-                                                                                    <TableCell align="right">
-                                                                                        $ {orderItem.item.unitPrice}
+                                                                                    <TableCell align={"right"}>
+                                                                                        $ {orderItem.item.unitPrice
+                                                                                            * orderItem.amount}
                                                                                     </TableCell>
                                                                                 </TableRow>
                                                                             ))

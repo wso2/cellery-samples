@@ -17,6 +17,8 @@
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
+CELLERY_ORG ?= wso2cellery
+CELLERY_VERSION ?= 0.1.0
 
 SAMPLE := hello-world-api
 COMPONENT := hello-service
@@ -30,12 +32,13 @@ clean:
 
 .PHONY: check-style
 check-style:
-	@:
+	cd components/$(COMPONENT); \
+	test -z "$$(goimports -l . | tee /dev/stderr)"
 
 .PHONY: build
 build:
 	cd components/$(COMPONENT); \
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o hello-service hello-service.go
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o build/hello-service hello-service.go
 
 .PHONY: docker
 docker:
@@ -46,3 +49,7 @@ docker:
 docker-push:
 	cd components/$(COMPONENT); \
 	docker push ${DOCKER_REPO}/samples-$(SAMPLE):${DOCKER_IMAGE_TAG}
+
+.PHONY: cellery-build
+cellery-build:
+	cellery build hello-world-api.bal $(CELLERY_ORG)/hello-world-api:$(CELLERY_VERSION)
