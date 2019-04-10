@@ -1,4 +1,4 @@
-## Pet store front end cell
+## Pet store pet-fe cell
 The portal web application is a [React](https://reactjs.org/) application, and it invokes the pet-be cell to get the 
 data based on the business logic and logged in user. 
 
@@ -7,12 +7,12 @@ data based on the business logic and logged in user.
 - The swagger file of the pet-fe can be fetched by executing command [`cellery extract-resources`](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#extract-resources) 
 which will extract the swagger file in the same location where you run the command.
   ```
-  cellery extract-resources wso2cellery/cells-pet-fe:0.1.0
+  cellery extract-resources wso2cellery/cells-pet-fe:0.2.0
   ```
-- Then based on the swagger file, the [client source](frontend/components/portal/src/gen/petStoreApi.js) is generated which can be used to invoke the pet-fe cell.
+- Then based on the swagger file, the [client source](pet-fe/components/portal/src/gen/petStoreApi.js) is generated which can be used to invoke the pet-fe cell.
 
 ### Pet-fe cell
-The below shown is the cell file for the pet-fe cell which is in [pet-fe.bal](backend/pet-fe.bal).
+The below shown is the cell file for the pet-fe cell which is in [pet-fe.bal](pet-fe/pet-fe.bal).
 ```
 import celleryio/cellery;
 import ballerina/config;
@@ -51,7 +51,7 @@ cellery:Component portalComponent = {
         BASE_PATH: {value: "."}
     },
     dependencies: {
-        petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be", ver: "0.1.0" }
+        petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be", ver: "0.2.0" }
     }
 };
 

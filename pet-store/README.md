@@ -15,8 +15,8 @@ All 4 micro services are implemented in [node.js](https://nodejs.org/en/) and po
 
 This sample is structured into two Cells.
 
-* [pet-be Cell](#pet-be-cell)
-* [pet-fe Cell](#pet-fe-cell)
+* [pet-be Cell](#[pet-be-cell](pet-be-cell-description.md))
+* [pet-fe Cell](#[pet-fe-cell](pet-fe-cell-description.md))
 
 ![Pet Store Cell Architecture Diagram](../docs/images/pet-store/pet-store-architecture.jpg)
 
@@ -37,66 +37,66 @@ This contains of a single component which serves the portal. The portal is expos
    cd <SAMPLES_ROOT>/pet-store
    ```
 
-### 2. Build backed cell
-1.  Build the pet-be Cell by executing `cellery build` command as shown below. 
+### 2. Build pet-be cell
+1.  Build the pet-be cell by executing `cellery build` command as shown below. 
    ```
-   $ cd <SAMPLES_ROOT>/pet-store/backend
-   $ cellery build pet-be.bal wso2cellery/pet-be:0.1.0
+   $ cd <SAMPLES_ROOT>/pet-store/pet-be
+   $ cellery build pet-be.bal wso2cellery/pet-be-cell:0.2.0
    Warning: Value is empty for environment variable "ORDER_HOST"
    Warning: Value is empty for environment variable "CATALOG_HOST"
    Warning: Value is empty for environment variable "CUSTOMER_HOST"
    true
-   ✔ Building image wso2cellery/pet-be:0.1.0
+   ✔ Building image wso2cellery/pet-be-cell:0.2.0
    ✔ Removing old Image
    ✔ Saving new Image to the Local Repository
    
    
-   ✔ Successfully built cell image: wso2cellery/pet-be:0.1.0
+   ✔ Successfully built cell image: wso2cellery/pet-be-cell:0.2.0
    
    What's next?
    --------------------------------------------------------
    Execute the following command to run the image:
-     $ cellery run wso2cellery/pet-be:0.1.0
+     $ cellery run wso2cellery/pet-be-cell:0.2.0
    --------------------------------------------------------
    ```
 2. View the cell information by executing `cellery view` command. This will open up a new tab in the browser and shows 
 the component and dependency details of the cell. 
     ```
-    $ cellery view wso2cellery/pet-be:0.1.0
+    $ cellery view wso2cellery/pet-be-cell:0.2.0
     ```
     ![pet fe view](../docs/images/pet-store/pet-be-view.png)
 
 3. Execute `cellery list ingress` to see the list ingress suppported by the pet-be cell, and you can see only `controller` component is exposing the API. 
     ```
-    $ cellery list ingress wso2cellery/pet-be:0.1.0
+    $ cellery list ingress wso2cellery/pet-be-cell:0.2.0
       COMPONENT    INGRESS TYPE   INGRESS CONTEXT   INGRESS PORT   GLOBALLY EXPOSED
      ------------ -------------- ----------------- -------------- ------------------
       controller   HTTP           controller        80             False
     ```
     
-### 3. Build and run frontend cell
+### 3. Build and run pet-fe cell
 1. Build the pet-fe cell by executing the `cellery build` command.
    ```
-   $ cd <SAMPLES_ROOT>/pet-store/frontend
-   $ cellery build pet-fe.bal wso2cellery/pet-fe:0.1.0
+   $ cd <SAMPLES_ROOT>/pet-store/pet-fe
+   $ cellery build pet-fe.bal wso2cellery/pet-fe-cell:0.2.0
    Warning: Value is empty for environment variable "PET_STORE_CELL_URL"
    true
-   ✔ Building image wso2cellery/pet-fe:0.1.0
+   ✔ Building image wso2cellery/pet-fe-cell:0.2.0
    ✔ Removing old Image
    ✔ Saving new Image to the Local Repository
    
    
-   ✔ Successfully built cell image: wso2cellery/pet-fe:0.1.0
+   ✔ Successfully built cell image: wso2cellery/pet-fe-cell:0.2.0
    
    What's next?
    --------------------------------------------------------
    Execute the following command to run the image:
-     $ cellery run wso2cellery/pet-fe:0.1.0
+     $ cellery run wso2cellery/pet-fe-cell:0.2.0
    --------------------------------------------------------
    ```
-2. View the inner components and cell dependency of cell wso2cellery/pet-fe:0.1.0.
+2. View the inner components and cell dependency of cell wso2cellery/pet-fe-cell:0.2.0.
     ```
-    $ cellery view wso2cellery/pet-fe:0.1.0
+    $ cellery view wso2cellery/pet-fe-cell:0.2.0
     ```
     ![pet fe view](../docs/images/pet-store/pet-fe-view.png)
 
@@ -104,22 +104,22 @@ the component and dependency details of the cell.
 As we haven't started the pet-be cell instance, we'll pass `-d` or `--start-dependencies` flag with run command to 
 start dependent cell instance if it is not available in the runtime.
    ```
-   $ cellery run wso2cellery/pet-fe:0.1.0 -n pet-fe -l petStoreBackend:pet-be -d
-   ✔ Extracting Cell Image wso2cellery/pet-fe:0.1.0
+   $ cellery run wso2cellery/pet-fe-cell:0.2.0 -n pet-fe -l petStoreBackend:pet-be -d
+   ✔ Extracting Cell Image wso2cellery/pet-fe-cell:0.2.0
    
    Main Instance: pet-fe
    
-   ✔ Reading Cell Image wso2cellery/pet-fe:0.1.0
+   ✔ Reading Cell Image wso2cellery/pet-fe-cell:0.2.0
    ✔ Validating dependency links
    ✔ Generating dependency tree
    ✔ Validating dependency tree
    
    Instances to be Used:
    
-     INSTANCE NAME          CELL IMAGE          USED INSTANCE   SHARED
-    --------------- -------------------------- --------------- --------
-     pet-be          wso2cellery/pet-be:0.1.0   To be Created    -
-     pet-fe          wso2cellery/pet-fe:0.1.0   To be Created    -
+     INSTANCE NAME          CELL IMAGE               USED INSTANCE   SHARED
+    --------------- ------------------------------- --------------- --------
+     pet-be          wso2cellery/pet-be-cell:0.2.0   To be Created    -
+     pet-fe          wso2cellery/pet-fe-cell:0.2.0   To be Created    -
    
    Dependency Tree to be Used:
    
@@ -133,7 +133,7 @@ start dependent cell instance if it is not available in the runtime.
    ✔ Starting main instance pet-fe
    
    
-   ✔ Successfully deployed cell image: wso2cellery/pet-fe:0.1.0
+   ✔ Successfully deployed cell image: wso2cellery/pet-fe-cell:0.2.0
    
    What's next?
    --------------------------------------------------------
@@ -180,7 +180,7 @@ and fill the customer information form. This operation will invoke the controlle
 8. You can logout from pet-store as alice user, and you can login as different user admin (Username: admin, Password:admin), and check for orders, which will 
 return a empty orders as admin user hasn't placed any order. Therefore, you can realize the pet-store application user specific information.  
 
-Checkout the source of the [front end](frontend/components/portal) and [backend components](backend/components), and feel free to play around the source code. 
+Checkout the source of the [pet-fe](pet-fe/components/portal) and [pet-be](pet-be/components), and feel free to play around the source code. 
 
 ## Observability 
 If you have installed complete setup or basic setup with observability enabled, you can follow below steps to view the cellery observability.
@@ -251,5 +251,5 @@ If you wish to change the Pet Store Sample and play around with Cellery, you can
    ```
    make docker-push
    ```
-6. Update the `<SAMPLES_ROOT>/pet-store/backend/pet-be.bal` and `<SAMPLES_ROOT>/pet-store/frontend/pet-fe.bal` files and set the newly created image names for the Component source.
+6. Update the `<SAMPLES_ROOT>/pet-store/pet-be/pet-be.bal` and `<SAMPLES_ROOT>/pet-store/pet-fe/pet-fe.bal` files and set the newly created image names for the Component source.
 7. [Build and run](#2.-build-backed-cell) the Cells.

@@ -1,9 +1,9 @@
-Hello world web cell
+Hello world cell
 =========
 
 Hello World is a simple static website that serves Hello World on top of Cellery.
 
-![Hello World Cell Architecture Diagram](../docs/images/hello-world-web/hello-world-architecture.jpg)
+![Hello World Cell Architecture Diagram](../docs/images/hello-world/hello-world-architecture.jpg)
 
 This contains a single component which serves the HTML web page. The web page runs on top of NGINX and its exposed through a web cell.
 
@@ -14,13 +14,13 @@ This contains a single component which serves the HTML web page. The web page ru
 ### 1. Checkout the Sample
 
 1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
-2. Navigate to the hello-world-web Sample.
+2. Navigate to the hello-world Sample.
    ```
-   cd <SAMPLES_ROOT>/hello-world-web
+   cd <SAMPLES_ROOT>/hello-world
    ```
 
-### 2. Build, run and push hello world web cell
-In this section let's focus on build, run and push a [hello world web cell](hello-world-web.bal). 
+### 2. Build, run and push hello world cell
+In this section let's focus on build, run and push a [hello world cell](hello-world.bal). 
 
 The cell `helloCell` consists of one component defined as `helloComponent` and it has one web ingress with default vhost `hello-world.com`.
 An environment variable `HELLO_NAME`with default value `Cellery` is used by `helloComponent` to render the webpage. By passing the  parameters in the runtime, the vhost entry and
@@ -85,12 +85,13 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     return cellery:createInstance(helloCell, iName);
 }
 ```
+---
 
-Follow below instructions to build, run and push the hello world web cell.
+Follow below instructions to build, run and push the hello world cell.
 
 1. Build the cellery image for hello world project by executing the cellery build command as shown below. Note `DOCKER_HUB_ORG` is your organization name in docker hub.
     ```
-    $ cellery build hello-world-web.bal <DOCKER_HUB_ORG>/hello-world-cell:1.0.0
+    $ cellery build hello-world.bal <DOCKER_HUB_ORG>/hello-world-cell:1.0.0
     Hello World Cell Built successfully.
     
     ✔ Building image <DOCKER_HUB_ORG>/hello-world-cell:1.0.0
@@ -106,7 +107,7 @@ Follow below instructions to build, run and push the hello world web cell.
     --------------------------------------------------------
     ```
 
-2. As mentioned above in the [hello-world-web.bal](hello-world-web.bal), it's looking for runtime parameters `VHOST_NAME` and `HELLO_NAME`, 
+2. As mentioned above in the [hello-world.bal](hello-world.bal), it's looking for runtime parameters `VHOST_NAME` and `HELLO_NAME`, 
 and if it's available then it'll will be using those as vhost and greeting name. Therefore run the built cellery image with ‘cellery run’ command, 
 and pass `my-hello-world.com` for `VHOST_NAME`, and your name for `HELLO_NAME` as shown below. 
     ```
@@ -154,7 +155,7 @@ and pass `my-hello-world.com` for `VHOST_NAME`, and your name for `HELLO_NAME` a
     ```
     $ cellery view <DOCKER_HUB_ORG>/hello-world-cell:1.0.0
     ```
-    ![hello world cell view](../docs/images/hello-world-web/hello-web-cell.png)
+    ![hello world cell view](../docs/images/hello-world/hello-web-cell.png)
     
 5. Access url [http://my-hello-world.com/](http://my-hello-world.com/) from browser. You will see updated web page with greeting param you passed for HELLO_NAME in step-2.
 
@@ -215,5 +216,5 @@ If you wish to change the Hello World Sample and play around with Cellery, you c
    ```
    make docker-push
    ```
-6. Update the `<SAMPLES_ROOT>/hello-world-web/hello-world-web.bal` file and set the newly created image names for the Component source.
-7. [Build and run](#2.-build,-run-and-push-hello-world-web-cell) the Cells.
+6. Update the `<SAMPLES_ROOT>/hello-world/hello-world-web.bal` file and set the newly created image names for the Component source.
+7. [Build and run](#2.-build,-run-and-push-hello-world-cell) the Cells.
