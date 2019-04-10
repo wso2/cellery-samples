@@ -20,8 +20,8 @@ DOCKER_IMAGE_TAG ?= latest
 CELLERY_ORG ?= wso2cellery
 CELLERY_VERSION ?= 0.1.0
 
-SAMPLE := hello-world-web
-CELL := hello
+SAMPLE := hello-world
+CELL := hello-world
 COMPONENT := webapp
 
 all: clean build docker
@@ -52,4 +52,4 @@ docker-push:
 
 .PHONY: cellery-build
 cellery-build:
-	cellery build hello-world-web.bal $(CELLERY_ORG)/hello-world-web:$(CELLERY_VERSION)
+	cellery build hello-world.bal $(CELLERY_ORG)/$(CELL):$(CELLERY_VERSION)

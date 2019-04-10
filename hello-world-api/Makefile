@@ -21,6 +21,7 @@ CELLERY_ORG ?= wso2cellery
 CELLERY_VERSION ?= 0.1.0
 
 SAMPLE := hello-world-api
+CELL := hello-world-api
 COMPONENT := hello-service
 
 all: clean build docker
@@ -52,4 +53,4 @@ docker-push:
 
 .PHONY: cellery-build
 cellery-build:
-	cellery build hello-world-api.bal $(CELLERY_ORG)/hello-world-api:$(CELLERY_VERSION)
+	cellery build hello-world-api.bal $(CELLERY_ORG)/$(CELL):$(CELLERY_VERSION)

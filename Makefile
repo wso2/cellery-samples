@@ -20,7 +20,7 @@ DOCKER_IMAGE_TAG ?= latest
 CELLERY_ORG ?= wso2cellery
 CELLERY_VERSION ?= 0.1.0
 
-SAMPLES := pet-store hello-world-web hello-world-api
+SAMPLES := pet-store hello-world hello-world-api
 
 CLEAN_TARGETS := $(addprefix clean., $(SAMPLES))
 CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES))
