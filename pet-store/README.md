@@ -253,3 +253,7 @@ If you wish to change the Pet Store Sample and play around with Cellery, you can
    ```
 6. Update the `<SAMPLES_ROOT>/pet-store/pet-be/pet-be.bal` and `<SAMPLES_ROOT>/pet-store/pet-fe/pet-fe.bal` files and set the newly created image names for the Component source.
 7. [Build and run](#2.-build-backed-cell) the Cells.
+
+### Did you try? 
+1. [Hello world](../hello-world)
+2. [Hello world Api](../hello-world-api)

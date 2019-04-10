@@ -16,7 +16,7 @@ Hello World API sample is a simple rest API that returns the text 'Hello World!'
    ```
    cd <SAMPLES_ROOT>/hello-world-api
    ```
-### 2. Build and run hello world web cell
+### 2. Build and run hello world api cell
 In this section let's focus on build, run and push a [hello world api cell](hello-world-api.bal). 
 
 The cell `helloCell` consists of one component defined as `helloComponent` and it has one http api ingress which is 
@@ -60,7 +60,7 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(helloCell, iName);
 }
 ```
-
+---
 #### Follow below instructions to build and run the hello world api cell.
 
 1. Build the cellery image for hello world project by executing the cellery build command as shown below. Note `DOCKER_HUB_ORG` is your organization name in docker hub.
@@ -183,3 +183,9 @@ If you wish to change the Hello World API Sample and play around with Cellery, y
    ```
 6. Update the `<SAMPLES_ROOT>/hello-world-api/hello-world-api.bal` file and set the newly created image names for the component source.
 7. [Build and run](#2.-build-and-run-hello-world-web-cell) the Cells.
+
+### Did you try? 
+1. [Hello world](../hello-world)
+
+###What's Next? 
+2. [Try pet store](../pet-store)
