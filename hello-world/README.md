@@ -220,6 +220,6 @@ If you wish to change the Hello World Sample and play around with Cellery, you c
 7. [Build and run](#2.-build,-run-and-push-hello-world-cell) the Cells.
 
 
-###What's Next? 
+### What's Next? 
 1. [Try hello world Api](../hello-world-api)
 2. [Try pet store](../pet-store)

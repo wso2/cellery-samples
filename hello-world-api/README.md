@@ -187,5 +187,5 @@ If you wish to change the Hello World API Sample and play around with Cellery, y
 ### Did you try? 
 1. [Hello world](../hello-world)
 
-###What's Next? 
+### What's Next? 
 2. [Try pet store](../pet-store)
