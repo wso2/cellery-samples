@@ -16,12 +16,12 @@
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= latest
+DOCKER_IMAGE_TAG ?= 0.2.0
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= 0.1.0
+CELLERY_VERSION ?= 0.2.0
 
-SAMPLE := hello-world-web
-CELL := hello
+SAMPLE := hello-world
+CELL := hello-world
 COMPONENT := webapp
 
 all: clean build docker
@@ -52,4 +52,8 @@ docker-push:
 
 .PHONY: cellery-build
 cellery-build:
-	cellery build hello-world-web.bal $(CELLERY_ORG)/hello-world-web:$(CELLERY_VERSION)
+	cellery build $(CELL).bal $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)
+
+.PHONY: cellery-push
+cellery-push:
+	cellery push $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)
