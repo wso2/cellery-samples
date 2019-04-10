@@ -17,6 +17,8 @@
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= latest
+CELLERY_ORG ?= wso2cellery
+CELLERY_VERSION ?= 0.1.0
 
 SAMPLE := hello-world-web
 CELL := hello
@@ -33,17 +35,21 @@ build:
 	@:
 
 .PHONY: check-style
-clean:
-	cd $(CELL)/components/$(COMPONENT); \
+check-style:
+	cd components/$(COMPONENT); \
 	npm ci; \
 	npm run lint
 
 .PHONY: docker
 docker:
-	cd $(CELL)/components/$(COMPONENT); \
+	cd components/$(COMPONENT); \
 	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} .; \
 
 .PHONY: docker-push
 docker-push:
-	cd $(CELL)/components/$(COMPONENT); \
+	cd components/$(COMPONENT); \
 	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG}
+
+.PHONY: cellery-build
+cellery-build:
+	cellery build hello-world-web.bal $(CELLERY_ORG)/hello-world-web:$(CELLERY_VERSION)
