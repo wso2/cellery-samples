@@ -1,6 +1,7 @@
 Cellery Samples
 ===============
 
+  [![Travis CI](https://travis-ci.org/wso2-cellery/samples.svg?branch=master)](https://travis-ci.org/wso2-cellery/samples)
   [![GitHub (pre-)release](https://img.shields.io/github/release/wso2-cellery/samples/all.svg)](https://github.com/wso2-cellery/samples/releases)
   [![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/wso2-cellery/samples.svg)](https://github.com/wso2-cellery/samples/releases)
   [![GitHub last commit](https://img.shields.io/github/last-commit/wso2-cellery/samples.svg)](https://github.com/wso2-cellery/samples/commits/master)
