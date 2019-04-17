@@ -15,8 +15,9 @@
 #  under the License.
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+GIT_REVISION := $(shell git rev-parse --verify HEAD)
 DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= 0.2.0
+DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
 CELLERY_ORG ?= wso2cellery
 CELLERY_VERSION ?= 0.2.0
 
@@ -79,22 +80,23 @@ $(BUILD_TARGETS):
 $(DOCKER_TARGETS):
 	$(eval SAMPLE=$(patsubst docker.%,%,$@))
 	@cd $(SAMPLE); \
-	$(MAKE) docker
+	DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker
 
 .PHONY: $(DOCKER_PUSH_TARGETS)
 $(DOCKER_PUSH_TARGETS):
 	$(eval SAMPLE=$(patsubst docker-push.%,%,$@))
 	@cd $(SAMPLE); \
-	$(MAKE) docker-push
+	DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker-push
 
 .PHONY: $(CELLERY_BUILD_TARGETS)
 $(CELLERY_BUILD_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-build.%,%,$@))
 	@cd $(SAMPLE); \
-	$(MAKE) cellery-build
+	CELLERY_VERSION=$(CELLERY_VERSION) $(MAKE) cellery-build
 
 .PHONY: $(CELLERY_PUSH_TARGETS)
 $(CELLERY_PUSH_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-push.%,%,$@))
 	@cd $(SAMPLE); \
+	CELLERY_VERSION=$(CELLERY_VERSION) CELLERY_USER=$(CELLERY_USER) CELLERY_USER_PASS=$(CELLERY_USER_PASS) \
 	$(MAKE) cellery-push
