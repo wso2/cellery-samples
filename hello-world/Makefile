@@ -15,10 +15,11 @@
 #  under the License.
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+GIT_REVISION := $(shell git rev-parse --verify HEAD)
 DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= 0.2.0
+DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= 0.2.0
+CELLERY_VERSION ?= latest
 
 SAMPLE := hello-world
 CELL := hello-world
@@ -56,4 +57,4 @@ cellery-build:
 
 .PHONY: cellery-push
 cellery-push:
-	cellery push $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)
+	cellery push $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION) -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
