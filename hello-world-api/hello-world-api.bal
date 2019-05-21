@@ -48,7 +48,5 @@ cellery:CellImage helloCell = {
 };
 
 public function build(cellery:ImageName iName) returns error? {
-    //Build Hello Cell
-    io:println("Building Hello World Cell ...");
     return cellery:createImage(helloCell, iName);
 }

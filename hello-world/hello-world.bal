@@ -44,19 +44,10 @@ cellery:CellImage helloCell = {
     }
 };
 
-# The Cellery Lifecycle Build method which is invoked for building the Cell Image.
-#
-# + iName - The Image name
-# + return - The created Cell Image
 public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(helloCell, iName);
 }
 
-# The Cellery Lifecycle Run method which is invoked for creating a Cell Instance.
-#
-# + iName - The Image name
-# + instances - The map dependency instances of the Cell instance to be created
-# + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     string vhostName = config:getAsString("VHOST_NAME");
     if (vhostName !== ""){

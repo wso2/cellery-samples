@@ -7,7 +7,7 @@ data based on the business logic and logged in user.
 - The swagger file of the pet-fe can be fetched by executing command [`cellery extract-resources`](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#extract-resources) 
 which will extract the swagger file in the same location where you run the command.
   ```
-  cellery extract-resources wso2cellery/cells-pet-fe:0.2.0
+  cellery extract-resources wso2cellery/cells-pet-fe:0.2.1
   ```
 - Then based on the swagger file, the [client source](pet-fe/components/portal/src/gen/petStoreApi.js) is generated which can be used to invoke the pet-fe cell.
 
@@ -51,7 +51,7 @@ cellery:Component portalComponent = {
         BASE_PATH: {value: "."}
     },
     dependencies: {
-        petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be", ver: "0.2.0" }
+        petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be", ver: "0.2.1" }
     }
 };
 

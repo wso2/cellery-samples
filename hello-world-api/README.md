@@ -55,8 +55,6 @@ cellery:CellImage helloCell = {
 };
 
 public function build(cellery:ImageName iName) returns error? {
-    //Build Hello Cell
-    io:println("Building Hello World Cell ...");
     return cellery:createImage(helloCell, iName);
 }
 ```
@@ -66,7 +64,6 @@ public function build(cellery:ImageName iName) returns error? {
 1. Build the cellery image for hello world project by executing the cellery build command as shown below. Note `DOCKER_HUB_ORG` is your organization name in docker hub.
     ```
     $ cellery build hello-world-api.bal <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0
-    Hello World Cell Built successfully.
     
     ✔ Building image <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0
     ✔ Saving new Image to the Local Repository
@@ -149,7 +146,7 @@ Congratulations! You have successfully tried out the hello world api sample!
 
 ## Building the Components from Source
 
-You do not need to build the Components if you just wish to deploy the Cells. This should only be done if you wish to change the Hello World API sample and play around with it.
+You do not need to build the components if you just wish to deploy the cells. This should only be done if you wish to change the Hello World API sample and play around with it.
 
 ### Prerequisites
 
