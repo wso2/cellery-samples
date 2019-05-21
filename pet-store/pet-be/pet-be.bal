@@ -21,7 +21,7 @@ import celleryio/cellery;
 cellery:Component ordersComponent = {
     name: "orders",
     source: {
-        image: "wso2cellery/samples-pet-store-orders"
+        image: "wso2cellery/samples-pet-store-orders:0.2.1"
     },
     ingresses: {
         orders: <cellery:HttpApiIngress>{
@@ -35,7 +35,7 @@ cellery:Component ordersComponent = {
 cellery:Component customersComponent = {
     name: "customers",
     source: {
-        image: "wso2cellery/samples-pet-store-customers"
+        image: "wso2cellery/samples-pet-store-customers:0.2.1"
     },
     ingresses: {
         customers: <cellery:HttpApiIngress>{
@@ -49,7 +49,7 @@ cellery:Component customersComponent = {
 cellery:Component catalogComponent = {
     name: "catalog",
     source: {
-        image: "wso2cellery/samples-pet-store-catalog"
+        image: "wso2cellery/samples-pet-store-catalog:0.2.1"
     },
     ingresses: {
         catalog: <cellery:HttpApiIngress>{
@@ -64,7 +64,7 @@ cellery:Component catalogComponent = {
 cellery:Component controllerComponent = {
     name: "controller",
     source: {
-        image: "wso2cellery/samples-pet-store-controller"
+        image: "wso2cellery/samples-pet-store-controller:0.2.1"
     },
     ingresses: {
         controller: <cellery:HttpApiIngress>{
