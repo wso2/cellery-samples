@@ -21,7 +21,7 @@ import celleryio/cellery;
 cellery:Component helloComponent = {
     name: "hello",
     source: {
-        image: "wso2cellery/samples-hello-world-webapp:0.2.1"
+        image: "wso2cellery/samples-hello-world-webapp"
     },
     ingresses: {
         webUI: <cellery:WebIngress> { // Web ingress will be always exposed globally.
