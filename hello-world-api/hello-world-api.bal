@@ -23,7 +23,7 @@ import celleryio/cellery;
 cellery:Component helloComponent = {
     name: "hello-api",
     source: {
-        image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:0.2.0"
+        image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:0.2.1"
     },
     ingresses: {
         helloApi: <cellery:HttpApiIngress>{ port: 9090,
@@ -48,7 +48,5 @@ cellery:CellImage helloCell = {
 };
 
 public function build(cellery:ImageName iName) returns error? {
-    //Build Hello Cell
-    io:println("Building Hello World Cell ...");
     return cellery:createImage(helloCell, iName);
 }

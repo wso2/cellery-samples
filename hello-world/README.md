@@ -22,7 +22,7 @@ In this section let's focus on build, run and push a [hello world cell](hello-wo
 
 The cell `helloCell` consists of one component defined as `helloComponent` and it has one web ingress with default vhost `hello-world.com`.
 An environment variable `HELLO_NAME`with default value `Cellery` is used by `helloComponent` to render the webpage. By passing the  parameters in the runtime, the vhost entry and
-env variable HELLO_NAME can be modified.
+env variable HELLO_NAME can be modified. 
 
 ```
 import ballerina/config;
@@ -56,19 +56,10 @@ cellery:CellImage helloCell = {
     }
 };
 
-# The Cellery Lifecycle Build method which is invoked for building the Cell Image.
-#
-# + iName - The Image name
-# + return - The created Cell Image
 public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(helloCell, iName);
 }
 
-# The Cellery Lifecycle Run method which is invoked for creating a Cell Instance.
-#
-# + iName - The Image name
-# + instances - The map dependency instances of the Cell instance to be created
-# + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     string vhostName = config:getAsString("VHOST_NAME");
     if (vhostName !== ""){
@@ -147,7 +138,7 @@ and pass `my-hello-world.com` for `VHOST_NAME`, and your name for `HELLO_NAME` a
     $ cellery list instances
                         INSTANCE                                   CELL IMAGE                   STATUS                            GATEWAY                            COMPONENTS           AGE
        ------------------------------------------ -------------------------------------------- -------- ----------------------------------------------------------- ------------ ----------------------
-        hello-world-cell-1-0-0-676b2131   sinthuja/hello-world-cell:1.0.0              Ready    sinthuja-hello-world-cell-1-0-0-676b2131--gateway-service   1            10 minutes 1 seconds
+        hello-world-cell-1-0-0-676b2131             sinthuja/hello-world-cell:1.0.0             Ready    sinthuja-hello-world-cell-1-0-0-676b2131--gateway-service     1           10 minutes 1 seconds
     ```
 4. Execute `cellery view` to see the components of your cell. This will open a HTML page in a browser and you can visualize the components and dependent cells of the cell image.
     ```
@@ -157,7 +148,7 @@ and pass `my-hello-world.com` for `VHOST_NAME`, and your name for `HELLO_NAME` a
     
 5. Access url [http://my-hello-world.com/](http://my-hello-world.com/) from browser. You will see updated web page with greeting param you passed for HELLO_NAME in step-2.
 
-8. As a final step, let's push your first cell project to your docker hub account. Tp perform this execute `cellery push` as shown below.
+8. As a final step, let's push your first cell project to your docker hub account. To perform this execute `cellery push` as shown below.
     ```
     $ cellery push <DOCKER_HUB_ORG>/hello-world-cell:1.0.0
     ✔ Connecting to registry-1.docker.io

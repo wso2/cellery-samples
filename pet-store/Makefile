@@ -16,9 +16,9 @@
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= 0.2.0
+DOCKER_IMAGE_TAG ?= 0.2.1
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= 0.2.0
+CELLERY_VERSION ?= 0.2.1
 
 SAMPLE := pet-store
 PET_BE_CELL := pet-be
