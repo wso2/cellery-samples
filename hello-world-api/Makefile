@@ -19,7 +19,7 @@ GIT_REVISION := $(shell git rev-parse --verify HEAD)
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= 0.2.1
+CELLERY_VERSION ?= latest
 
 SAMPLE := hello-world-api
 CELL := hello-world-api
