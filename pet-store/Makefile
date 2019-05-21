@@ -15,10 +15,11 @@
 #  under the License.
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+GIT_REVISION := $(shell git rev-parse --verify HEAD)
 DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= 0.2.1
+DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= 0.2.1
+CELLERY_VERSION ?= latest
 
 SAMPLE := pet-store
 PET_BE_CELL := pet-be
@@ -123,12 +124,12 @@ cellery-build.$(PET_FE_CELL):
 .PHONY: cellery-push.$(PET_BE_CELL)
 cellery-push.$(PET_BE_CELL):
 	cd  $(PET_BE_CELL); \
-	cellery push $(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)
+	cellery push $(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
 
 .PHONY: cellery-push.$(PET_FE_CELL)
 cellery-push.$(PET_FE_CELL):
 	cd  $(PET_FE_CELL); \
-	cellery push $(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)
+	cellery push $(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
 
 
 ## Component Level Targets

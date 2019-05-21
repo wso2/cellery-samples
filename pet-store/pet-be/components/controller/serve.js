@@ -249,7 +249,7 @@ service.post("/profile", (req, res) => {
         method: "POST",
         data: {
             ...req.body,
-            name: username
+            username: username
         }
     };
     callCustomersService(config, req)

@@ -133,7 +133,7 @@ And, by default all the APIs are secured, therefore we need to obtain a token to
        
 1. Login to the [API Store](https://wso2-apim/store/) as admin user (username: admin, password: admin).
     
-2. Click on ‘my_hello_api_global_1_0_0_hello’ to create a subscription and generate a token. 
+2. Click on ‘hello_world_api_cell_global_1_0_0_hello’ to create a subscription and generate a token. 
 (See  [Subscribing to an API](https://docs.wso2.com/display/AM260/Subscribe+to+an+API))
        
 3. Once you have subscribed to the API and generated a token, invoke the API passing the same as a Bearer token:
