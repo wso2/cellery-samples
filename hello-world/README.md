@@ -167,13 +167,13 @@ and pass `my-hello-world.com` for `VHOST_NAME`, and your name for `HELLO_NAME` a
     --------------------------------------------------------
     ```
     
-Congratulations! You have successfully created your own cell, and completed getting started!
+Congratulations! You have successfully created your own cell!
  
 Please feel free to checkout this repository and play around with the sample.
 
 ## Building the Components from Source
 
-You do not need to build the Components if you just wish to deploy the Cells. This should only be done if you wish to change the Hello World sample and play around with it.
+You do not need to build the components if you just wish to deploy the cells. This should only be done if you wish to change the Hello World sample and play around with it.
 
 ### Prerequisites
 

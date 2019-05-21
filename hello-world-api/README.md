@@ -146,7 +146,7 @@ Congratulations! You have successfully tried out the hello world api sample!
 
 ## Building the Components from Source
 
-You do not need to build the Components if you just wish to deploy the Cells. This should only be done if you wish to change the Hello World API sample and play around with it.
+You do not need to build the components if you just wish to deploy the cells. This should only be done if you wish to change the Hello World API sample and play around with it.
 
 ### Prerequisites
 
