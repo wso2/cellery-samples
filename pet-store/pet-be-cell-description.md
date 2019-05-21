@@ -64,7 +64,7 @@ cellery:Component catalogComponent = {
 cellery:Component controllerComponent = {
     name: "controller",
     source: {
-        image: "wso2cellery/samples-pet-store-controller"
+        image: "wso2cellery/samples-pet-store-controller:0.2.1"
     },
     ingresses: {
         controller: <cellery:HttpApiIngress>{

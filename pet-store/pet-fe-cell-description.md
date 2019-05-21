@@ -22,7 +22,7 @@ import ballerina/config;
 cellery:Component portalComponent = {
     name: "portal",
     source: {
-        image: "wso2cellery/samples-pet-store-portal"
+        image: "wso2cellery/samples-pet-store-portal:0.2.1"
     },
     ingresses: {
         portal: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
