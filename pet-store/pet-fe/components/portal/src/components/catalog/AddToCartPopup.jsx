@@ -45,6 +45,7 @@ class AddToCartPopup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            addToCartEnabled: true,
             amount: 1,
             notification: {
                 open: false,
@@ -62,13 +63,22 @@ class AddToCartPopup extends React.Component {
         });
     };
 
-    handleAmountChange = () => {
+    handleAmountChange = (event) => {
         const {item} = this.props;
-        const value = parseInt(event.target.value, 10);
-        if (value > 0 && value <= item.inStock) {
+        const elementValue = event.currentTarget.value;
+        if (elementValue === "") {
             this.setState({
-                amount: value
+                amount: "",
+                addToCartEnabled: false
             });
+        } else {
+            const value = parseInt(elementValue, 10);
+            if (value > 0 && value <= item.inStock) {
+                this.setState({
+                    amount: value,
+                    addToCartEnabled: true
+                });
+            }
         }
     };
 
@@ -87,7 +97,7 @@ class AddToCartPopup extends React.Component {
 
     render() {
         const {classes, item, onClose, open} = this.props;
-        const {amount, notification} = this.state;
+        const {addToCartEnabled, amount, notification} = this.state;
         return (
             <React.Fragment>
                 <Dialog maxWidth={"sm"} open={open} onClose={onClose} TransitionComponent={Zoom}
@@ -129,8 +139,8 @@ class AddToCartPopup extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={onClose} size={"small"}>Cancel</Button>
-                        <Button disabled={amount === 0} variant={"contained"} color={"primary"} size={"small"}
-                            onClick={this.handleAddToCart}>
+                        <Button disabled={amount === 0 || !addToCartEnabled} variant={"contained"}
+                            color={"primary"} size={"small"} onClick={this.handleAddToCart}>
                             <Check/> Add to Cart
                         </Button>
                     </DialogActions>
