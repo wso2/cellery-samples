@@ -57,14 +57,14 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
             cells: {
-                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "0.2.0" }
+                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "latest" }
             }
         }
     };
 
     // Assign the URL of the backend cell
-    portalComponent.envVars.PET_STORE_CELL_URL.value = <string>cellery:getReference(portalComponent, "petStoreBackend").
-    controller_api_url;
+    portalComponent.envVars.PET_STORE_CELL_URL.value =
+    <string>cellery:getReference(portalComponent, "petStoreBackend").controller_api_url;
 
     // Cell Initialization
     cellery:CellImage petStoreFrontendCell = {
