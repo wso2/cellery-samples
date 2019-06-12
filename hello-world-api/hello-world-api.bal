@@ -19,34 +19,35 @@
 import ballerina/io;
 import celleryio/cellery;
 
-//Hello World Component
-cellery:Component helloComponent = {
-    name: "hello-api",
-    source: {
-        image: "docker.io/wso2cellery/samples-hello-world-api-hello-service"
-    },
-    ingresses: {
-        helloApi: <cellery:HttpApiIngress>{ port: 9090,
-            context: "hello",
-            definition: {
-                resources: [
-                    {
-                        path: "/",
-                        method: "GET"
-                    }
-                ]
-            },
-            expose: "global"
-        }
-    }
-};
-
-cellery:CellImage helloCell = {
-    components: {
-        helloComp: helloComponent
-    }
-};
-
 public function build(cellery:ImageName iName) returns error? {
-    return cellery:createImage(helloCell, iName);
+    //Hello World Component
+    cellery:Component helloComponent = {
+        name: "hello-api",
+        source: {
+            image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:0.2.0"
+        },
+        ingresses: {
+            helloApi: <cellery:HttpApiIngress>{ port: 9090,
+                context: "hello",
+                definition: {
+                    resources: [
+                        {
+                            path: "/",
+                            method: "GET"
+                        }
+                    ]
+                },
+                expose: "global"
+            }
+        }
+    };
+
+    cellery:CellImage helloCell = {
+        components: {
+            helloComp: helloComponent
+        }
+    };
+    //Build Hello Cell
+    io:println("Building Hello World Cell ...");
+    return cellery:createImage(helloCell, untaint iName);
 }
