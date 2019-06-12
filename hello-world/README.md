@@ -24,7 +24,7 @@ The cell `helloCell` consists of one component defined as `helloComponent` and i
 An environment variable `HELLO_NAME`with default value `Cellery` is used by `helloComponent` to render the webpage. By passing the  parameters in the runtime, the vhost entry and
 env variable HELLO_NAME can be modified. 
 
-```
+```ballerina
 import ballerina/config;
 import celleryio/cellery;
 

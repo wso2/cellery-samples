@@ -22,7 +22,7 @@ In this section let's focus on build, run and push a [hello world api cell](hell
 The cell `helloCell` consists of one component defined as `helloComponent` and it has one http api ingress which is 
 exposed as `global` API.
 
-```
+```ballerina
 import ballerina/io;
 import celleryio/cellery;
 
