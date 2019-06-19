@@ -92,12 +92,12 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     }
 
     cellery:WebIngress portalIngress = <cellery:WebIngress>portalComponent.ingresses.portal;
-    portalIngress.gatewayConfig.oidc.providerUrl = config:getAsString("providerUrl", default =
+    portalIngress.gatewayConfig.oidc.providerUrl = config:getAsString("providerUrl", defaultValue =
         "https://idp.cellery-system/oauth2/token");
-    portalIngress.gatewayConfig.oidc.clientId = config:getAsString("clientId", default = "petstoreapplication");
+    portalIngress.gatewayConfig.oidc.clientId = config:getAsString("clientId", defaultValue = "petstoreapplication");
     cellery:DCR dcrConfig = {
-        dcrUser: config:getAsString("dcrUser", default = "admin"),
-        dcrPassword: config:getAsString("dcrPassword", default = "admin")
+        dcrUser: config:getAsString("dcrUser", defaultValue = "admin"),
+        dcrPassword: config:getAsString("dcrPassword", defaultValue = "admin")
     };
     portalIngress.gatewayConfig.oidc.clientSecret = dcrConfig;
 
