@@ -124,12 +124,12 @@ cellery-build.$(PET_FE_CELL):
 .PHONY: cellery-push.$(PET_BE_CELL)
 cellery-push.$(PET_BE_CELL):
 	cd  $(PET_BE_CELL); \
-	cellery push $(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
+	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
 
 .PHONY: cellery-push.$(PET_FE_CELL)
 cellery-push.$(PET_FE_CELL):
 	cd  $(PET_FE_CELL); \
-	cellery push $(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
+	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
 
 
 ## Component Level Targets
