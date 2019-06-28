@@ -3,7 +3,7 @@ Hello world API cell
 
 Hello World API sample is a simple rest API that returns the text 'Hello World!' as a response to a GET request.
 
-![Hello World API Cell Architecture Diagram](../docs/images/hello-world-api/hello-world-api-architecture.jpg)
+![Hello World API Cell Architecture Diagram](../../docs/images/hello-world-api/hello-world-api-architecture.jpg)
 
 ##### Note: To run this sample, a cellery deployment which includes API Manager component is required (complete cellery deployment or basic celley deployment with APIM is required).
 
@@ -125,7 +125,7 @@ public function build(cellery:ImageName iName) returns error? {
     ```
     $ cellery view <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0
     ```
-    ![hello world api cell view](../docs/images/hello-world-api/hello-world-cell-api-docs-view.png)
+    ![hello world api cell view](../../docs/images/hello-world-api/hello-world-cell-api-docs-view.png)
     
 ### 3. Obtain access token and invoke API
 
