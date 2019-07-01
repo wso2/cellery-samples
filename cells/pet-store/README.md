@@ -180,7 +180,8 @@ and fill the customer information form. This operation will invoke the controlle
 8. You can logout from pet-store as alice user, and you can login as different user admin (Username: admin, Password:admin), and check for orders, which will 
 return a empty orders as admin user hasn't placed any order. Therefore, you can realize the pet-store application user specific information.  
 
-Checkout the source of the [pet-fe](pet-fe/components/portal) and [pet-be](pet-be/components), and feel free to play around the source code. 
+Checkout the source of the [pet-fe](../../src/pet-store/pet-fe/portal) and [pet-be](../../src/pet-store/pet-be), and feel free to play around the source code. 
+Follow the instructions provided [here](../../src/pet-store) to build from source. 
 
 ## Observability 
 If you have installed complete setup or basic setup with observability enabled, you can follow below steps to view the cellery observability.

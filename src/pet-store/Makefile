@@ -18,8 +18,6 @@ PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 GIT_REVISION := $(shell git rev-parse --verify HEAD)
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
-CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= latest
 
 SAMPLE := pet-store
 PET_BE_CELL := pet-be
@@ -73,14 +71,14 @@ docker: $(CELL_DOCKER_TARGETS)
 docker-push: $(CELL_DOCKER_PUSH_TARGETS)
 
 .PHONY: cellery-build
-cellery-build: $(CELL_CELLERY_BUILD_TARGETS)
+cellery-build:
+   @:
 
 .PHONY: cellery-push
-cellery-push: $(CELL_CELLERY_PUSH_TARGETS)
+cellery-push:
+   @:
 
-
-## Cell Level Targets
-
+## Cell level targets
 .PHONY: $(CELL_CLEAN_TARGETS)
 $(CELL_CLEAN_TARGETS):
 	$(eval CELL=$(patsubst clean.%,%,$@))
@@ -111,27 +109,6 @@ $(CELL_DOCKER_PUSH_TARGETS):
 	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
 	@CELL=$(CELL) $(MAKE) $(addprefix docker-push.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
-.PHONY: cellery-build.$(PET_BE_CELL)
-cellery-build.$(PET_BE_CELL):
-	cd  $(PET_BE_CELL); \
-	cellery build $(PET_BE_CELL).bal $(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)
-
-.PHONY: cellery-build.$(PET_FE_CELL)
-cellery-build.$(PET_FE_CELL):
-	cd  $(PET_FE_CELL); \
-	cellery build $(PET_FE_CELL).bal $(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)
-
-.PHONY: cellery-push.$(PET_BE_CELL)
-cellery-push.$(PET_BE_CELL):
-	cd  $(PET_BE_CELL); \
-	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
-
-.PHONY: cellery-push.$(PET_FE_CELL)
-cellery-push.$(PET_FE_CELL):
-	cd  $(PET_FE_CELL); \
-	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
-
-
 ## Component Level Targets
 
 .PHONY: $(PET_BE_CELL_CLEAN_TARGETS)
@@ -141,21 +118,21 @@ $(PET_BE_CELL_CLEAN_TARGETS):
 .PHONY: $(PET_FE_CELL_CLEAN_TARGETS)
 $(PET_FE_CELL_CLEAN_TARGETS):
 	$(eval COMPONENT=$(patsubst clean.$(PET_FE_CELL).%,%,$@))
-	cd  $(PET_FE_CELL)/components/$(COMPONENT); \
+	cd  $(PET_FE_CELL)/$(COMPONENT); \
 	npm ci; \
 	npm run clean
 
 .PHONY: $(PET_BE_CELL_CHECK_STYLE_TARGETS)
 $(PET_BE_CELL_CHECK_STYLE_TARGETS):
 	$(eval COMPONENT=$(patsubst check-style.$(PET_BE_CELL).%,%,$@))
-	cd  $(PET_BE_CELL)/components/$(COMPONENT); \
+	cd  $(PET_BE_CELL)/$(COMPONENT); \
 	npm ci; \
 	npm run lint
 
 .PHONY: $(PET_FE_CELL_CHECK_STYLE_TARGETS)
 $(PET_FE_CELL_CHECK_STYLE_TARGETS):
 	$(eval COMPONENT=$(patsubst check-style.$(PET_FE_CELL).%,%,$@))
-	cd  $(PET_FE_CELL)/components/$(COMPONENT); \
+	cd  $(PET_FE_CELL)/$(COMPONENT); \
 	npm ci; \
 	npm run lint
 
@@ -166,19 +143,19 @@ $(PET_BE_CELL_BUILD_TARGETS):
 .PHONY: $(PET_FE_CELL_BUILD_TARGETS)
 $(PET_FE_CELL_BUILD_TARGETS):
 	$(eval COMPONENT=$(patsubst build.$(PET_FE_CELL).%,%,$@))
-	cd  $(PET_FE_CELL)/components/$(COMPONENT); \
+	cd  $(PET_FE_CELL)/$(COMPONENT); \
 	npm ci; \
 	npm run build
 
 .PHONY: $(PET_BE_CELL_DOCKER_TARGETS)
 $(PET_BE_CELL_DOCKER_TARGETS):
 	$(eval COMPONENT=$(patsubst docker.$(PET_BE_CELL).%,%,$@))
-	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(PET_BE_CELL)/components/$(COMPONENT)
+	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(PET_BE_CELL)/$(COMPONENT)
 
 .PHONY: $(PET_FE_CELL_DOCKER_TARGETS)
 $(PET_FE_CELL_DOCKER_TARGETS):
 	$(eval COMPONENT=$(patsubst docker.$(PET_FE_CELL).%,%,$@))
-	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(PET_FE_CELL)/components/$(COMPONENT)
+	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(PET_FE_CELL)/$(COMPONENT)
 
 .PHONY: $(PET_BE_CELL_DOCKER_PUSH_TARGETS)
 $(PET_BE_CELL_DOCKER_PUSH_TARGETS):
