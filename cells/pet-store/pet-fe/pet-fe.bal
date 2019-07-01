@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component portalComponent = {
         name: "portal",
         source: {
-            image: "wso2cellery/samples-pet-store-portal:latest"
+            image: "wso2cellery/samples-pet-store-portal"
         },
         ingresses: {
             portal: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
