@@ -21,7 +21,7 @@ DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
 
 SAMPLE := hello-world-api
 CELL := hello-world-api
-COMPONENT := hello-service
+COMPONENT := service
 
 all: clean build docker
 
