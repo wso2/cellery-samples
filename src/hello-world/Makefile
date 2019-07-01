@@ -18,44 +18,41 @@ PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 GIT_REVISION := $(shell git rev-parse --verify HEAD)
 DOCKER_REPO ?= wso2cellery
 DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
-CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= latest
 
-SAMPLE := hello-world-api
-CELL := hello-world-api
-COMPONENT := hello-service
+SAMPLE := hello-world
+CELL := hello-world
+COMPONENT := webapp
 
 all: clean build docker
 
 .PHONY: clean
 clean:
-	cd components/$(COMPONENT); \
-	rm -f hello-service
-
-.PHONY: check-style
-check-style:
-	cd components/$(COMPONENT); \
-	test -z "$$(goimports -l . | tee /dev/stderr)"
+	@:
 
 .PHONY: build
 build:
-	cd components/$(COMPONENT); \
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o build/hello-service hello-service.go
+	@:
+
+.PHONY: check-style
+check-style:
+	cd $(COMPONENT); \
+	npm ci; \
+	npm run lint
 
 .PHONY: docker
 docker:
-	cd components/$(COMPONENT); \
-	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} .
+	cd $(COMPONENT); \
+	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} .; \
 
 .PHONY: docker-push
 docker-push:
-	cd components/$(COMPONENT); \
+	cd $(COMPONENT); \
 	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG}
 
 .PHONY: cellery-build
 cellery-build:
-	cellery build $(CELL).bal $(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION)
+	@:
 
 .PHONY: cellery-push
 cellery-push:
-	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(CELL)-cell:$(CELLERY_VERSION) -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
+    @:

@@ -16,10 +16,6 @@
 
 import celleryio/cellery;
 
-# The Cellery Lifecycle Build method which is invoked for building the Cell Image.
-#
-# + iName - The Image name
-# + return - The created Cell Image
 public function build(cellery:ImageName iName) returns error? {
 
     // Orders Component
@@ -78,7 +74,7 @@ public function build(cellery:ImageName iName) returns error? {
                 context: "controller",
                 expose: "local",
                 definition: <cellery:ApiDefinition>cellery:readSwaggerFile(
-                                                       "./components/controller/resources/pet-store.swagger.json")
+                                                       "./resources/pet-store.swagger.json")
             }
         },
         envVars: {
@@ -103,11 +99,6 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(petStoreBackendCell, untaint iName);
 }
 
-# The Cellery Lifecycle Run method which is invoked for creating a Cell Instance.
-#
-# + iName - The Image name
-# + instances - The map dependency instances of the Cell instance to be created
-# + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     cellery:CellImage petStoreBackendCell = check cellery:constructCellImage(untaint iName);
     return cellery:createInstance(petStoreBackendCell, iName, instances);

@@ -8,8 +8,8 @@
   "scripts": {
     "clean": "rimraf ./build/",
     "gen:swagger": "node src/genSwagger.js",
-    "lint:app": "eslint --color --ext .jsx src/",
-    "lint:server": "eslint --color --ext .js src/",
+    "lint:app": "eslint --color --ext .jsx src",
+    "lint:server": "eslint --color --ext .js src",
     "lint": "npm run lint:app && npm run lint:server",
     "lint:fix": "npm run lint:app -- --fix && npm run lint:server -- --fix",
     "build": "npm run clean && NODE_ENV=production webpack-cli --config webpack.config.js --progress --colors -p"

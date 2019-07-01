@@ -7,27 +7,23 @@ data based on the business logic and logged in user.
 - The swagger file of the pet-fe can be fetched by executing command [`cellery extract-resources`](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#extract-resources) 
 which will extract the swagger file in the same location where you run the command.
   ```
-  cellery extract-resources wso2cellery/cells-pet-fe:0.2.1
+  cellery extract-resources wso2cellery/cells-pet-fe:latest
   ```
-- Then based on the swagger file, the [client source](pet-fe/components/portal/src/gen/petStoreApi.js) is generated which can be used to invoke the pet-fe cell.
+- Then based on the swagger file, the [client source](../../../src/pet-store/pet-fe/portal/src/gen/petStoreApi.js) is generated which can be used to invoke the pet-fe cell.
 
 ### Pet-fe cell
-The below shown is the cell file for the pet-fe cell which is in [pet-fe.bal](pet-fe/pet-fe.bal).
+The below shown is the cell file for the pet-fe cell which is in [pet-fe.bal](pet-fe.bal).
 ```ballerina
 import celleryio/cellery;
 import ballerina/config;
 
-# The Cellery Lifecycle Build method which is invoked for building the Cell Image.
-#
-# + iName - The Image name
-# + return - The created Cell Image
 public function build(cellery:ImageName iName) returns error? {
     // Portal Component
     // This is the Component which exposes the Pet Store portal
     cellery:Component portalComponent = {
         name: "portal",
         source: {
-            image: "wso2cellery/samples-pet-store-portal:0.2.0"
+            image: "wso2cellery/samples-pet-store-portal:latest"
         },
         ingresses: {
             portal: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
@@ -75,11 +71,6 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(petStoreFrontendCell, untaint iName);
 }
 
-# The Cellery Lifecycle Run method which is invoked for creating a Cell Instance.
-#
-# + iName - The Image name
-# + instances - The map dependency instances of the Cell instance to be created
-# + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     cellery:CellImage petStoreFrontendCell = check cellery:constructCellImage(untaint iName);
     cellery:Component portalComponent = petStoreFrontendCell.components.portal;

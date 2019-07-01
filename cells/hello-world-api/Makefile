@@ -16,14 +16,12 @@
 
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 GIT_REVISION := $(shell git rev-parse --verify HEAD)
-DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
 CELLERY_ORG ?= wso2cellery
 CELLERY_VERSION ?= latest
 
-SAMPLE := hello-world
-CELL := hello-world
-COMPONENT := webapp
+SAMPLE := hello-world-api
+CELL := hello-world-api
+COMPONENT := hello-service
 
 all: clean build docker
 
@@ -37,19 +35,15 @@ build:
 
 .PHONY: check-style
 check-style:
-	cd components/$(COMPONENT); \
-	npm ci; \
-	npm run lint
+	@
 
 .PHONY: docker
 docker:
-	cd components/$(COMPONENT); \
-	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} .; \
+	@:
 
 .PHONY: docker-push
 docker-push:
-	cd components/$(COMPONENT); \
-	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG}
+	@:
 
 .PHONY: cellery-build
 cellery-build:

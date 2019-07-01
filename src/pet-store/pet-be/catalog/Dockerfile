@@ -26,7 +26,7 @@ WORKDIR ${APP_DIR}
 
 COPY package*.json ${APP_DIR}/
 COPY serve.js ${APP_DIR}/
-COPY ./data/ ${APP_DIR}/data/
+COPY data ${APP_DIR}/data/
 
 RUN npm ci
 

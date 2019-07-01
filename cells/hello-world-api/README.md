@@ -1,9 +1,9 @@
 Hello world API cell
 ===============
 
-Hello World API sample is a simple rest API that returns the text 'Hello World!' as a response to a GET request.
+Hello-world API sample is a simple rest API that returns the text 'Hello World!' as a response to a GET request.
 
-![Hello World API Cell Architecture Diagram](../docs/images/hello-world-api/hello-world-api-architecture.jpg)
+![Hello World API Cell Architecture Diagram](../../docs/images/hello-world-api/hello-world-api-architecture.jpg)
 
 ##### Note: To run this sample, a cellery deployment which includes API Manager component is required (complete cellery deployment or basic celley deployment with APIM is required).
 
@@ -14,13 +14,12 @@ Hello World API sample is a simple rest API that returns the text 'Hello World!'
 1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
 2. Navigate to the hello-world-api Sample.
    ```
-   cd <SAMPLES_ROOT>/hello-world-api
+   cd <SAMPLES_ROOT>/cells/hello-world-api
    ```
 ### 2. Build and run hello world api cell
 In this section let's focus on build, run and push a [hello world api cell](hello-world-api.bal). 
 
-The cell `helloCell` consists of one component defined as `helloComponent` and it has one http api ingress which is 
-exposed as `global` API.
+The cell `helloCell` consists of one component defined as `hello` component and it has one http API ingress that is exposed globally. 
 
 ```ballerina
 import ballerina/io;
@@ -31,7 +30,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component helloComponent = {
         name: "hello-api",
         source: {
-            image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:0.2.0"
+            image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:latest"
         },
         ingresses: {
             helloApi: <cellery:HttpApiIngress>{ port: 9090,
@@ -64,29 +63,29 @@ public function build(cellery:ImageName iName) returns error? {
 
 1. Build the cellery image for hello world project by executing the cellery build command as shown below. Note `DOCKER_HUB_ORG` is your organization name in docker hub.
     ```
-    $ cellery build hello-world-api.bal <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0
+    $ cellery build hello-world-api.bal <DOCKER_HUB_ORG>/hello-world-api-cell:latest
     
-    ✔ Building image <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0
+    ✔ Building image <DOCKER_HUB_ORG>/hello-world-api-cell:latest
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0
+    ✔ Successfully built cell image: <DOCKER_HUB_ORG>/hello-world-api-cell:latest
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <DOCKER_HUB_ORG>/helloworld:1.0.0
+      $ cellery run <DOCKER_HUB_ORG>/helloworld:latest
     --------------------------------------------------------
     ```
 
 2. Run the cell image by executing `cellery run` command as shown below.
     ```
-    $ cellery run <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0 -n hello-world-api-cell
-       ✔ Extracting Cell Image  <DOCKER_HUB_ORG/hello-world-api-cell:1.0.0
+    $ cellery run <DOCKER_HUB_ORG>/hello-world-api-cell:latest -n hello-world-api-cell
+       ✔ Extracting Cell Image  <DOCKER_HUB_ORG/hello-world-api-cell:latest
        
        Main Instance: my-hello-world
        
-       ✔ Reading Cell Image  <DOCKER_HUB_ORG/hello-world-api-cell:1.0.0
+       ✔ Reading Cell Image  <DOCKER_HUB_ORG/hello-world-api-cell:latest
        ✔ Validating environment variables
        ✔ Validating dependencies
        
@@ -94,7 +93,7 @@ public function build(cellery:ImageName iName) returns error? {
        
          INSTANCE NAME                     CELL IMAGE                         USED INSTANCE   SHARED
        ---------------------- --------------------------------------------- --------------- --------
-        hello-world-api-cell    <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0   To be Created    -
+        hello-world-api-cell    <DOCKER_HUB_ORG>/hello-world-api-cell:latest   To be Created    -
        
        Dependency Tree to be Used:
        
@@ -105,7 +104,7 @@ public function build(cellery:ImageName iName) returns error? {
        ✔ Starting main instance my-hello-world
        
        
-       ✔ Successfully deployed cell image:  <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0
+       ✔ Successfully deployed cell image:  <DOCKER_HUB_ORG>/hello-world-api-cell:latest
        
        What's next?
        --------------------------------------------------------
@@ -118,14 +117,14 @@ public function build(cellery:ImageName iName) returns error? {
     ```
     $ cellery list instances
                         INSTANCE                                   CELL IMAGE                   STATUS                            GATEWAY                               COMPONENTS           AGE
-       ------------------------------------------ -------------------------------------------- -------- -------------------------------------------------------------- ------------ ----------------------
-        hello-world-api-cell-1-0-0-676b2131           sinthuja/hello-world-api-cell:1.0.0       Ready    sinthuja-hello-world-api-cell-1-0-0-676b2131--gateway-service   1            10 minutes 1 seconds
+       ------------------------------------------ -------------------------------------------- -------- ----------------------------------------------------------------- ------------ ----------------------
+        hello-world-api-cell-1-0-0-676b2131           sinthuja/hello-world-api-cell:latest       Ready    sinthuja-hello-world-api-cell-latest-676b2131--gateway-service   1            10 minutes 1 seconds
     ```
 4. Execute `cellery view` to see the components of your cell. This will open a HTML page in a browser and you can visualize the components and dependent cells of the cell image.
     ```
-    $ cellery view <DOCKER_HUB_ORG>/hello-world-api-cell:1.0.0
+    $ cellery view <DOCKER_HUB_ORG>/hello-world-api-cell:latest
     ```
-    ![hello world api cell view](../docs/images/hello-world-api/hello-world-cell-api-docs-view.png)
+    ![hello world api cell view](../../docs/images/hello-world-api/hello-world-cell-api-docs-view.png)
     
 ### 3. Obtain access token and invoke API
 
@@ -145,42 +144,7 @@ And, by default all the APIs are secured, therefore we need to obtain a token to
 
 Congratulations! You have successfully tried out the hello world api sample! 
 
-## Building the Components from Source
-
-You do not need to build the components if you just wish to deploy the cells. This should only be done if you wish to change the Hello World API sample and play around with it.
-
-### Prerequisites
-
-* Docker
-* GNU Make 4.1+
-
-### Building the Components
-
-If you wish to change the Hello World API Sample and play around with Cellery, you can follow this section to rebuild the Components.
-
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository to your `GO_PATH/src/github.com/wso2cellery` directory. 
-2. Set the following environment variables for customizing the build.
-
-   | Environment Variable  |                                                                       |
-   |-----------------------|-----------------------------------------------------------------------|
-   | DOCKER_REPO           | The name of the repository of the Docker images (Your Docker Hub ID)  |
-   | DOCKER_IMAGE_TAG      | The tag of the Docker images                                          |
-
-3. Run the make target for building docker images.
-   ```
-   make docker
-   ```
-   This would build the components from source and build the docker images using the environment variables you have provided.
-4. Login to Docker Hub
-   ```
-   docker login
-   ```
-5. Run the target for pushing the docker images.
-   ```
-   make docker-push
-   ```
-6. Update the `<SAMPLES_ROOT>/hello-world-api/hello-world-api.bal` file and set the newly created image names for the component source.
-7. [Build and run](#2.-build-and-run-hello-world-web-cell) the Cells.
+Please feel free to checkout this repository and play around with the sample as explained [here](../../src/hello-world-api)
 
 ## Did you try? 
 1. [Hello world](../hello-world)
