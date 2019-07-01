@@ -216,12 +216,6 @@ This will show the overall health of the cells and the system, and the dependenc
 ![cellery sequence diagram view](../../docs/images/pet-store/sequence-diagram-2.png)
 
 ![cellery dependency graph view](../../docs/images/pet-store/dependency-diagram-tarce.png)
- 
-## Building the Components from Source
-
-You do not need to build the Components if you just wish to deploy the Cells. This should only be done if you wish to change the Pet Store sample and play around with it.
-
-Please feel free to checkout this repository and play around with the sample as explained [here](../../src/pet-store)
 
 ## Did you try? 
 1. [Hello world](../hello-world)

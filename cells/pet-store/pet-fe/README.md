@@ -17,10 +17,6 @@ The below shown is the cell file for the pet-fe cell which is in [pet-fe.bal](pe
 import celleryio/cellery;
 import ballerina/config;
 
-# The Cellery Lifecycle Build method which is invoked for building the Cell Image.
-#
-# + iName - The Image name
-# + return - The created Cell Image
 public function build(cellery:ImageName iName) returns error? {
     // Portal Component
     // This is the Component which exposes the Pet Store portal
@@ -75,11 +71,6 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(petStoreFrontendCell, untaint iName);
 }
 
-# The Cellery Lifecycle Run method which is invoked for creating a Cell Instance.
-#
-# + iName - The Image name
-# + instances - The map dependency instances of the Cell instance to be created
-# + return - The Cell instance
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     cellery:CellImage petStoreFrontendCell = check cellery:constructCellImage(untaint iName);
     cellery:Component portalComponent = petStoreFrontendCell.components.portal;
