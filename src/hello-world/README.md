@@ -37,4 +37,4 @@ If you wish to change the Hello World Sample and play around with Cellery, you c
    make docker-push
    ```
 6. Update the `<SAMPLES_ROOT>/cell/hello-world/hello-world-web.bal` file and set the newly created image names for the Component source.
-7. [Build and run](../../cells/hello-world/README.md#2.-build,-run-and-push-hello-world-cell) the Cells.
+7. [Build and run](../../cells/hello-world#2-build-run-and-push-hello-world-cell) the Cells.

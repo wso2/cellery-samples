@@ -11,7 +11,7 @@ All 4 micro services are implemented in [node.js](https://nodejs.org/en/).
 
 
 ### Pet-be cell
-The below shown is the cell file for the pet-be cell which is in [pet-be.bal](pet-be/pet-be.bal).
+The below shown is the cell file for the pet-be cell which is in [pet-be.bal](pet-be.bal).
 
 ```ballerina
 import celleryio/cellery;
@@ -27,7 +27,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component ordersComponent = {
         name: "orders",
         source: {
-            image: "wso2cellery/samples-pet-store-orders:0.2.0"
+            image: "wso2cellery/samples-pet-store-orders:latest"
         },
         ingresses: {
             orders: <cellery:HttpApiIngress>{
@@ -41,7 +41,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component customersComponent = {
         name: "customers",
         source: {
-            image: "wso2cellery/samples-pet-store-customers:0.2.0"
+            image: "wso2cellery/samples-pet-store-customers:latest"
         },
         ingresses: {
             customers: <cellery:HttpApiIngress>{
@@ -55,7 +55,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component catalogComponent = {
         name: "catalog",
         source: {
-            image: "wso2cellery/samples-pet-store-catalog:0.2.0"
+            image: "wso2cellery/samples-pet-store-catalog:latest"
         },
         ingresses: {
             catalog: <cellery:HttpApiIngress>{
@@ -70,7 +70,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component controllerComponent = {
         name: "controller",
         source: {
-            image: "wso2cellery/samples-pet-store-controller:0.2.0"
+            image: "wso2cellery/samples-pet-store-controller:latest"
         },
         ingresses: {
             controller: <cellery:HttpApiIngress>{
@@ -119,7 +119,7 @@ And therefore the controller component's HttpAPIIngress's API definition is upda
 - There are four components defined to deploy four micro-services (catalog, orders, customers, and controller), and all four components have HTTP ingress to receive the external requests. 
 - Only `controller` component has defined `expose` parameter to `local` in the [HttpAPIIngress](https://github.com/wso2-cellery/spec#1-http-ingresses), 
 and therefore only `controller` component is exposed as cell API, and all other three components are only accessible within the cell and not from other cells.
-- The API definition of the controller micro service is defined in the swagger file [pet-store.swagger.json](pet-be/components/controller/resources/pet-store.swagger.json). 
+- The API definition of the controller micro service is defined in the swagger file [pet-store.swagger.json](../../../src/pet-store/pet-be/controller/resources/pet-store.swagger.json). 
 - The `controller` component cell has defined `envVars` to get the runtime value of host and ports for other components catalog, customer, and orders. 
 - All four components are defined included in the cell during `petStoreBackendCell` initialization.
 - `cellery:getHost` method will return the actual host value of other micro-services components so that respective `envVars` will be properly set at the `controller` component.
