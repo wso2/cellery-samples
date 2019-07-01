@@ -9,12 +9,12 @@ Cellery Samples
 
 **Note**: If you just wish to get started with trying out Cellery, you can start your journey at [wso2-cellery/sdk](https://github.com/wso2-cellery/sdk) repository.
 
-Cellery Samples contains various samples that can be deployed in a Cellery Runtime. If you have not already set-up a Cellery CLI and Runtime, please visit the [Getting Started](https://github.com/wso2-cellery/sdk#getting-started) to set-up your Cellery CLI and Runtime.
+Cellery Samples contains various samples that can be deployed in a Cellery Runtime. If you have not already setup a Cellery CLI and runtime, please visit the [Getting Started](https://github.com/wso2-cellery/sdk#quickstart-guide) to set-up your Cellery CLI and Runtime.
 
-Once you have set-up the Cellery CLI and Runtime you can proceed with deploying the samples provided here. You can find the following samples in this repository.
+Once the Cellery setup is completed, you can proceed with deploying the samples provided below. You can find the following samples in this repository.
 
-* [Hello world](src/hello-world)
-* [Hello world Api](src/hello-world-api)
-* [Pet store](src/pet-store)
+* [Hello world](cells/hello-world)
+* [Hello world Api](cells/hello-world-api)
+* [Pet store](cells/pet-store)
 
 Please follow the relevant documentation provided in the samples to learn more about the samples and deploy them.
