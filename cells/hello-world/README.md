@@ -139,7 +139,7 @@ as shown below to change the hello-world cell's default behaviour.
     $ cellery list instances
                         INSTANCE                                   CELL IMAGE                   STATUS                            GATEWAY                            COMPONENTS           AGE
        ------------------------------------------ -------------------------------------------- -------- ----------------------------------------------------------- ------------ ----------------------
-        hello-world-cell-1-0-0-676b2131             sinthuja/hello-world-cell:latest             Ready    sinthuja-hello-world-cell-1-0-0-676b2131--gateway-service     1           10 minutes 1 seconds
+        hello-world-cell-1-0-0-676b2131           <DOCKER_HUB_ORG>/hello-world-cell:latest      Ready       hello-world-cell-1-0-0-676b2131--gateway-service             1        10 minutes 1 seconds
     ```
 4. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components and dependent cells of the cell image.
     ```
