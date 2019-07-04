@@ -18,5 +18,6 @@ Once you have completed cellery setup, you can proceed with deploying the sample
 * [Hello world](cells/hello-world)
 * [Hello world Api](cells/hello-world-api)
 * [Pet store](cells/pet-store)
+* [Hipster shopt](cells/hipster-shop)
 
 Please follow the relevant documentation provided in the samples to learn more about the samples and deploy them.
