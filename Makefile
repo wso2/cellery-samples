@@ -21,7 +21,7 @@ DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
 CELLERY_ORG ?= wso2cellery
 CELLERY_VERSION ?= latest
 
-SAMPLES :=  $(addprefix cells/, pet-store hello-world hello-world-api) $(addprefix src/, pet-store hello-world hello-world-api)
+SAMPLES :=  $(addprefix cells/, pet-store hello-world hello-world-api hipster-shop) $(addprefix src/, pet-store hello-world hello-world-api)
 
 CLEAN_TARGETS := $(addprefix clean., $(SAMPLES))
 CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES))
