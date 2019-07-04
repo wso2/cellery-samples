@@ -1,0 +1,168 @@
+import ballerina/config;
+import ballerina/io;
+import celleryio/cellery;
+
+public function build(cellery:ImageName iName) returns error? {
+    int emailContainerPort = 8080;
+    int paymentContainerPort = 50051;
+    int shippingContainerPort = 50051;
+    int currencyContainerPort = 7000;
+    int checkoutContainerPort = 5050;
+    
+    // Email service component
+    // Sends users an order confirmation email (mock).
+    cellery:Component emailServiceComponent = {
+        name: "email",
+        source: {
+            image: "gcr.io/google-samples/microservices-demo/emailservice:v0.1.1"
+        },
+        ingresses: {
+            tcpIngress: <cellery:TCPIngress>{
+            backendPort: emailContainerPort,
+            gatewayPort: 31405
+        }
+        },
+        envVars: {
+            PORT: {
+                value: emailContainerPort
+            },
+            ENABLE_PROFILER: {
+                value: 0
+            }
+        }
+    };
+
+    // Payment service component
+    // Charges the given credit card info (mock) with the given amount and returns a transaction ID.
+    cellery:Component paymentServiceComponent = {
+        name: "payment",
+        source: {
+            image: "gcr.io/google-samples/microservices-demo/paymentservice:v0.1.1"
+        },
+        ingresses: {
+            tcpIngress: <cellery:TCPIngress>{
+            backendPort: paymentContainerPort,
+            gatewayPort: 31406
+        }
+        },
+        envVars: {
+            PORT: {
+                value: paymentContainerPort
+            }
+        }
+    };
+
+    // Shipping service component
+    // Gives shipping cost estimates based on the shopping cart. Ships items to the given address (mock)
+    cellery:Component shippingServiceComponent = {
+        name: "shipping",
+        source: {
+            image: "gcr.io/google-samples/microservices-demo/shippingservice:v0.1.1"
+        },
+        ingresses: {
+            tcpIngress: <cellery:TCPIngress>{
+            backendPort: shippingContainerPort,
+            gatewayPort: 31407
+        }
+        },
+        envVars: {
+            PORT: {
+                value: shippingContainerPort
+            }
+        }
+    };
+
+    // Currency service component
+    // Converts one money amount to another currency.
+    // Uses real values fetched from European Central Bank. It's the highest QPS service.
+    cellery:Component currencyServiceComponent = {
+        name: "currency",
+        source: {
+            image: "gcr.io/google-samples/microservices-demo/currencyservice:v0.1.1"
+        },
+        ingresses: {
+            tcpIngress: <cellery:TCPIngress>{
+            backendPort: currencyContainerPort,
+            gatewayPort: 31408
+        }
+        },
+        envVars: {
+            PORT: {
+                value: currencyContainerPort
+            }
+        }
+    };
+
+    // Checkout service component
+    // Retrieves user cart, prepares order and orchestrates the payment,
+    // shipping and the email notification.
+
+    cellery:Component checkoutServiceComponent = {
+        name: "checkout",
+        source: {
+            image: "gcr.io/google-samples/microservices-demo/checkoutservice:v0.1.1"
+        },
+        ingresses: {
+            tcpIngress: <cellery:TCPIngress>{
+            backendPort: checkoutContainerPort,
+            gatewayPort: 31409
+        }
+        },
+        envVars: {
+            PORT: {
+                value: checkoutContainerPort
+            },
+            //same-cell components
+            EMAIL_SERVICE_ADDR: {
+                value: cellery:getHost(emailServiceComponent) + ":" + emailContainerPort
+            },
+            PAYMENT_SERVICE_ADDR: {
+                value: cellery:getHost(paymentServiceComponent) + ":" + paymentContainerPort
+            },
+            SHIPPING_SERVICE_ADDR: {
+                value: cellery:getHost(shippingServiceComponent) + ":" + shippingContainerPort
+            },
+            CURRENCY_SERVICE_ADDR: {
+                value: cellery:getHost(currencyServiceComponent) + ":" + currencyContainerPort
+            },
+            //components of external cells
+            PRODUCT_CATALOG_SERVICE_ADDR: {
+                value: ""
+            },
+            CART_SERVICE_ADDR: {
+                value: ""
+            }
+        },
+        dependencies: {
+            components: [emailServiceComponent, paymentServiceComponent, shippingServiceComponent, currencyServiceComponent],
+            cells: {
+                productsCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "products-cell", ver: "latest"},
+                cartCellDep: <cellery:ImageName> { org: "wso2cellery", name: "cart-cell", ver: "latest" }
+            }
+        }
+    };
+
+    cellery:Reference productReference = cellery:getReference(checkoutServiceComponent, "productsCellDep");
+    checkoutServiceComponent.envVars.PRODUCT_CATALOG_SERVICE_ADDR.value = <string>productReference.gateway_host + ":" +<string>productReference.products_tcp_port;
+
+    cellery:Reference cartReference = cellery:getReference(checkoutServiceComponent, "cartCellDep");
+    checkoutServiceComponent.envVars.CART_SERVICE_ADDR.value = <string>cartReference.gateway_host + ":" +<string>cartReference.cart_tcp_port;
+
+    // Cell Initialization
+    cellery:CellImage checkoutCell = {
+        components: {
+            emailServiceComponent: emailServiceComponent,
+            paymentServiceComponent: paymentServiceComponent,
+            shippingServiceComponent: shippingServiceComponent,
+            currencyServiceComponent: currencyServiceComponent,
+            checkoutServiceComponent: checkoutServiceComponent
+        }
+    };
+    return cellery:createImage(checkoutCell, untaint iName);
+}
+
+public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+    cellery:CellImage checkoutCell = check cellery:constructCellImage(untaint iName);
+    return cellery:createInstance(checkoutCell, iName, instances);
+}
+
