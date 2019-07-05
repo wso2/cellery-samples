@@ -143,7 +143,8 @@ instructions [here](../../cells/pet-store/README.md#view-application)
 
 
 ## What's Next?
-- [Observe the pet-store](observability.md) - This shows how you can observe and understand the runtime operations to the pet-store application.
+- [Cell Test](test-be-cell.md) - perform pet-be cell test and shows the results in the log file.
+- [Observe the pet-store](observability.md) - yhis shows how you can observe and understand the runtime operations to the pet-store application.
 - [Update pet-be cell](update-cell.md) - provides the steps to update a running cell with new version.
 - [Scale pet-be cell](scale-cell.md) - walks through the steps to scale pet-be cell with horizontal pod autoscaler, and zero scaling with Knative. 
 - [Pet store sample](../../cells/pet-store/README.md) - provides the instructions to work with pet-store sample.
