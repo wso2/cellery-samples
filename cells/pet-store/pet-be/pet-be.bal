@@ -103,3 +103,24 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     cellery:CellImage petStoreBackendCell = check cellery:constructCellImage(untaint iName);
     return cellery:createInstance(petStoreBackendCell, iName, instances);
 }
+
+// cellery test command will facilitate all flags as cellery run
+public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+    string pet_be_url = "http://" + iName.instanceName + "--gateway-service:80";
+    cellery:Test petBeTest = {
+        name: "pet-be-test",
+        source: {
+            image: "docker.io/wso2cellery/pet-be-tests"
+        },
+        envVars: {
+            PET_BE_CELL_URL: { value: pet_be_url }
+        }
+    };
+    cellery:TestSuite hrTestSuite = {
+        tests: [petBeTest]
+    };
+
+    cellery:ImageName[] instanceList = cellery:runInstances(iName, instances);
+    error? a = cellery:runTestSuite(iName, hrTestSuite);
+    return cellery:stopInstances(iName, instanceList);
+}
