@@ -57,6 +57,10 @@ public function build(cellery:ImageName iName) returns error? {
             catalog: <cellery:HttpApiIngress>{
                 port: 80
             }
+        },
+        scalingPolicy: <cellery:ZeroScalingPolicy> {
+           maxReplicas: 3,
+           concurrencyTarget: 5
         }
     };
 
@@ -74,7 +78,7 @@ public function build(cellery:ImageName iName) returns error? {
                 context: "controller",
                 expose: "local",
                 definition: <cellery:ApiDefinition>cellery:readSwaggerFile(
-                                                       "../resources/pet-store.swagger.json")
+                                                       "../../resources/pet-store.swagger.json")
             }
         },
         envVars: {
@@ -85,8 +89,9 @@ public function build(cellery:ImageName iName) returns error? {
             CUSTOMER_HOST: { value: cellery:getHost(customersComponent) },
             CUSTOMER_PORT: { value: 80 }
         },
-        dependencies: {
-            components: [catalogComponent, ordersComponent, customersComponent]
+        scalingPolicy: <cellery:ZeroScalingPolicy> {
+             maxReplicas: 3,
+             concurrencyTarget: 10
         }
     };
 
@@ -105,25 +110,4 @@ public function build(cellery:ImageName iName) returns error? {
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     cellery:CellImage petStoreBackendCell = check cellery:constructCellImage(untaint iName);
     return cellery:createInstance(petStoreBackendCell, iName, instances);
-}
-
-// cellery test command will facilitate all flags as cellery run
-public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
-    string pet_be_url = "http://" + iName.instanceName + "--gateway-service:80";
-    cellery:Test petBeTest = {
-        name: "pet-be-test",
-        source: {
-            image: "docker.io/wso2cellery/pet-be-tests"
-        },
-        envVars: {
-            PET_BE_CELL_URL: { value: pet_be_url }
-        }
-    };
-    cellery:TestSuite hrTestSuite = {
-        tests: [petBeTest]
-    };
-
-    cellery:ImageName[] instanceList = cellery:runInstances(iName, instances);
-    error? a = cellery:runTestSuite(iName, hrTestSuite);
-    return cellery:stopInstances(iName, instanceList);
 }

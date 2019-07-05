@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component ordersComponent = {
         name: "orders",
         source: {
-            image: "wso2cellery/samples-pet-store-orders"
+            image: "wso2cellery/samples-pet-store-orders:latestv2"
         },
         ingresses: {
             orders: <cellery:HttpApiIngress>{
@@ -37,7 +37,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component customersComponent = {
         name: "customers",
         source: {
-            image: "wso2cellery/samples-pet-store-customers"
+            image: "wso2cellery/samples-pet-store-customers:latestv2"
         },
         ingresses: {
             customers: <cellery:HttpApiIngress>{
@@ -51,7 +51,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component catalogComponent = {
         name: "catalog",
         source: {
-            image: "wso2cellery/samples-pet-store-catalog"
+            image: "wso2cellery/samples-pet-store-catalog:latestv2"
         },
         ingresses: {
             catalog: <cellery:HttpApiIngress>{
@@ -66,7 +66,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component controllerComponent = {
         name: "controller",
         source: {
-            image: "wso2cellery/samples-pet-store-controller"
+            image: "wso2cellery/samples-pet-store-controller:latestv2"
         },
         ingresses: {
             controller: <cellery:HttpApiIngress>{
@@ -74,7 +74,7 @@ public function build(cellery:ImageName iName) returns error? {
                 context: "controller",
                 expose: "local",
                 definition: <cellery:ApiDefinition>cellery:readSwaggerFile(
-                                                       "../resources/pet-store.swagger.json")
+                                                       "../../resources/pet-store.swagger.json")
             }
         },
         envVars: {
@@ -84,9 +84,6 @@ public function build(cellery:ImageName iName) returns error? {
             ORDER_PORT: { value: 80 },
             CUSTOMER_HOST: { value: cellery:getHost(customersComponent) },
             CUSTOMER_PORT: { value: 80 }
-        },
-        dependencies: {
-            components: [catalogComponent, ordersComponent, customersComponent]
         }
     };
 
@@ -105,25 +102,4 @@ public function build(cellery:ImageName iName) returns error? {
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     cellery:CellImage petStoreBackendCell = check cellery:constructCellImage(untaint iName);
     return cellery:createInstance(petStoreBackendCell, iName, instances);
-}
-
-// cellery test command will facilitate all flags as cellery run
-public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
-    string pet_be_url = "http://" + iName.instanceName + "--gateway-service:80";
-    cellery:Test petBeTest = {
-        name: "pet-be-test",
-        source: {
-            image: "docker.io/wso2cellery/pet-be-tests"
-        },
-        envVars: {
-            PET_BE_CELL_URL: { value: pet_be_url }
-        }
-    };
-    cellery:TestSuite hrTestSuite = {
-        tests: [petBeTest]
-    };
-
-    cellery:ImageName[] instanceList = cellery:runInstances(iName, instances);
-    error? a = cellery:runTestSuite(iName, hrTestSuite);
-    return cellery:stopInstances(iName, instanceList);
 }
