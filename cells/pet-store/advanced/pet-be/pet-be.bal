@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component ordersComponent = {
         name: "orders",
         source: {
-            image: "wso2cellery/samples-pet-store-orders"
+            image: "wso2cellery/samples-pet-store-orders:latestv2"
         },
         ingresses: {
             orders: <cellery:HttpApiIngress>{
@@ -37,7 +37,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component customersComponent = {
         name: "customers",
         source: {
-            image: "wso2cellery/samples-pet-store-customers"
+            image: "wso2cellery/samples-pet-store-customers:latestv2"
         },
         ingresses: {
             customers: <cellery:HttpApiIngress>{
@@ -51,7 +51,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component catalogComponent = {
         name: "catalog",
         source: {
-            image: "wso2cellery/samples-pet-store-catalog"
+            image: "wso2cellery/samples-pet-store-catalog:latestv2"
         },
         ingresses: {
             catalog: <cellery:HttpApiIngress>{
@@ -66,7 +66,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component controllerComponent = {
         name: "controller",
         source: {
-            image: "wso2cellery/samples-pet-store-controller"
+            image: "wso2cellery/samples-pet-store-controller:latestv2"
         },
         ingresses: {
             controller: <cellery:HttpApiIngress>{
@@ -84,21 +84,6 @@ public function build(cellery:ImageName iName) returns error? {
             ORDER_PORT: { value: 80 },
             CUSTOMER_HOST: { value: cellery:getHost(customersComponent) },
             CUSTOMER_PORT: { value: 80 }
-        },
-        resources: {
-            requests: {
-                cpu: "125m"
-            },
-            limits: {
-                cpu: "125m"
-            }
-        },
-        scalingPolicy: <cellery:AutoScalingPolicy> {
-            minReplicas: 1,
-            maxReplicas: 3,
-            metrics: {
-               cpu: <cellery:Percentage>{ threshold : 10 }
-            }
         }
     };
 

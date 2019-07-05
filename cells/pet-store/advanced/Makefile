@@ -22,7 +22,8 @@ CELLERY_VERSION ?= latest
 PET_BE_AS_CELL := pet-be-auto-scale
 PET_BE_ZS_CELL := pet-be-zero-scale
 LOAD_GEN_CELL := load-gen
-CELLS := $(PET_BE_AS_CELL) $(PET_BE_ZS_CELL) $(LOAD_GEN_CELL)
+PET_BE_CELL := pet-be
+CELLS := $(PET_BE_AS_CELL) $(PET_BE_ZS_CELL) $(LOAD_GEN_CELL) $(PET_BE_CELL)
 
 CELL_CLEAN_TARGETS := $(addprefix clean., $(CELLS))
 CELL_CHECK_STYLE_TARGETS := $(addprefix check-style., $(CELLS))
@@ -78,6 +79,11 @@ cellery-build.$(LOAD_GEN_CELL):
 	cd  $(LOAD_GEN_CELL); \
 	cellery build $(LOAD_GEN_CELL).bal $(CELLERY_ORG)/$(LOAD_GEN_CELL)-cell:$(CELLERY_VERSION)
 
+.PHONY: cellery-build.$(PET_BE_CELL)
+cellery-build.$(PET_BE_CELL):
+	cd  $(PET_BE_CELL); \
+	cellery build $(PET_BE_CELL).bal $(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)v2
+
 .PHONY: cellery-push.$(PET_BE_AS_CELL)
 cellery-push.$(PET_BE_AS_CELL):
 	cd  $(PET_BE_AS_CELL); \
@@ -92,3 +98,8 @@ cellery-push.$(PET_BE_ZS_CELL):
 cellery-push.$(LOAD_GEN_CELL):
 	cd  $(LOAD_GEN_CELL); \
 	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(LOAD_GEN_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
+
+.PHONY: cellery-push.$(PET_BE_CELL)
+cellery-push.$(PET_BE_CELL):
+	cd  $(PET_BE_CELL); \
+	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
