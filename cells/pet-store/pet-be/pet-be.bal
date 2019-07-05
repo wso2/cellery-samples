@@ -109,21 +109,20 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
 
 // cellery test command will facilitate all flags as cellery run
 public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
-    string pet_be_url = "http://" + iName.instanceName + "--gateway-service:80";
     cellery:Test petBeTest = {
         name: "pet-be-test",
         source: {
             image: "docker.io/wso2cellery/pet-be-tests"
         },
         envVars: {
-            PET_BE_CELL_URL: { value: pet_be_url }
+            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(iName).controller_api_url }
         }
     };
-    cellery:TestSuite hrTestSuite = {
+    cellery:TestSuite petBeTestSuite = {
         tests: [petBeTest]
     };
 
     cellery:ImageName[] instanceList = cellery:runInstances(iName, instances);
-    error? a = cellery:runTestSuite(iName, hrTestSuite);
+    error? a = cellery:runTestSuite(iName, petBeTestSuite);
     return cellery:stopInstances(iName, instanceList);
 }
