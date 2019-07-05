@@ -232,5 +232,5 @@ $ cellery terminate pet-be
 - [Observe the pet-store](observability.md) - shows how you can observe and understand the runtime operations to the pet-store application.
 - [Update pet-be cell](update-cell.md) - provides the steps to update a running cell with new version.
 - [Pet store sample](../../cells/pet-store/README.md) - provides the instructions to work with pet-store sample.
-- [Hipster store sample](../../cells/hipster-shop/README.md) - is a sample that shows the cellery usage with the original 
+- [Hipster shop sample](../../cells/hipster-shop/README.md) - is a sample that shows the cellery usage with the original 
 micro services demo [here](https://github.com/GoogleCloudPlatform/microservices-demo).

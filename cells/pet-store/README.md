@@ -76,7 +76,7 @@ and fill the customer information form. This operation will invoke the controlle
 5. You can logout from pet-store as alice user, and you can login as different user admin (Username: admin, Password:admin), and check for orders, which will 
 return a empty orders as admin user hasn't placed any order. Therefore, you can realize the pet-store application user specific information.  
 
-## Build cell by your own
+## [Build cell by your own](../../docs/pet-store/build-and-run.md)
 If you are interested getting in working more with Cellery, you can build and run the sample in your own. You can also make the changes to the 
 cell files, or actual source of this sample and try out. Please follow the instructions provided [here](../../docs/pet-store/build-and-run.md) 
 to build and run the pet store application. 
@@ -84,19 +84,25 @@ to build and run the pet store application.
 Checkout the application source of the [pet-fe](../../src/pet-store/pet-fe/portal) and [pet-be](../../src/pet-store/pet-be), 
 and feel free to play around the source code.  Follow the instructions provided [here](../../src/pet-store) to build from source. 
 
-## Observability
+## [Observability](../../docs/pet-store/observability.md)
 You can observe the pet-store application in runtime, and view cell overeview, request traces, metrics, dependency diagram and much more. 
 Cellery observability mainly supported by [Cellery Dashboard](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md#use-cellery-dashboard). 
 Please follow the instructions provided [here](../../docs/pet-store/observability.md) to use observability with pet-store. 
 
-## Update cell with new version
+## [Update cell with new version](../../docs/pet-store/update-cell.md)
+In this section, we focus on how the cells can be updated in the runtime without having a considerable downtime. Cellery supports rolling updates, 
+and advanced deployments such as blue-green and canary updates. In this sample, we provide step-by-step details on how to update the pet-be cell with the new 
+version by rolling update, blue-green and canary update. Please follow the instructions provided [here](../../docs/pet-store/update-cell.md) to update the pet-be cell.
 
-
-## Scale cell
-
+## [Scale cell](../../docs/pet-store/scale-cell.md)
+In this section, we focus on attaching autoscaling policy and zero scaling policy to pet-be cell. We also use a load-gen 
+cell to generate the load and test the functionality. Please follow the instructions [here](../../docs/pet-store/scale-cell.md) to get more detailed steps. 
 
 # Did you try? 
 1. [Hello world](../hello-world)
 2. [Hello world Api](../hello-world-api)
 
 # What's Next?
+- [Hipster shop sample](../../cells/hipster-shop/README.md) - is a sample that shows the cellery usage with the original 
+micro services demo [here](https://github.com/GoogleCloudPlatform/microservices-demo).
+
