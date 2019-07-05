@@ -84,6 +84,11 @@ to build and run the pet store application.
 Checkout the application source of the [pet-fe](../../src/pet-store/pet-fe/portal) and [pet-be](../../src/pet-store/pet-be), 
 and feel free to play around the source code.  Follow the instructions provided [here](../../src/pet-store) to build from source. 
 
+## [Run cell integration tests](../../docs/pet-store/test-be-cell.md)
+You can test the cell endpoints by running cell integration tests. Try running the first test case to validate the 
+orders endpoint of the Petstore backend by following the instructions given [here](../../docs/pet-store/test-be-cell
+.md).
+
 ## [Observability](../../docs/pet-store/observability.md)
 You can observe the pet-store application in runtime, and view cell overeview, request traces, metrics, dependency diagram and much more. 
 Cellery observability mainly supported by [Cellery Dashboard](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md#use-cellery-dashboard). 
