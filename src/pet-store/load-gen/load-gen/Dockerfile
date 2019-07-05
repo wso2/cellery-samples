@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 
 ENV DURATION 2m
 ENV CONCURRENCY=40
-ENV PET_BE_INSTANCE=pet-be
+ENV PET_STOE_BE_CELL_URL=""
 
 RUN apt-get update && apt-get install -y curl wget telnet iputils-ping dnsutils net-tools netcat iptables
 

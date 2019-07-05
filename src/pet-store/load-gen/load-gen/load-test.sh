@@ -1,6 +1,6 @@
 #!/bin/bash
 echo Duration = "$DURATION"
 echo Concurrency = "$CONCURRENCY"
-echo Instance = "$PET_BE_INSTANCE"
+echo URL = "$PET_STOE_BE_CELL_URL"
 
-hey -z "$DURATION" -c "$CONCURRENCY" http://"$PET_BE_INSTANCE"--gateway-service/controller/catalog
+hey -z "$DURATION" -c "$CONCURRENCY" "$PET_STOE_BE_CELL_URL"/catalog
