@@ -102,4 +102,4 @@ cellery-push.$(LOAD_GEN_CELL):
 .PHONY: cellery-push.$(PET_BE_CELL)
 cellery-push.$(PET_BE_CELL):
 	cd  $(PET_BE_CELL); \
-	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
+	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)v2  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)

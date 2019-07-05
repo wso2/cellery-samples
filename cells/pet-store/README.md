@@ -31,10 +31,11 @@ This Pet store sample includes,
 
 1. [Quick run](#quick-run)
 2. [View application](#view-application)
-3. [Build cell by your own](#build-cell-by-your-own)
-4. [Observability](#observability)
-5. [Update pet-be-cell](#update-cell-with-new-version)
-6. [Scale pet-be-cell](#scale-cell)
+3. [Build the cells by your own](#build-the-cells-by-your-owndocspet-storebuild-and-runmd)
+4. [Test cell](#run-cell-integration-testsdocspet-storetest-be-cellmd)
+4. [Observability](#observabilitydocspet-storeobservabilitymd)
+5. [Update cell](#update-cell-with-new-versiondocspet-storeupdate-cellmd)
+6. [Scale cell](#scale-celldocspet-storescale-cellmd)
 
 ## Quick run 
 1. Pet store application can be started by executing the single command as shown below. 
@@ -76,7 +77,7 @@ and fill the customer information form. This operation will invoke the controlle
 5. You can logout from pet-store as alice user, and you can login as different user admin (Username: admin, Password:admin), and check for orders, which will 
 return a empty orders as admin user hasn't placed any order. Therefore, you can realize the pet-store application user specific information.  
 
-## [Build cell by your own](../../docs/pet-store/build-and-run.md)
+## [Build the cells by your own](../../docs/pet-store/build-and-run.md)
 If you are interested getting in working more with Cellery, you can build and run the sample in your own. You can also make the changes to the 
 cell files, or actual source of this sample and try out. Please follow the instructions provided [here](../../docs/pet-store/build-and-run.md) 
 to build and run the pet store application. 
@@ -86,8 +87,7 @@ and feel free to play around the source code.  Follow the instructions provided 
 
 ## [Run cell integration tests](../../docs/pet-store/test-be-cell.md)
 You can test the cell endpoints by running cell integration tests. Try running the first test case to validate the 
-orders endpoint of the Petstore backend by following the instructions given [here](../../docs/pet-store/test-be-cell
-.md).
+orders endpoint of the Petstore backend by following the instructions given [here](../../docs/pet-store/test-be-cell.md).
 
 ## [Observability](../../docs/pet-store/observability.md)
 You can observe the pet-store application in runtime, and view cell overeview, request traces, metrics, dependency diagram and much more. 

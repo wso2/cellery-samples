@@ -107,7 +107,6 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     return cellery:createInstance(petStoreBackendCell, iName, instances);
 }
 
-// cellery test command will facilitate all flags as cellery run
 public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
     cellery:Test petBeTest = {
         name: "pet-be-test",
