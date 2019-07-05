@@ -1,0 +1,16 @@
+FROM ubuntu:16.04
+
+ENV DURATION 2m
+ENV CONCURRENCY=40
+ENV PET_BE_INSTANCE=pet-be
+
+RUN apt-get update && apt-get install -y curl wget telnet iputils-ping dnsutils net-tools netcat iptables
+
+RUN wget https://storage.googleapis.com/jblabs/dist/hey_linux_v0.1.2
+RUN mv hey_linux_v0.1.2 /usr/local/bin/hey
+RUN chmod +x /usr/local/bin/hey
+
+COPY load-test.sh /load-test.sh
+RUN chmod +x load-test.sh
+
+ENTRYPOINT ["/bin/bash", "-c", "./load-test.sh"]

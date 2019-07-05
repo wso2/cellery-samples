@@ -57,6 +57,10 @@ public function build(cellery:ImageName iName) returns error? {
             catalog: <cellery:HttpApiIngress>{
                 port: 80
             }
+        },
+        scalingPolicy: <cellery:ZeroScalingPolicy> {
+           maxReplicas: 3,
+           concurrencyTarget: 10
         }
     };
 
@@ -84,6 +88,10 @@ public function build(cellery:ImageName iName) returns error? {
             ORDER_PORT: { value: 80 },
             CUSTOMER_HOST: { value: cellery:getHost(customersComponent) },
             CUSTOMER_PORT: { value: 80 }
+        },
+        scalingPolicy: <cellery:ZeroScalingPolicy> {
+             maxReplicas: 3,
+             concurrencyTarget: 10
         }
     };
 
