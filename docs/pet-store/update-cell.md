@@ -1,8 +1,8 @@
-# Update cells
+# Update pet store cell
 This readme explains the steps to update the running cell pet-be. Cellery supports cell updates via,
 - [Rolling update](#rolling-update)
-- Blue/Green update
-- Canary update
+- [Blue/Green update](#blue-green-and-canary-update)
+- [Canary update](#blue-green-and-canary-update)
 
 In this section, we focus on updating the pet-be cell with all three above mentioned update methods. 
 
@@ -137,5 +137,5 @@ cellery terminate pet-be
 # What's Next?
 - [Scale pet-be cell](scale-cell.md) - walks through the steps to scale pet-be cell with horizontal pod autoscaler, and zero scaling with Knative. 
 - [Observe the pet-store](observability.md) - This shows how you can observe and understand the runtime operations to the pet-store application.
-- [Pet store sample](../../cells/pet-store/README.md) - provides the instructions to wotk with pet-store sample.
+- [Pet store sample](../../cells/pet-store/README.md) - provides the instructions to work with pet-store sample.
 

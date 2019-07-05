@@ -97,7 +97,7 @@ public function build(cellery:ImageName iName) returns error? {
             minReplicas: 1,
             maxReplicas: 3,
             metrics: {
-               cpu: <cellery:Percentage>{ threshold : 10 }
+               cpu: <cellery:Percentage>{ threshold : 40 }
             }
         }
     };

@@ -39,4 +39,4 @@ This will show the overall health of the cells and the system, and the dependenc
 ## What's Next?
 - [Update pet-be cell](update-cell.md) - provides the steps to update a running cell with new version.
 - [Scale pet-be cell](scale-cell.md) - walks through the steps to scale pet-be cell with horizontal pod autoscaler, and zero scaling with Knative. 
-- [Pet store sample](../../cells/pet-store/README.md) - provides the instructions to wotk with pet-store sample.
+- [Pet store sample](../../cells/pet-store/README.md) - provides the instructions to work with pet-store sample.

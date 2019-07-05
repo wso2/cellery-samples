@@ -28,16 +28,9 @@ public function build(cellery:ImageName iName) returns error? {
         envVars: {
             DURATION: { value: "5m" },
             CONCURRENCY: {value: "40"},
-            PET_STOE_BE_CELL_URL: {value: ""}
-        },
-        dependencies: {
-            cells: {
-                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "latest" }
-            }
+            PET_STORE_INST: {value: "pet-be"}
         }
     };
-
-    loadGenComponent.envVars.PET_STOE_BE_CELL_URL.value = <string>cellery:getReference(loadGenComponent, "petStoreBackend").controller_api_url;
 
     cellery:CellImage loadGenCell = {
         components: {
@@ -57,8 +50,13 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     }
 
     string concurrency = config:getAsString("CONCURRENCY");
-        if (concurrency !== "") {
+    if (concurrency !== "") {
             loadGenComponent.envVars.CONCURRENCY.value = concurrency;
+    }
+
+    string petStoreInstance = config:getAsString("PET_STORE_INST");
+    if (petStoreInstance !== "") {
+            loadGenComponent.envVars.PET_STORE_INST.value = petStoreInstance;
     }
     return cellery:createInstance(loadGenImage, iName, instances);
 }
