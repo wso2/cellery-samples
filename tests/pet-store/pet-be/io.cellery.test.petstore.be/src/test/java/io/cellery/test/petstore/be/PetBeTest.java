@@ -33,7 +33,7 @@ public class PetBeTest {
 
     @Test(description = "Test inserting and retrieving orders")
     public void testOrder() throws Exception {
-        String ordersEndpoint = PET_BE_GATEWAY_ENDPOINT + "/controller/orders";
+        String ordersEndpoint = PET_BE_GATEWAY_ENDPOINT + "/orders";
         String payload = "{\"order\":[{\"id\":1,\"amount\":1}]}";
         String expectedPostResponseRegex = "\\{\"status\":\"SUCCESS\",\"data\":\\{\"id\":[0-9]*\\}\\}";
         String expectedGetResponse = "{\"status\":\"SUCCESS\",\"data\":{\"orders\":[{\"order\":[{\"item\":{\"id\":1," +
