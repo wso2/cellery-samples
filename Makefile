@@ -21,15 +21,18 @@ DOCKER_IMAGE_TAG ?= $(GIT_REVISION)
 CELLERY_ORG ?= wso2cellery
 CELLERY_VERSION ?= latest
 
-SAMPLES :=  $(addprefix cells/, pet-store hello-world hello-world-api hipster-shop) $(addprefix src/, pet-store hello-world hello-world-api)
+SRC_DIR := src
+CELLS_DIR := cells
+SAMPLES_SRC := pet-store hello-world hello-world-api
+SAMPLES_CELLS := pet-store hello-world hello-world-api hipster-shop
 
-CLEAN_TARGETS := $(addprefix clean., $(SAMPLES))
-CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES))
-BUILD_TARGETS := $(addprefix build., $(SAMPLES))
-DOCKER_TARGETS := $(addprefix docker., $(SAMPLES))
-DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(SAMPLES))
-CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(SAMPLES))
-CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(SAMPLES))
+CLEAN_TARGETS := $(addprefix clean., $(SAMPLES_SRC))
+CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES_SRC))
+BUILD_TARGETS := $(addprefix build., $(SAMPLES_SRC))
+DOCKER_TARGETS := $(addprefix docker., $(SAMPLES_SRC))
+DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(SAMPLES_SRC))
+CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(SAMPLES_CELLS))
+CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(SAMPLES_CELLS))
 
 
 all: clean build docker
@@ -61,43 +64,43 @@ cellery-push: $(CELLERY_PUSH_TARGETS)
 .PHONY: $(CLEAN_TARGETS)
 $(CLEAN_TARGETS):
 	$(eval SAMPLE=$(patsubst clean.%,%,$@))
-	@cd $(SAMPLE); \
+	@cd $(SRC_DIR)/$(SAMPLE); \
 	$(MAKE) clean
 
 .PHONY: $(CHECK_STYLE_TARGETS)
 $(CHECK_STYLE_TARGETS):
 	$(eval SAMPLE=$(patsubst check-style.%,%,$@))
-	@cd $(SAMPLE); \
+	@cd $(SRC_DIR)/$(SAMPLE); \
 	$(MAKE) check-style
 
 .PHONY: $(BUILD_TARGETS)
 $(BUILD_TARGETS):
 	$(eval SAMPLE=$(patsubst build.%,%,$@))
-	@cd $(SAMPLE); \
+	@cd $(SRC_DIR)/$(SAMPLE); \
 	$(MAKE) build
 
 .PHONY: $(DOCKER_TARGETS)
 $(DOCKER_TARGETS):
 	$(eval SAMPLE=$(patsubst docker.%,%,$@))
-	@cd $(SAMPLE); \
+	@cd $(SRC_DIR)/$(SAMPLE); \
 	DOCKER_REPO=$(DOCKER_REPO) DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker
 
 .PHONY: $(DOCKER_PUSH_TARGETS)
 $(DOCKER_PUSH_TARGETS):
 	$(eval SAMPLE=$(patsubst docker-push.%,%,$@))
-	@cd $(SAMPLE); \
+	@cd $(SRC_DIR)/$(SAMPLE); \
 	DOCKER_REPO=$(DOCKER_REPO) DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker-push
 
 .PHONY: $(CELLERY_BUILD_TARGETS)
 $(CELLERY_BUILD_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-build.%,%,$@))
-	@cd $(SAMPLE); \
+	@cd $(CELLS_DIR)/$(SAMPLE); \
 	CELLERY_ORG=$(CELLERY_ORG) CELLERY_VERSION=$(CELLERY_VERSION) $(MAKE) cellery-build
 
 .PHONY: $(CELLERY_PUSH_TARGETS)
 $(CELLERY_PUSH_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-push.%,%,$@))
-	@cd $(SAMPLE); \
+	@cd $(CELLS_DIR)/$(SAMPLE); \
 	CELLERY_REGISTRY=$(CELLERY_REGISTRY) CELLERY_ORG=$(CELLERY_ORG) CELLERY_VERSION=$(CELLERY_VERSION) \
 	CELLERY_USER=$(CELLERY_USER) CELLERY_USER_PASS=$(CELLERY_USER_PASS) \
 	$(MAKE) cellery-push

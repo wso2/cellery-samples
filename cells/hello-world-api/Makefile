@@ -23,27 +23,7 @@ SAMPLE := hello-world-api
 CELL := hello-world-api
 COMPONENT := hello-service
 
-all: clean build docker
-
-.PHONY: clean
-clean:
-	@:
-
-.PHONY: build
-build:
-	@:
-
-.PHONY: check-style
-check-style:
-	@
-
-.PHONY: docker
-docker:
-	@:
-
-.PHONY: docker-push
-docker-push:
-	@:
+all: cellery-build
 
 .PHONY: cellery-build
 cellery-build:

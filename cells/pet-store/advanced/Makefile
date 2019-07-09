@@ -33,27 +33,7 @@ CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(CELLS))
 CELL_CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(CELLS))
 CELL_CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(CELLS))
 
-all: clean build docker
-
-.PHONY: clean
-clean:
-    @:
-
-.PHONY: check-style
-check-style:
-    @:
-
-.PHONY: build
-build:
-    @:
-
-.PHONY: docker
-docker:
-    @:
-
-.PHONY: docker-push
-docker-push:
-    @:
+all: cellery-build
 
 .PHONY: cellery-build
 cellery-build: $(CELL_CELLERY_BUILD_TARGETS)
@@ -61,8 +41,6 @@ cellery-build: $(CELL_CELLERY_BUILD_TARGETS)
 .PHONY: cellery-push
 cellery-push: $(CELL_CELLERY_PUSH_TARGETS)
 
-
-## Cell Level Targets
 
 .PHONY: cellery-build.$(PET_BE_AS_CELL)
 cellery-build.$(PET_BE_AS_CELL):
