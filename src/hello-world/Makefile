@@ -48,11 +48,3 @@ docker:
 docker-push:
 	cd $(COMPONENT); \
 	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG}
-
-.PHONY: cellery-build
-cellery-build:
-	@:
-
-.PHONY: cellery-push
-cellery-push:
-    @:
