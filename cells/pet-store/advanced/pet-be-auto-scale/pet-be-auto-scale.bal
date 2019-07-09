@@ -85,6 +85,9 @@ public function build(cellery:ImageName iName) returns error? {
             CUSTOMER_HOST: { value: cellery:getHost(customersComponent) },
             CUSTOMER_PORT: { value: 80 }
         },
+        dependencies: {
+            components: [catalogComponent, ordersComponent, customersComponent]
+        },
         resources: {
             requests: {
                 cpu: "125m"
