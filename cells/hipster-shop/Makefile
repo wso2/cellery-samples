@@ -30,35 +30,13 @@ CELLS := $(ADS_CELL) $(CART_CELL) $(PRODUCTS_CELL) $(CHECKOUT_CELL)  $(FRONT_END
 CELL_CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(CELLS))
 CELL_CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(CELLS))
 
-all: clean build docker
-
-.PHONY: clean
-clean:
-    @:
-
-.PHONY: check-style
-check-style:
-    @:
-
-.PHONY: build
-build:
-    @:
-
-.PHONY: docker
-docker:
-    @:
-
-.PHONY: docker-push
-docker-push:
-    @:
+all: cellery-build
 
 .PHONY: cellery-build
 cellery-build: $(CELL_CELLERY_BUILD_TARGETS)
 
 .PHONY: cellery-push
 cellery-push: $(CELL_CELLERY_PUSH_TARGETS)
-
-## Cell Level Targets
 
 .PHONY: cellery-build.$(ADS_CELL)
 cellery-build.$(ADS_CELL):

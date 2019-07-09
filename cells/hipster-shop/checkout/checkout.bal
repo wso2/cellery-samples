@@ -17,10 +17,9 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/emailservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
-            backendPort: emailContainerPort,
-            gatewayPort: 31405
-        }
+            grpcIngress: <cellery:GRPCIngress>{
+                backendPort: emailContainerPort
+            }
         },
         envVars: {
             PORT: {
@@ -40,10 +39,9 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/paymentservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
-            backendPort: paymentContainerPort,
-            gatewayPort: 31406
-        }
+            grpcIngress: <cellery:GRPCIngress>{
+                backendPort: paymentContainerPort
+            }
         },
         envVars: {
             PORT: {
@@ -60,10 +58,10 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/shippingservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
-            backendPort: shippingContainerPort,
-            gatewayPort: 31407
-        }
+            grpcIngress: <cellery:GRPCIngress>{
+                backendPort: shippingContainerPort,
+                gatewayPort: 31407
+            }
         },
         envVars: {
             PORT: {
@@ -81,9 +79,9 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/currencyservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
-            backendPort: currencyContainerPort,
-            gatewayPort: 31408
+            grpcIngress: <cellery:GRPCIngress>{
+                backendPort: currencyContainerPort,
+                gatewayPort: 31408
         }
         },
         envVars: {
@@ -103,9 +101,9 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/checkoutservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
-            backendPort: checkoutContainerPort,
-            gatewayPort: 31409
+            grpcIngress: <cellery:GRPCIngress>{
+                backendPort: checkoutContainerPort,
+                gatewayPort: 31409
         }
         },
         envVars: {
@@ -143,10 +141,10 @@ public function build(cellery:ImageName iName) returns error? {
     };
 
     cellery:Reference productReference = cellery:getReference(checkoutServiceComponent, "productsCellDep");
-    checkoutServiceComponent.envVars.PRODUCT_CATALOG_SERVICE_ADDR.value = <string>productReference.gateway_host + ":" +<string>productReference.products_tcp_port;
+    checkoutServiceComponent.envVars.PRODUCT_CATALOG_SERVICE_ADDR.value = <string>productReference.gateway_host + ":" +<string>productReference.products_grpc_port;
 
     cellery:Reference cartReference = cellery:getReference(checkoutServiceComponent, "cartCellDep");
-    checkoutServiceComponent.envVars.CART_SERVICE_ADDR.value = <string>cartReference.gateway_host + ":" +<string>cartReference.cart_tcp_port;
+    checkoutServiceComponent.envVars.CART_SERVICE_ADDR.value = <string>cartReference.gateway_host + ":" +<string>cartReference.cart_grpc_port;
 
     // Cell Initialization
     cellery:CellImage checkoutCell = {

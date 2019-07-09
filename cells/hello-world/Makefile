@@ -22,27 +22,7 @@ CELLERY_VERSION ?= latest
 SAMPLE := hello-world
 CELL := hello-world
 
-all: clean build docker
-
-.PHONY: clean
-clean:
-	@:
-
-.PHONY: build
-build:
-	@:
-
-.PHONY: check-style
-check-style:
-	@:
-
-.PHONY: docker
-docker:
-	@:
-
-.PHONY: docker-push
-docker-push:
-	@:
+all: cellery-build
 
 .PHONY: cellery-build
 cellery-build:
