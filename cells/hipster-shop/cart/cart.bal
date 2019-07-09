@@ -13,10 +13,9 @@ public function build(cellery:ImageName iName) returns error? {
             image: "redis:alpine"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
-            backendPort: cacheContainerPort,
-            gatewayPort: cacheContainerPort  
-           }
+            tcpIngress: <cellery:TCPIngress> {
+                backendPort: cacheContainerPort
+            }
         }
     };
 
@@ -28,10 +27,10 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/cartservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
-            backendPort: cartContainerPort,
-            gatewayPort: 31407
-        }
+            grpcIngress: <cellery:GRPCIngress> {
+                backendPort: cartContainerPort,
+                gatewayPort: 31407
+            }
         },
         envVars: {
             PORT: {

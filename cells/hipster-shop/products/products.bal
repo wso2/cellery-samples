@@ -14,7 +14,7 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/productcatalogservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
+            grpcIngress: <cellery:GRPCIngress>{
             backendPort: productCatalogContainerPort,
             gatewayPort: 31406
         }
@@ -34,7 +34,7 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/recommendationservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
+            grpcIngress: <cellery:GRPCIngress>{
             backendPort: recommendationsContainerPort,
             gatewayPort: 31407
         }
