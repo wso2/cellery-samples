@@ -48,7 +48,7 @@ If you wish to change the Pet Store Sample and play around with Cellery, you can
    make docker-push
    ```
 6. Update the `<SAMPLES_ROOT>/cells/pet-store/pet-be/pet-be.bal` and `<SAMPLES_ROOT>/cells/pet-store/pet-fe/pet-fe.bal` files and set the newly created image names for the Component source.
-7. [Build and run](../../cells/pet-store#2-build-pet-be-cell) the Cells.
+7. [Build and run](../../docs/pet-store/build-and-run.md) the Cells.
 
 ## Did you try? 
 1. [Hello world](../hello-world)
