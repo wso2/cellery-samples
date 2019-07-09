@@ -22,4 +22,15 @@
 import createServer from "./server/app";
 
 const webPortalPort = process.env.PORTAL_PORT || 3000;
-createServer(webPortalPort);
+const server = createServer(webPortalPort);
+
+// Listening for os Signals to gracefully shutdown
+const shutdownServer = () => {
+    console.log("[INFO] Shutting down Pet Store Portal");
+    server.close(() => {
+        console.log("[INFO] Pet Store Portal shutdown complete");
+        process.exit(0);
+    });
+};
+process.on("SIGTERM", shutdownServer);
+process.on("SIGINT", shutdownServer);

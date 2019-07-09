@@ -128,6 +128,8 @@ const createServer = (port) => {
 
         console.log("[INFO] Pet Store Portal listening at http://%s:%s", host, port);
     });
+
+    return server;
 };
 
 export default createServer;
