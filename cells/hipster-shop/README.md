@@ -413,3 +413,23 @@ Access url [http://my-hipstershop.com/](http://my-hipstershop.com/) from a brows
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/hipstershop-application.png)](../../docs/images/hipster-shop/hipstershop-application.png)
 
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/hipstershop-application-cart.png)](../../docs/images/hipster-shop/hipstershop-application-cart.png)
+
+## Observability
+The hipster shop cells and components can be observed in runtime, and it provides overview about the cells, components, metrics, and distributed tracing. Below are 
+some of the screenshots of observability provided by [http://celler-dashboard](http://celler-dashboard). You can find more information about the observability 
+[here](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md). 
+---
+Cells overview.
+![Cell overview of Hipstershop services](../../docs/images/hipster-shop/observe-cell-overview.png)
+---
+Overview of the components in `checkout-cell`
+![Component overview of checkout-cell](../../docs/images/hipster-shop/checkout-component-overview.png)
+---
+Metrics for component `checkout`
+![Component overview of checkout-cell](../../docs/images/hipster-shop/checkout-comp-metrics.png)
+---
+List of cells in the runtime
+![List cells](../../docs/images/hipster-shop/cells-list-view.png)
+---
+List of components in `checkout-cell`.
+![List components](../../docs/images/hipster-shop/list-components-checkout.png)
