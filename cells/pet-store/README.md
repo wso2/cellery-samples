@@ -31,14 +31,15 @@ This Pet store sample includes,
 
 1. [Quick run](#quick-run)
 2. [View application](#view-application)
-3. [Build the cells by your own](#build-the-cells-by-your-owndocspet-storebuild-and-runmd)
-4. [Test cell](#run-cell-integration-testsdocspet-storetest-be-cellmd)
-4. [Observability](#observabilitydocspet-storeobservabilitymd)
-5. [Update cell](#update-cell-with-new-versiondocspet-storeupdate-cellmd)
-6. [Scale cell](#scale-celldocspet-storescale-cellmd)
+3. [Build the cells by your own](#build-the-cells-by-your-own)
+4. [Test cell](#run-cell-integration-tests)
+4. [Observability](#observability)
+5. [Update cell](#update-cell-with-new-version)
+6. [Scale cell](#scale-cell)
 
 ## Quick run 
-1. Pet store application can be started by executing the single command as shown below. 
+1. Pet store application can be started by executing the single command as shown below. For more details about flags 
+refer [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-run).
 ```
  $ cellery run wso2cellery/pet-fe-cell:latest -n pet-fe -l petStoreBackend:pet-be -d -y
 ```
@@ -108,6 +109,6 @@ cell to generate the load and test the functionality. Please follow the instruct
 2. [Hello world Api](../hello-world-api)
 
 # What's Next?
-- [Hipster shop sample](../../cells/hipster-shop/README.md) - is a sample that shows the cellery usage with the original 
+- [Hipster shop sample](../../cells/hipster-shop/README.md) - A sample that shows the cellery usage with the original 
 micro services demo [here](https://github.com/GoogleCloudPlatform/microservices-demo).
 

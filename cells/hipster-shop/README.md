@@ -53,17 +53,17 @@ languages that talk to each other over gRPC. This sample is structured into 5 ce
 Hipster Shop services](../../docs/images/hipster-shop/hipstershop-cell-architecture.png)](../../docs/images/hipster-shop/hipstershop-cell-architecture.png)
 
 ## Quick Deploy the Hipster Shop Cells
-1. Execute the command below to deploy the pre-built cell images in one go. If you are interested in building and running the cell images, execute the steps explained [here](#build-and-deploy-the-hipstershop-cells).
+Execute the command below to deploy the pre-built cell images in one go. If you are interested in building and running the cell images, execute the steps explained [here](#build-and-deploy-the-hipstershop-cells).
 
 ```
 cellery run wso2cellery/front-end-cell:latest -n front-end-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -l adsCellDep:ads-cell -l checkoutCellDep:checkout-cell -d -y
 ```
-2. Now [view the application](#viewing-the-application)
+Now [view the application](#viewing-the-application).
 
 ## Build and Deploy the Hipster Shop Cells
 ### 1. Clone sample
 Clone the wso2-cellery/samples repository and 
-navigate to the samples/cells/hipster-shop/directory
+navigate to the samples/cells/hipster-shop/directory.
 ```
 cd samples/cells/hipster-shop
 ```
@@ -172,7 +172,7 @@ Execute the following command to list running cells:
 --------------------------------------------------------
 ```
 
-### 4. Build and Run <b>cart-cell</b>
+### 4. Build and run <b>cart</b> cell
 ```
 $ cd ../cart/
 $ cellery build cart.bal wso2cellery/cart-cell:latest
@@ -286,7 +286,7 @@ Execute the following command to list running cells:
 --------------------------------------------------------
 ```
 
-### 6. Build and run <b>frontend</b> cell
+### 6. Build and run <b>front-end</b> cell
 ```
 $ cd ../front-end
 $ cellery build front-end.bal wso2cellery/front-end-cell:latest
@@ -398,17 +398,17 @@ cellery view wso2cellery/front-end-cell:latest
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/front-end-cell-view.png)](../../docs/images/hipster-shop/front-end-cell-view.png)
 
 
-### 8. Viewing the Application
+### 8. View the application
 You would have already added the `/etc/host` entries during the cellery installation as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/local-setup.md#configure-host-entries), 
 [GCP](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/gcp-setup.md#configure-host-entries) and
 [existing kubernetes cluster](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/existing-cluster.md#configure-host-entries). 
-You need to add the `my-hipstershop.com` also for `/etc/host` entry as shown below.
+You will also need to add the entry `my-hipstershop.com` to the `/etc/host` file as shown below.
 
 ```
 192.168.56.10 wso2-apim cellery-dashboard wso2sp-observability-api wso2-apim-gateway cellery-k8s-metrics idp.cellery-system pet-store.com hello-world.com my-hello-world.com my-hipstershop.com
 ```
 
-Access url [http://my-hipstershop.com/](http://my-hipstershop.com/) from a browser.
+Access url [http://my-hipstershop.com/](http://my-hipstershop.com/) from a browser and you can now try out the Hipster Shop application.
 
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/hipstershop-application.png)](../../docs/images/hipster-shop/hipstershop-application.png)
 
