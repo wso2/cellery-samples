@@ -11,7 +11,7 @@ public function build(cellery:ImageName iName) returns error? {
             image: "gcr.io/google-samples/microservices-demo/adservice:v0.1.1"
         },
         ingresses: {
-            tcpIngress: <cellery:TCPIngress>{
+            grpcIngress: <cellery:GRPCIngress>{
             backendPort: adsContainerPort,
             gatewayPort: 31406
         }
