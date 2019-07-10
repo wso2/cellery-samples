@@ -55,7 +55,7 @@ $ cellery run wso2cellery/load-gen-cell:latest -n load-gen -y
 ```
  OR
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -l petStoreBackend:pet-be -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
+$ cellery run wso2cellery/load-gen-cell:latest -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
 ```
 5) Execute `kubectl get hpa` to see the current load for pet-be's controller component once the `load-gen` cell instance is running. 
 ```
@@ -179,7 +179,7 @@ $ cellery run wso2cellery/load-gen-cell:latest -n load-gen -y
 ```
   OR
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -l petStoreBackend:pet-be -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
+$ cellery run wso2cellery/load-gen-cell:latest -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
 ```
 4) Once the load-gen cell is started, the `controller` and `catalog` components will be running as shown below.
 ```
