@@ -25,6 +25,8 @@ LOAD_GEN_CELL := load-gen
 PET_BE_CELL := pet-be
 CELLS := $(PET_BE_AS_CELL) $(PET_BE_ZS_CELL) $(LOAD_GEN_CELL) $(PET_BE_CELL)
 
+RESOURCES_DIR := resources
+
 CELL_CLEAN_TARGETS := $(addprefix clean., $(CELLS))
 CELL_CHECK_STYLE_TARGETS := $(addprefix check-style., $(CELLS))
 CELL_BUILD_TARGETS := $(addprefix build., $(CELLS))
@@ -41,14 +43,17 @@ cellery-build: $(CELL_CELLERY_BUILD_TARGETS)
 .PHONY: cellery-push
 cellery-push: $(CELL_CELLERY_PUSH_TARGETS)
 
-
 .PHONY: cellery-build.$(PET_BE_AS_CELL)
 cellery-build.$(PET_BE_AS_CELL):
+	@rm -rf $(PET_BE_AS_CELL)/$(RESOURCES_DIR)
+	cp -rf ../$(RESOURCES_DIR) $(PET_BE_AS_CELL)/$(RESOURCES_DIR)
 	cd  $(PET_BE_AS_CELL); \
 	cellery build $(PET_BE_AS_CELL).bal $(CELLERY_ORG)/$(PET_BE_AS_CELL)-cell:$(CELLERY_VERSION)
 
 .PHONY: cellery-build.$(PET_BE_ZS_CELL)
 cellery-build.$(PET_BE_ZS_CELL):
+	@rm -rf $(PET_BE_ZS_CELL)/$(RESOURCES_DIR)
+	cp -rf ../$(RESOURCES_DIR) $(PET_BE_ZS_CELL)/$(RESOURCES_DIR)
 	cd  $(PET_BE_ZS_CELL); \
 	cellery build $(PET_BE_ZS_CELL).bal $(CELLERY_ORG)/$(PET_BE_ZS_CELL)-cell:$(CELLERY_VERSION)
 
@@ -59,6 +64,8 @@ cellery-build.$(LOAD_GEN_CELL):
 
 .PHONY: cellery-build.$(PET_BE_CELL)
 cellery-build.$(PET_BE_CELL):
+	@rm -rf $(PET_BE_CELL)/$(RESOURCES_DIR)
+	cp -rf ../$(RESOURCES_DIR) $(PET_BE_CELL)/$(RESOURCES_DIR)
 	cd  $(PET_BE_CELL); \
 	cellery build $(PET_BE_CELL).bal $(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)v2
 
