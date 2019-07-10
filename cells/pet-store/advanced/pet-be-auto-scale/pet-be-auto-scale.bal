@@ -74,7 +74,7 @@ public function build(cellery:ImageName iName) returns error? {
                 context: "controller",
                 expose: "local",
                 definition: <cellery:ApiDefinition>cellery:readSwaggerFile(
-                                                       "../../resources/pet-store.swagger.json")
+                                                       "./resources/pet-store.swagger.json")
             }
         },
         envVars: {
