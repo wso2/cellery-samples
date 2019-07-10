@@ -216,6 +216,7 @@ const shutdownServer = () => {
     console.log("[INFO] Shutting down Pet Store Orders Service");
     server.close(() => {
         console.log("[INFO] Pet Store Orders Service shutdown complete");
+        // eslint-disable-next-line no-process-exit
         process.exit(0);
     });
 };

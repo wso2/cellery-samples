@@ -47,11 +47,10 @@ const handleSuccess = (res, data) => {
  */
 const handleError = (res, message) => {
     console.log("[ERROR] " + message);
-    res.status(500).
-        send({
-            status: "ERROR",
-            message: message
-        });
+    res.status(500).send({
+        status: "ERROR",
+        message: message
+    });
 };
 
 /**
@@ -61,11 +60,10 @@ const handleError = (res, message) => {
  * @param message The error message
  */
 const handleNotFound = (res, message) => {
-    res.status(404).
-        send({
-            status: "NOT_FOUND",
-            message: message
-        });
+    res.status(404).send({
+        status: "NOT_FOUND",
+        message: message
+    });
 };
 
 /*
@@ -201,6 +199,7 @@ const shutdownServer = () => {
     console.log("[INFO] Shutting down Pet Store Catalog Service");
     server.close(() => {
         console.log("[INFO] Pet Store Catalog Service shutdown complete");
+        // eslint-disable-next-line no-process-exit
         process.exit(0);
     });
 };

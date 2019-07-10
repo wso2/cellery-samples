@@ -26,9 +26,12 @@ const server = createServer(webPortalPort);
 
 // Listening for os Signals to gracefully shutdown
 const shutdownServer = () => {
+    // eslint-disable-next-line no-console
     console.log("[INFO] Shutting down Pet Store Portal");
     server.close(() => {
+        // eslint-disable-next-line no-console
         console.log("[INFO] Pet Store Portal shutdown complete");
+        // eslint-disable-next-line no-process-exit
         process.exit(0);
     });
 };
