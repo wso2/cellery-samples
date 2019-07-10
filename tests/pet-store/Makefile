@@ -24,109 +24,80 @@ PET_BE_CELL := pet-be
 CELLS := $(PET_BE_CELL)
 PET_BE_COMPONENTS := order
 
-CELL_CLEAN_TARGETS := $(addprefix clean., $(CELLS))
-CELL_CHECK_STYLE_TARGETS := $(addprefix check-style., $(CELLS))
-CELL_BUILD_TARGETS := $(addprefix build., $(CELLS))
-CELL_DOCKER_TARGETS := $(addprefix docker., $(CELLS))
-CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(CELLS))
-CELL_CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(CELLS))
-CELL_CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(CELLS))
+CELL_CLEAN_TARGETS := $(addprefix clean-tests., $(CELLS))
+CELL_CHECK_STYLE_TARGETS := $(addprefix check-style-tests., $(CELLS))
+CELL_DOCKER_TARGETS := $(addprefix docker-tests., $(CELLS))
+CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push-tests., $(CELLS))
 
-PET_BE_CELL_CLEAN_TARGETS := $(addprefix clean.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
-PET_BE_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
-PET_BE_CELL_BUILD_TARGETS := $(addprefix build.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
-PET_BE_CELL_DOCKER_TARGETS := $(addprefix docker.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
-PET_BE_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
+PET_BE_CELL_CLEAN_TARGETS := $(addprefix clean-tests.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
+PET_BE_CELL_CHECK_STYLE_TARGETS := $(addprefix check-style-tests.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
+PET_BE_CELL_DOCKER_TARGETS := $(addprefix docker-tests.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
+PET_BE_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push-tests.$(PET_BE_CELL)., $(PET_BE_COMPONENTS))
 
 COMPONENT_CLEAN_TARGETS := $(PET_BE_CELL_CLEAN_TARGETS)
 COMPONENT_CHECK_STYLE_TARGETS := $(PET_BE_CELL_CHECK_STYLE_TARGETS)
-COMPONENT_BUILD_TARGETS := $(PET_BE_CELL_BUILD_TARGETS)
 COMPONENT_DOCKER_TARGETS := $(PET_BE_CELL_DOCKER_TARGETS)
 COMPONENT_DOCKER_PUSH_TARGETS := $(PET_BE_CELL_DOCKER_PUSH_TARGETS)
 
+all: clean-tests check-style-tests docker-tests
 
-all: clean build docker
+.PHONY: clean-tests
+clean-tests: $(CELL_CLEAN_TARGETS)
 
+.PHONY: check-style-tests
+check-style-tests: $(CELL_CHECK_STYLE_TARGETS)
 
-.PHONY: clean
-clean: $(CELL_CLEAN_TARGETS)
+.PHONY: docker-tests
+docker-tests: $(CELL_DOCKER_TARGETS)
 
-.PHONY: check-style
-check-style: $(CELL_CHECK_STYLE_TARGETS)
-
-.PHONY: build
-build:
-    @:
-
-.PHONY: docker
-docker: $(CELL_DOCKER_TARGETS)
-
-.PHONY: docker-push
-docker-push: $(CELL_DOCKER_PUSH_TARGETS)
-
-.PHONY: cellery-build
-cellery-build:
-   @:
-
-.PHONY: cellery-push
-cellery-push:
-   @:
+.PHONY: docker-push-tests
+docker-push-tests: $(CELL_DOCKER_PUSH_TARGETS)
 
 ## Cell level targets
 .PHONY: $(CELL_CLEAN_TARGETS)
 $(CELL_CLEAN_TARGETS):
-	$(eval CELL=$(patsubst clean.%,%,$@))
+	$(eval CELL=$(patsubst clean-tests.%,%,$@))
 	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
-	@CELL=$(CELL) $(MAKE) $(addprefix clean.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
+	@CELL=$(CELL) $(MAKE) $(addprefix clean-tests.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
 .PHONY: $(CELL_CHECK_STYLE_TARGETS)
 $(CELL_CHECK_STYLE_TARGETS):
-	$(eval CELL=$(patsubst check-style.%,%,$@))
+	$(eval CELL=$(patsubst check-style-tests.%,%,$@))
 	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
-	@CELL=$(CELL) $(MAKE) $(addprefix check-style.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
-
-.PHONY: $(CELL_BUILD_TARGETS)
-$(CELL_BUILD_TARGETS):
-	$(eval CELL=$(patsubst build.%,%,$@))
-	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
-	@CELL=$(CELL) $(MAKE) $(addprefix build.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
+	@CELL=$(CELL) $(MAKE) $(addprefix check-style-tests.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
 .PHONY: $(CELL_DOCKER_TARGETS)
 $(CELL_DOCKER_TARGETS):
-	$(eval CELL=$(patsubst docker.%,%,$@))
+	$(eval CELL=$(patsubst docker-tests.%,%,$@))
 	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
-	@CELL=$(CELL) $(MAKE) $(addprefix docker.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
+	@CELL=$(CELL) $(MAKE) $(addprefix docker-tests.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
 .PHONY: $(CELL_DOCKER_PUSH_TARGETS)
 $(CELL_DOCKER_PUSH_TARGETS):
-	$(eval CELL=$(patsubst docker-push.%,%,$@))
+	$(eval CELL=$(patsubst docker-push-tests.%,%,$@))
 	$(eval CELL_UPPERCASE=$(shell echo $(CELL) | tr '[a-z-]' '[A-Z_]'))
-	@CELL=$(CELL) $(MAKE) $(addprefix docker-push.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
+	@CELL=$(CELL) $(MAKE) $(addprefix docker-push-tests.$(CELL)., $($(CELL_UPPERCASE)_COMPONENTS))
 
 ## Component Level Targets
 
 .PHONY: $(PET_BE_CELL_CLEAN_TARGETS)
 $(PET_BE_CELL_CLEAN_TARGETS):
-	$(eval COMPONENT=$(patsubst clean.$(PET_BE_CELL).%,%,$@))
+	$(eval COMPONENT=$(patsubst clean-tests.$(PET_BE_CELL).%,%,$@))
 	cd $(PET_BE_CELL)/$(COMPONENT); \
 	mvn clean
 
 .PHONY: $(PET_BE_CELL_CHECK_STYLE_TARGETS)
 $(PET_BE_CELL_CHECK_STYLE_TARGETS):
-	$(eval COMPONENT=$(patsubst check-style.$(PET_BE_CELL).%,%,$@))
+	$(eval COMPONENT=$(patsubst check-style-tests.$(PET_BE_CELL).%,%,$@))
 	cd  $(PET_BE_CELL)/$(COMPONENT); \
 	mvn validate
 
-.PHONY: $(PET_BE_CELL_BUILD_TARGETS)
-$(PET_BE_CELL_BUILD_TARGETS):
-	@:
-
 .PHONY: $(PET_BE_CELL_DOCKER_TARGETS)
 $(PET_BE_CELL_DOCKER_TARGETS):
-	$(eval COMPONENT=$(patsubst docker.$(PET_BE_CELL).%,%,$@))
+	$(eval COMPONENT=$(patsubst docker-tests.$(PET_BE_CELL).%,%,$@))
 	docker build --build-arg MODULE=$(COMPONENT) -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT)-tests:${DOCKER_IMAGE_TAG} ./$(PET_BE_CELL)
 
 .PHONY: $(PET_BE_CELL_DOCKER_PUSH_TARGETS)
 $(PET_BE_CELL_DOCKER_PUSH_TARGETS):
-	$(eval COMPONENT=$(patsubst docker-push.$(PET_BE_CELL).%,%,$@))
+	$(eval COMPONENT=$(patsubst docker-push-tests.$(PET_BE_CELL).%,%,$@))
 	docker push ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT)-tests:${DOCKER_IMAGE_TAG}
