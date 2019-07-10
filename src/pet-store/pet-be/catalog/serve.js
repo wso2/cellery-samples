@@ -30,13 +30,13 @@ service.use(express.json());
  * @param data The returned data from the API invocation
  */
 const handleSuccess = (res, data) => {
-  const response = {
-    status: "SUCCESS"
-  };
-  if (data) {
-    response.data = data;
-  }
-  res.send(response);
+    const response = {
+        status: "SUCCESS"
+    };
+    if (data) {
+        response.data = data;
+    }
+    res.send(response);
 };
 
 /**
@@ -46,11 +46,11 @@ const handleSuccess = (res, data) => {
  * @param message The error message
  */
 const handleError = (res, message) => {
-  console.log("[ERROR] " + message);
-  res.status(500).send({
-    status: "ERROR",
-    message: message
-  });
+    console.log("[ERROR] " + message);
+    res.status(500).send({
+        status: "ERROR",
+        message: message
+    });
 };
 
 /**
@@ -60,136 +60,148 @@ const handleError = (res, message) => {
  * @param message The error message
  */
 const handleNotFound = (res, message) => {
-  res.status(404).send({
-    status: "NOT_FOUND",
-    message: message
-  });
+    res.status(404).send({
+        status: "NOT_FOUND",
+        message: message
+    });
 };
 
 /*
  * API endpoint for getting a list of accessories available in the catalog.
  */
 service.get("/accessories", (req, res) => {
-  fs.readFile(catalogDataFile, "utf8", function (err, data) {
-    if (err) {
-      handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
-    } else {
-      handleSuccess(res, JSON.parse(data));
-    }
-  });
+    fs.readFile(catalogDataFile, "utf8", function (err, data) {
+        if (err) {
+            handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
+        } else {
+            handleSuccess(res, JSON.parse(data));
+        }
+    });
 });
 
 /*
  * API endpoint for creating a new accessory in the catalog.
  */
 service.post("/accessories", (req, res) => {
-  fs.readFile(catalogDataFile, "utf8", function (err, data) {
-    const accessories = JSON.parse(data);
-    if (err) {
-      handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
-    } else {
-      // Creating the new accessory data.
-      const maxId = accessories.reduce((acc, accessory) => accessory.id > acc ? accessory.id : acc, 0);
-      accessories.push({
-        ...req.body,
-        id: maxId + 1
-      });
-
-      // Creating the new accessory
-      fs.writeFile(catalogDataFile, JSON.stringify(accessories), "utf8", function (err) {
+    fs.readFile(catalogDataFile, "utf8", function (err, data) {
+        const accessories = JSON.parse(data);
         if (err) {
-          handleError(res, "Failed to create new accessory due to " + err)
+            handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
         } else {
-          handleSuccess(res, {
-            id: maxId
-          });
+            // Creating the new accessory data.
+            const maxId = accessories.reduce((acc, accessory) => accessory.id > acc ? accessory.id : acc, 0);
+            accessories.push({
+                ...req.body,
+                id: maxId + 1
+            });
+
+            // Creating the new accessory
+            fs.writeFile(catalogDataFile, JSON.stringify(accessories), "utf8", function (err) {
+                if (err) {
+                    handleError(res, "Failed to create new accessory due to " + err)
+                } else {
+                    handleSuccess(res, {
+                        id: maxId
+                    });
+                }
+            });
         }
-      });
-    }
-  });
+    });
 });
 
 /*
  * API endpoint for getting a single accessory from the catalog.
  */
 service.get("/accessories/:id", (req, res) => {
-  fs.readFile(catalogDataFile, "utf8", function (err, data) {
-    const accessories = JSON.parse(data);
-    if (err) {
-      handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
-    } else {
-      let match = accessories.filter((accessory) => accessory.id === req.params.id);
-      if (match.length === 1) {
-        handleSuccess(res, match[0]);
-      } else {
-        handleNotFound("Accessory not available");
-      }
-    }
-  });
+    fs.readFile(catalogDataFile, "utf8", function (err, data) {
+        const accessories = JSON.parse(data);
+        if (err) {
+            handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
+        } else {
+            let match = accessories.filter((accessory) => accessory.id === req.params.id);
+            if (match.length === 1) {
+                handleSuccess(res, match[0]);
+            } else {
+                handleNotFound("Accessory not available");
+            }
+        }
+    });
 });
 
 /*
  * API endpoint for updating an accessory in the catalog.
  */
 service.put("/accessories/:id", (req, res) => {
-  fs.readFile(catalogDataFile, "utf8", function (err, data) {
-    const accessories = JSON.parse(data);
-    if (err) {
-      handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
-    } else {
-      const match = accessories.filter((accessory) => accessory.id === req.params.id);
+    fs.readFile(catalogDataFile, "utf8", function (err, data) {
+        const accessories = JSON.parse(data);
+        if (err) {
+            handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
+        } else {
+            const match = accessories.filter((accessory) => accessory.id === req.params.id);
 
-      if (match.length === 1) {
-        Object.assign(match[0], req.body);
+            if (match.length === 1) {
+                Object.assign(match[0], req.body);
 
-        // Updating the accessory
-        fs.writeFile(catalogDataFile, JSON.stringify(accessories), "utf8", function (err) {
-          if (err) {
-            handleError(res, "Failed to update accessory " + req.params.id + " due to " + err)
-          } else {
-            handleSuccess(res);
-          }
-        });
-      } else {
-        handleNotFound("Accessory not available");
-      }
-    }
-  });
+                // Updating the accessory
+                fs.writeFile(catalogDataFile, JSON.stringify(accessories), "utf8", function (err) {
+                    if (err) {
+                        handleError(res, "Failed to update accessory " + req.params.id + " due to " + err)
+                    } else {
+                        handleSuccess(res);
+                    }
+                });
+            } else {
+                handleNotFound("Accessory not available");
+            }
+        }
+    });
 });
 
 /*
  * API endpoint for deleting an accessory in the catalog.
  */
 service.delete("/accessories/:id", (req, res) => {
-  fs.readFile(catalogDataFile, "utf8", function (err, data) {
-    const accessories = JSON.parse(data);
-    if (err) {
-      handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
-    } else {
-      const newAccessories = accessories.filter((accessory) => accessory.id !== req.params.id);
+    fs.readFile(catalogDataFile, "utf8", function (err, data) {
+        const accessories = JSON.parse(data);
+        if (err) {
+            handleError(res, "Failed to read data file " + catalogDataFile + " due to " + err);
+        } else {
+            const newAccessories = accessories.filter((accessory) => accessory.id !== req.params.id);
 
-      if (newAccessories.length === accessories.length) {
-        handleNotFound("Accessory not available");
-      } else {
-        // Deleting the accessory
-        fs.writeFile(catalogDataFile, JSON.stringify(newAccessories), "utf8", function (err) {
-          if (err) {
-            handleError(res, "Failed to delete accessory " + req.params.id + " due to " + err)
-          } else {
-            handleSuccess(res);
-          }
-        });
-      }
-    }
-  });
+            if (newAccessories.length === accessories.length) {
+                handleNotFound("Accessory not available");
+            } else {
+                // Deleting the accessory
+                fs.writeFile(catalogDataFile, JSON.stringify(newAccessories), "utf8", function (err) {
+                    if (err) {
+                        handleError(res, "Failed to delete accessory " + req.params.id + " due to " + err)
+                    } else {
+                        handleSuccess(res);
+                    }
+                });
+            }
+        }
+    });
 });
 
 /*
  * Starting the server
  */
 const server = service.listen(port, () => {
-  const host = server.address().address;
-  const port = server.address().port;
+    const host = server.address().address;
+    const port = server.address().port;
 
-  console.log("[INFO] Pet Store Catalog Service listening at http://%s:%s", host, port);
+    console.log("[INFO] Pet Store Catalog Service listening at http://%s:%s", host, port);
 });
+
+// Listening for os Signals to gracefully shutdown
+const shutdownServer = () => {
+    console.log("[INFO] Shutting down Pet Store Catalog Service");
+    server.close(() => {
+        console.log("[INFO] Pet Store Catalog Service shutdown complete");
+        // eslint-disable-next-line no-process-exit
+        process.exit(0);
+    });
+};
+process.on("SIGTERM", shutdownServer);
+process.on("SIGINT", shutdownServer);

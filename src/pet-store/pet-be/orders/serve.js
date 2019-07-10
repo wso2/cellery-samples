@@ -210,3 +210,15 @@ const server = service.listen(port, () => {
 
     console.log("[INFO] Pet Store Orders Service listening at http://%s:%s", host, port);
 });
+
+// Listening for os Signals to gracefully shutdown
+const shutdownServer = () => {
+    console.log("[INFO] Shutting down Pet Store Orders Service");
+    server.close(() => {
+        console.log("[INFO] Pet Store Orders Service shutdown complete");
+        // eslint-disable-next-line no-process-exit
+        process.exit(0);
+    });
+};
+process.on("SIGTERM", shutdownServer);
+process.on("SIGINT", shutdownServer);
