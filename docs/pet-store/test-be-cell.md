@@ -53,7 +53,7 @@ $ cellery test wso2cellery/pet-be-cell:latest -n pet-be --debugMode
 
 2. View logs
 ```bash
-$ cat pet-be-test.log
+$ cat logs/pet-be-test.log
 ```
 
 # What's Next?
