@@ -27,6 +27,8 @@ CELLS := $(PET_BE_CELL) $(PET_FE_CELL) $(ADVANCED_CELL)
 PET_BE_COMPONENTS := catalog customers orders controller
 PET_FE_COMPONENTS := portal
 
+RESOURCES_DIR := resources
+
 CELL_CLEAN_TARGETS := $(addprefix clean., $(CELLS))
 CELL_CHECK_STYLE_TARGETS := $(addprefix check-style., $(CELLS))
 CELL_BUILD_TARGETS := $(addprefix build., $(CELLS))
@@ -45,6 +47,8 @@ cellery-push: $(CELL_CELLERY_PUSH_TARGETS)
 
 .PHONY: cellery-build.$(PET_BE_CELL)
 cellery-build.$(PET_BE_CELL):
+	@rm -rf $(PET_BE_CELL)/$(RESOURCES_DIR)
+	cp -rf $(RESOURCES_DIR) $(PET_BE_CELL)/$(RESOURCES_DIR)
 	cd  $(PET_BE_CELL); \
 	cellery build $(PET_BE_CELL).bal $(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)
 

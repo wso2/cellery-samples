@@ -8,7 +8,7 @@ In this READE we focus on scaling up pet-be's `controller` component with,
 
 ## Horizontal Autoscaler
 An updated controller component in the pet-be cell is attached with autoscaling policy as explained [here](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal).
-Therefore, inorder to validate the behaviour we require to run the cell with this cell. 
+Therefore, inorder to validate the behaviour we require to run the cell with the updated controller component. 
 
 ### Pre-requisites
 1) Execute below command and confirm the autoscaling with HPA is enabled.
@@ -21,8 +21,8 @@ cluster name: cellery-admin@cellery
  ---------------------------- ----------
   ApiManager                   Enabled
   Observability                Enabled
-  Scale to zero                Enabled
-  Horizontal pod auto scalar   Disabled
+  Scale to zero                Disabled
+  Horizontal pod auto scalar   Enabled
 ```
 
 2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-scaling.md#enable-hpa).
@@ -45,7 +45,7 @@ pet-be--controller-autoscalepolicy-hpa   Deployment/pet-be--controller-deploymen
 You can also optionally pass the `-f` flag to point to the file location to be used to store the policy as explained 
 [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-export-policy). 
 ```
- $ cellery export-policy autoscale pet-fe 
+ $ cellery export-policy autoscale pet-be 
 ```
 4) Run a [load generator cell](../../cells/pet-store/advanced/load-gen/load-gen.bal) which invokes the pet-be's 
 `catalog` component in a high concurrency. There are optional environmental variables can be passed to the load-gen 
@@ -55,7 +55,7 @@ $ cellery run wso2cellery/load-gen-cell:latest -n load-gen -y
 ```
  OR
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -l petStoreBackend:pet-be -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
+$ cellery run wso2cellery/load-gen-cell:latest -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
 ```
 5) Execute `kubectl get hpa` to see the current load for pet-be's controller component once the `load-gen` cell instance is running. 
 ```
@@ -110,7 +110,7 @@ $ cellery terminate pet-be
 ## Zero scaling
 An update controller and catalog component is attached to zero scaling configurations as mentioned in 
 [pet-be-zero-scale.bal](../../cells/pet-store/advanced/pet-be-zero-scale/pet-be-zero-scale.bal). Based on that configuration, 
-both controller and catalogue components are configured with zero scaling. The zero configuration used in
+both controller and catalogue components are configured with zero scaling. The zero scale configuration used in
 the component is provided below.
 
 ```
@@ -122,8 +122,8 @@ scalingPolicy: <cellery:ZeroScalingPolicy> {
 ...
 ```
 
-As per above configuration, if there is no request for the components, the replica count will be zero. And the component 
-will be scaled up if the concurrency leven of the incoming request is increased to `10`. 
+As per above configuration, if there is no request coming for the component, the component will scale down to zero replicas. The component will only deployed if it receives a request, and the component 
+will be scaled up if there is more than `10` concurrent requests for one replica up to max of `3` replicas. 
 
 In this sample, we will be deploying the same [load generator cell](../../cells/pet-store/advanced/load-gen/load-gen.bal) 
 which invokes the pet-be's `catalog` component in a high concurrency, and evaluate the zero scaling behaviour.
@@ -139,7 +139,7 @@ cluster name: cellery-admin@cellery
  ---------------------------- ----------
   ApiManager                   Enabled
   Observability                Enabled
-  Scale to zero                Disabled
+  Scale to zero                Enabled
   Horizontal pod auto scalar   Disabled
 ```
 
@@ -179,7 +179,7 @@ $ cellery run wso2cellery/load-gen-cell:latest -n load-gen -y
 ```
   OR
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -l petStoreBackend:pet-be -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
+$ cellery run wso2cellery/load-gen-cell:latest -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
 ```
 4) Once the load-gen cell is started, the `controller` and `catalog` components will be running as shown below.
 ```

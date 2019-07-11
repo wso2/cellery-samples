@@ -57,18 +57,19 @@ a new pet-be cell instance, and having a canary deployment by having 50% traffic
 Then, we completely switch 100% traffic to new deployment and still have the both cell instances running as per the blue-green deployment pattern. 
 Finally, terminate old instance.
 
-1) You can optionally build the updated pet-be cell `wso2cellery/pet-be-auto-scale-cell:latest` as explained [here](build-and-run.md). 
-Or you can simply run directly which will pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
+1) You can optionally build cell wi`wso2cellery/pet-be-auto-scale-cell:latest` from cell file [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) 
+as explained [here](build-and-run.md). Or you can simply run directly which will pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
 ```
 $ cellery run wso2cellery/pet-be-auto-scale-cell:latest -n pet-be-as
 ```
-
 2) Make sure the `pet-be-as` cell is in `Ready` status with `cellery list instances` command.
 
-3) Route the 50% of the traffic to the new `pet-be-as` cell instance. 
+3) Cell `pet-fe` was linked to `pet-be` instance as pet store application was started as shown [here](../../cells/pet-store/README.md#quick-run).
+ Let us route the 50% of the traffic to the new `pet-be-as` cell instance as shown below. 
 ```
 $ cellery route-traffic pet-be -p pet-be-as=50
 ```
+
 4) Now you can check the pet-store application is up and running by following the instructions [here](../../cells/pet-store/README.md#view-application).
 
 5) This is the canary deployment, and you can see both instances are in operation. You can get tail the logs of the 
