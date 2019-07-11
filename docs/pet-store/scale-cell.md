@@ -8,7 +8,7 @@ In this READE we focus on scaling up pet-be's `controller` component with,
 
 ## Horizontal Autoscaler
 An updated controller component in the pet-be cell is attached with autoscaling policy as explained [here](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal).
-Therefore, inorder to validate the behaviour we require to run the cell with this cell. 
+Therefore, inorder to validate the behaviour we require to run the cell with the updated controller component. 
 
 ### Pre-requisites
 1) Execute below command and confirm the autoscaling with HPA is enabled.
@@ -22,7 +22,7 @@ cluster name: cellery-admin@cellery
   ApiManager                   Enabled
   Observability                Enabled
   Scale to zero                Disabled
-  Horizontal pod auto scalar   Disabled
+  Horizontal pod auto scalar   Enabled
 ```
 
 2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-scaling.md#enable-hpa).
@@ -139,7 +139,7 @@ cluster name: cellery-admin@cellery
  ---------------------------- ----------
   ApiManager                   Enabled
   Observability                Enabled
-  Scale to zero                Disabled
+  Scale to zero                Enabled
   Horizontal pod auto scalar   Disabled
 ```
 
