@@ -416,7 +416,7 @@ Access url [http://my-hipstershop.com/](http://my-hipstershop.com/) from a brows
 
 ## Observability
 The hipster shop cells and components can be observed in runtime, and it provides overview about the cells, components, metrics, and distributed tracing. Below are 
-some of the screenshots of observability provided by [http://celler-dashboard](http://celler-dashboard). You can find more information about the observability 
+some of the screenshots of observability provided by [http://cellery-dashboard](http://cellery-dashboard). You can find more information about the observability 
 [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md). 
 
 ---
