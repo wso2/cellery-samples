@@ -35,7 +35,7 @@ This Pet store sample includes,
 4. [Test cell](#run-cell-integration-tests)
 4. [Observability](#observability)
 5. [Update cell](#update-cell-with-new-version)
-6. [Scale cell](#scale-celldocspet-storescale-cellmd)
+6. [Scale cell](#scale-cell)
 
 ## Quick run 
 1. Pet store application can be started by executing the single command as shown below. For more details about flags 
