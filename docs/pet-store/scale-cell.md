@@ -110,7 +110,7 @@ $ cellery terminate pet-be
 ## Zero scaling
 An update controller and catalog component is attached to zero scaling configurations as mentioned in 
 [pet-be-zero-scale.bal](../../cells/pet-store/advanced/pet-be-zero-scale/pet-be-zero-scale.bal). Based on that configuration, 
-both controller and catalogue components are configured with zero scaling. The zero configuration used in
+both controller and catalogue components are configured with zero scaling. The zero scale configuration used in
 the component is provided below.
 
 ```
@@ -122,8 +122,8 @@ scalingPolicy: <cellery:ZeroScalingPolicy> {
 ...
 ```
 
-As per above configuration, if there is no request for the components, the replica count will be zero. And the component 
-will be scaled up if the concurrency leven of the incoming request is increased to `10`. 
+As per above configuration, if there is no request coming for the component, the component will scale down to zero replicas. The component will only deployed if it receives a request, and the component 
+will be scaled up if there is more than `10` concurrent requests for one replica up to max of `3` replicas. 
 
 In this sample, we will be deploying the same [load generator cell](../../cells/pet-store/advanced/load-gen/load-gen.bal) 
 which invokes the pet-be's `catalog` component in a high concurrency, and evaluate the zero scaling behaviour.

@@ -23,8 +23,10 @@ CELLERY_VERSION ?= latest
 
 SRC_DIR := src
 CELLS_DIR := cells
+TESTS_DIR := tests
 SAMPLES_SRC := pet-store hello-world hello-world-api
 SAMPLES_CELLS := pet-store hello-world hello-world-api hipster-shop
+SAMPLES_TESTS := pet-store
 
 CLEAN_TARGETS := $(addprefix clean., $(SAMPLES_SRC))
 CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES_SRC))
@@ -33,15 +35,25 @@ DOCKER_TARGETS := $(addprefix docker., $(SAMPLES_SRC))
 DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(SAMPLES_SRC))
 CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(SAMPLES_CELLS))
 CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(SAMPLES_CELLS))
+TEST_CLEAN_TARGETS := $(addprefix clean-tests., $(SAMPLES_TESTS))
+TEST_CHECK_STYLE_TARGETS := $(addprefix check-style-tests., $(SAMPLES_TESTS))
+TEST_DOCKER_TARGETS := $(addprefix docker-tests., $(SAMPLES_TESTS))
+TEST_DOCKER_PUSH_TARGETS := $(addprefix docker-push-tests., $(SAMPLES_TESTS))
 
 
-all: clean build docker
+all: clean build docker clean-tests check-style-tests docker-tests
 
 .PHONY: clean
 clean: $(CLEAN_TARGETS)
 
+.PHONY: clean-tests
+clean-tests: $(TEST_CLEAN_TARGETS)
+
 .PHONY: check-style
 check-style: $(CHECK_STYLE_TARGETS)
+
+.PHONY: check-style-tests
+check-style-tests: $(TEST_CHECK_STYLE_TARGETS)
 
 .PHONY: build
 build: $(BUILD_TARGETS)
@@ -49,8 +61,14 @@ build: $(BUILD_TARGETS)
 .PHONY: docker
 docker: $(DOCKER_TARGETS)
 
+.PHONY: docker-tests
+docker-tests: $(TEST_DOCKER_TARGETS)
+
 .PHONY: docker-push
 docker-push: $(DOCKER_PUSH_TARGETS)
+
+.PHONY: docker-push-tests
+docker-push-tests: $(TEST_DOCKER_PUSH_TARGETS)
 
 .PHONY: cellery-build
 cellery-build: $(CELLERY_BUILD_TARGETS)
@@ -67,11 +85,23 @@ $(CLEAN_TARGETS):
 	@cd $(SRC_DIR)/$(SAMPLE); \
 	$(MAKE) clean
 
+.PHONY: $(TEST_CLEAN_TARGETS)
+$(TEST_CLEAN_TARGETS):
+	$(eval SAMPLE=$(patsubst clean-tests.%,%,$@))
+	@cd $(TESTS_DIR)/$(SAMPLE); \
+	$(MAKE) clean-tests
+
 .PHONY: $(CHECK_STYLE_TARGETS)
 $(CHECK_STYLE_TARGETS):
 	$(eval SAMPLE=$(patsubst check-style.%,%,$@))
 	@cd $(SRC_DIR)/$(SAMPLE); \
 	$(MAKE) check-style
+
+.PHONY: $(TEST_CHECK_STYLE_TARGETS)
+$(TEST_CHECK_STYLE_TARGETS):
+	$(eval SAMPLE=$(patsubst check-style-tests.%,%,$@))
+	@cd $(TESTS_DIR)/$(SAMPLE); \
+	$(MAKE) check-style-tests
 
 .PHONY: $(BUILD_TARGETS)
 $(BUILD_TARGETS):
@@ -85,11 +115,23 @@ $(DOCKER_TARGETS):
 	@cd $(SRC_DIR)/$(SAMPLE); \
 	DOCKER_REPO=$(DOCKER_REPO) DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker
 
+.PHONY: $(TEST_DOCKER_TARGETS)
+$(TEST_DOCKER_TARGETS):
+	$(eval SAMPLE=$(patsubst docker-tests.%,%,$@))
+	@cd $(TESTS_DIR)/$(SAMPLE); \
+	DOCKER_REPO=$(DOCKER_REPO) DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker-tests
+
 .PHONY: $(DOCKER_PUSH_TARGETS)
 $(DOCKER_PUSH_TARGETS):
 	$(eval SAMPLE=$(patsubst docker-push.%,%,$@))
 	@cd $(SRC_DIR)/$(SAMPLE); \
 	DOCKER_REPO=$(DOCKER_REPO) DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker-push
+
+.PHONY: $(TEST_DOCKER_PUSH_TARGETS)
+$(TEST_DOCKER_PUSH_TARGETS):
+	$(eval SAMPLE=$(patsubst docker-push-tests.%,%,$@))
+	@cd $(TESTS_DIR)/$(SAMPLE); \
+	DOCKER_REPO=$(DOCKER_REPO) DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker-push-tests
 
 .PHONY: $(CELLERY_BUILD_TARGETS)
 $(CELLERY_BUILD_TARGETS):
