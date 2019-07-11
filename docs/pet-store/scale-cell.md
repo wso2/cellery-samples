@@ -21,7 +21,7 @@ cluster name: cellery-admin@cellery
  ---------------------------- ----------
   ApiManager                   Enabled
   Observability                Enabled
-  Scale to zero                Disabled
+  Scale to zero                Enabled
   Horizontal pod auto scalar   Disabled
 ```
 
