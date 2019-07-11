@@ -95,10 +95,10 @@ You can observe the pet-store application in runtime, and view cell overeview, r
 Cellery observability mainly supported by [Cellery Dashboard](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md#use-cellery-dashboard). 
 Please follow the instructions provided [here](../../docs/pet-store/observability.md) to use observability with pet-store. 
 
-## [Update cell with new version](../../docs/pet-store/update-cell.md)
+## [Update cell with new version](../../docs/pet-store/cell-component-update-and-adv-deployment.md)
 In this section, we focus on how the cells can be updated in the runtime without having a considerable downtime. Cellery supports rolling updates, 
 and advanced deployments such as blue-green and canary updates. In this sample, we provide step-by-step details on how to update the pet-be cell with the new 
-version by rolling update, blue-green and canary update. Please follow the instructions provided [here](../../docs/pet-store/update-cell.md) to update the pet-be cell.
+version by rolling update, blue-green and canary update. Please follow the instructions provided [here](../../docs/pet-store/cell-component-update-and-adv-deployment.md) to update the pet-be cell.
 
 ## [Scale cell](../../docs/pet-store/scale-cell.md)
 In this section, we focus on attaching autoscaling policy and zero scaling policy to pet-be cell. We also use a load-gen 

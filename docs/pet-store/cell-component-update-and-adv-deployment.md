@@ -1,17 +1,18 @@
-# Update pet store cell
-This readme explains the steps to update the running cell pet-be. Cellery supports cell updates via,
-- [Rolling update](#rolling-update)
-- [Blue/Green update](#blue-green-and-canary-update)
-- [Canary update](#blue-green-and-canary-update)
-
-In this section, we focus on updating the pet-be cell with all three above mentioned update methods. 
+# Updating Cell and Advanced Deployemt Patterns
+This readme explains the steps to update the components of the running cell pet-be and how to try out advanced deployments such as Blue-Green and Canary with pet-be.
+- [Cell component update](#cell-component-update)
+- [Blue-Green deployment](#blue-green-and-canary-deployment)
+- [Canary deployment](#blue-green-and-canary-deployment)
 
 ### Pre Requisites
 - You should have the pet-store application running as explained [here](../../cells/pet-store/README.md).
 
-## Rolling update
-A components within the cell can updated via rolling update. This will terminate the components one-by-one and applying 
-the changes, eventually the whole cell will be updated with new version. Follow below mentioned steps to rolling update the current running cell pet-be.  
+## Cell Component Update
+The components within the cell can updated via rolling update. This will terminate the components one-by-one and apply 
+the changes, and eventually the whole cell will be updated with new version. 
+This is an in-place update mechanism and only considers changes done to docker images which are encapsulated in components.
+
+Follow the below mentioned steps update the current running cell pet-be.  
 
 Let's assume the pet-be components should be updated with resource requests and limits as per advanced 
 [pet-be.bal](../../cells/pet-store/advanced/pet-be/pet-be.bal). And now we require to update the current running pet-be bal with this new cell. 
@@ -47,9 +48,10 @@ pet-fe--sts-deployment-59dbb995c7-g7tc7          3/3     Running           0    
 
 4) Now you can check the pet-store application is up and running by following the instructions [here](../../cells/pet-store/README.md#view-application).
 
-## Blue-Green and Canary update
-To update a cell using Blue-Green/ Canary patterns, you should first create a cell instance using the cellery run command. 
-Then, the traffic for the specific instance can be switch 100% (Blue-Green) or partially to a new version (canary). 
+## Blue-Green and Canary deployment
+Blue-Green and Canary are advanced deployment patterns which can used to perform updates to running cell instances. 
+However, in contrast to the component update method described above, this update does not happen in place and a new cell instance needs to be used to re-route traffic explicitly. 
+The traffic can be either switched 100% (Blue-Green method) or partially (Canary method) to a cell instance created with a new cell image.
 
 Inorder to test this, let us assume that the pet-be cell should be updated with autoscaling policy as defined in 
 [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal). And we will be starting 
@@ -57,7 +59,7 @@ a new pet-be cell instance, and having a canary deployment by having 50% traffic
 Then, we completely switch 100% traffic to new deployment and still have the both cell instances running as per the blue-green deployment pattern. 
 Finally, terminate old instance.
 
-1) You can optionally build cell wi`wso2cellery/pet-be-auto-scale-cell:latest` from cell file [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) 
+1) You can optionally build cell with `wso2cellery/pet-be-auto-scale-cell:latest` from cell file [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) 
 as explained [here](build-and-run.md). Or you can simply run directly which will pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
 ```
 $ cellery run wso2cellery/pet-be-auto-scale-cell:latest -n pet-be-as
