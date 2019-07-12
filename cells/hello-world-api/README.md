@@ -61,31 +61,31 @@ public function build(cellery:ImageName iName) returns error? {
 ---
 #### Follow below instructions to build and run the hello world api cell.
 
-1. Build the cellery image for hello world project by executing the cellery build command as shown below. Note `DOCKER_HUB_ORG` is your organization name in docker hub.
+1. Build the cellery image for hello world project by executing the cellery build command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build hello-world-api.bal <DOCKER_HUB_ORG>/hello-world-api-cell:0.3.0
+    $ cellery build hello-world-api.bal <CELLERY_HUB_ORG>/hello-world-api-cell:0.3.0
     
-    ✔ Building image <DOCKER_HUB_ORG>/hello-world-api-cell:0.3.0
+    ✔ Building image <CELLERY_HUB_ORG>/hello-world-api-cell:0.3.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <DOCKER_HUB_ORG>/hello-world-api-cell:0.3.0
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/hello-world-api-cell:0.3.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <DOCKER_HUB_ORG>/helloworld:0.3.0
+      $ cellery run <CELLERY_HUB_ORG>/helloworld:0.3.0
     --------------------------------------------------------
     ```
 
 2. Run the cell image by executing `cellery run` command as shown below.
     ```
-    $ cellery run <DOCKER_HUB_ORG>/hello-world-api-cell:0.3.0 -n hello-world-api-cell
-       ✔ Extracting Cell Image  <DOCKER_HUB_ORG/hello-world-api-cell:0.3.0
+    $ cellery run <CELLERY_HUB_ORG>/hello-world-api-cell:0.3.0 -n hello-world-api-cell
+       ✔ Extracting Cell Image  <CELLERY_HUB_ORG/hello-world-api-cell:0.3.0
        
        Main Instance: my-hello-world
        
-       ✔ Reading Cell Image  <DOCKER_HUB_ORG/hello-world-api-cell:0.3.0
+       ✔ Reading Cell Image  <CELLERY_HUB_ORG/hello-world-api-cell:0.3.0
        ✔ Validating environment variables
        ✔ Validating dependencies
        
@@ -93,7 +93,7 @@ public function build(cellery:ImageName iName) returns error? {
        
          INSTANCE NAME                     CELL IMAGE                         USED INSTANCE   SHARED
        ---------------------- --------------------------------------------- --------------- --------
-        hello-world-api-cell    <DOCKER_HUB_ORG>/hello-world-api-cell:0.3.0   To be Created    -
+        hello-world-api-cell    <CELLERY_HUB_ORG>/hello-world-api-cell:0.3.0   To be Created    -
        
        Dependency Tree to be Used:
        
@@ -104,7 +104,7 @@ public function build(cellery:ImageName iName) returns error? {
        ✔ Starting main instance my-hello-world
        
        
-       ✔ Successfully deployed cell image:  <DOCKER_HUB_ORG>/hello-world-api-cell:0.3.0
+       ✔ Successfully deployed cell image:  <CELLERY_HUB_ORG>/hello-world-api-cell:0.3.0
        
        What's next?
        --------------------------------------------------------
@@ -122,7 +122,7 @@ public function build(cellery:ImageName iName) returns error? {
     ```
 4. Execute `cellery view` to see the components of your cell. This will open a HTML page in a browser and you can visualize the components and dependent cells of the cell image.
     ```
-    $ cellery view <DOCKER_HUB_ORG>/hello-world-api-cell:0.3.0
+    $ cellery view <CELLERY_HUB_ORG>/hello-world-api-cell:0.3.0
     ```
     ![hello world api cell view](../../docs/images/hello-world-api/hello-world-cell-api-docs-view.png)
     
@@ -130,6 +130,9 @@ public function build(cellery:ImageName iName) returns error? {
 
 Since the hello-world-api is exposed via the global gateway, the request can go through the global API gateway to the hello world service. 
 And, by default all the APIs are secured, therefore we need to obtain a token to invoke the API. The below provided steps explains the process to obtain the token and invoke the API.
+Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/local-setup.md), 
+[gcp](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and [existing setup](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries) 
+before proceeding to the following steps.
        
 1. Login to the [API Store](https://wso2-apim/store/) as admin user (username: admin, password: admin).
     

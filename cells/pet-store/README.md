@@ -54,7 +54,11 @@ refer [here](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/cli-reference.
 ```
 3. Now view the application by following the [instructions](#view-application).
 
-## View application 
+## View application
+Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/local-setup.md), 
+[gcp](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and [existing setup](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries) before
+proceeding to following steps.
+ 
 1. Access the petstore add via accessing [http://pet-store.com/](http://pet-store.com/). You will be landed in the home page of cellery. 
 As `/` is configured to be as unsecured context as described [here](pet-fe/README.md), you can see the content of home page without logging in. 
 

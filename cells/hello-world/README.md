@@ -79,21 +79,21 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
 
 Follow below instructions to build, run and push the hello world cell.
 
-1. Build the cell image for hello-world project by executing the `cellery build` command as shown below. Note `DOCKER_HUB_ORG` is your organization name in docker hub.
+1. Build the cell image for hello-world project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build hello-world.bal <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+    $ cellery build hello-world.bal <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+    ✔ Building image <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <DOCKER_HUB_ORG>/helloworld:0.3.0
+      $ cellery run <CELLERY_HUB_ORG>/helloworld:0.3.0
     --------------------------------------------------------
     ```
 
@@ -101,12 +101,12 @@ Follow below instructions to build, run and push the hello world cell.
 Therefore, run the hello-world cell image with ‘cellery run’ command with input parameters `my-hello-world.com` for `VHOST_NAME`, and your name for `HELLO_NAME` 
 as shown below to change the hello-world cell's default behaviour. 
     ```
-    $ cellery run <DOCKER_HUB_ORG/hello-world-cell:0.3.0 -e VHOST_NAME=my-hello-world.com -e HELLO_NAME=WSO2 -n my-hello-world
-       ✔ Extracting Cell Image  <DOCKER_HUB_ORG/hello-world-cell:0.3.0
+    $ cellery run <CELLERY_HUB_ORG/hello-world-cell:0.3.0 -e VHOST_NAME=my-hello-world.com -e HELLO_NAME=WSO2 -n my-hello-world
+       ✔ Extracting Cell Image  <CELLERY_HUB_ORG/hello-world-cell:0.3.0
        
        Main Instance: my-hello-world
        
-       ✔ Reading Cell Image  <DOCKER_HUB_ORG/hello-world-cell:0.3.0
+       ✔ Reading Cell Image  <CELLERY_HUB_ORG/hello-world-cell:0.3.0
        ✔ Validating environment variables
        ✔ Validating dependencies
        
@@ -114,7 +114,7 @@ as shown below to change the hello-world cell's default behaviour.
        
          INSTANCE NAME              CELL IMAGE                        USED INSTANCE   SHARED
         ---------------- ------------------------------------------- --------------- --------
-         my-hello-world    <DOCKER_HUB_ORG>/hello-world-cell:0.3.0   To be Created    -
+         my-hello-world    <CELLERY_HUB_ORG>/hello-world-cell:0.3.0   To be Created    -
        
        Dependency Tree to be Used:
        
@@ -125,7 +125,7 @@ as shown below to change the hello-world cell's default behaviour.
        ✔ Starting main instance my-hello-world
        
        
-       ✔ Successfully deployed cell image:  <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+       ✔ Successfully deployed cell image:  <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
        
        What's next?
        --------------------------------------------------------
@@ -139,32 +139,34 @@ as shown below to change the hello-world cell's default behaviour.
     $ cellery list instances
                         INSTANCE                                   CELL IMAGE                   STATUS                            GATEWAY                            COMPONENTS           AGE
        ------------------------------------------ -------------------------------------------- -------- ----------------------------------------------------------- ------------ ----------------------
-        hello-world-cell-1-0-0-676b2131           <DOCKER_HUB_ORG>/hello-world-cell:0.3.0      Ready       hello-world-cell-1-0-0-676b2131--gateway-service             1        10 minutes 1 seconds
+        hello-world-cell-1-0-0-676b2131           <CELLERY_HUB_ORG>/hello-world-cell:0.3.0      Ready       hello-world-cell-1-0-0-676b2131--gateway-service             1        10 minutes 1 seconds
     ```
 4. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components and dependent cells of the cell image.
     ```
-    $ cellery view <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+    $ cellery view <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
     ```
     ![hello world cell view](../../docs/images/hello-world/hello-web-cell.png)
     
-5. Access url [http://my-hello-world.com/](http://my-hello-world.com/) from browser. You will see updated web page with greeting param you passed for HELLO_NAME in step-2.
+5. Access url [http://my-hello-world.com/](http://my-hello-world.com/) from browser. You will see updated web page with greeting param you passed for HELLO_NAME in step-2. 
+Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/local-setup.md), 
+[gcp](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and [existing cluster](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries).
 
-8. As a final step, let's push your first cell project to your docker hub account as shown below.
+8. As a final step, let's push your first cell project to your [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
-    $ cellery push <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+    $ cellery push <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
     ✔ Connecting to registry-1.docker.io
-    ✔ Reading image <DOCKER_HUB_ORG>/hello-world-cell:0.3.0 from the Local Repository
-    ✔ Checking if the image <DOCKER_HUB_ORG>/hello-world-cell:0.3.0 already exists in the Registry
-    ✔ Pushing image <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+    ✔ Reading image <CELLERY_HUB_ORG>/hello-world-cell:0.3.0 from the Local Repository
+    ✔ Checking if the image <CELLERY_HUB_ORG>/hello-world-cell:0.3.0 already exists in the Registry
+    ✔ Pushing image <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
     
     Image Digest : sha256:8935b3495a6c1cbc466ac28f4120c3836894e8ea1563fb5da7ecbd17e4b80df5
     
-    ✔ Successfully pushed cell image: <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+    ✔ Successfully pushed cell image: <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to pull the image:
-      $ cellery pull <DOCKER_HUB_ORG>/hello-world-cell:0.3.0
+      $ cellery pull <CELLERY_HUB_ORG>/hello-world-cell:0.3.0
     --------------------------------------------------------
     ```
 Congratulations! You have successfully created your own cell!
