@@ -56,7 +56,7 @@ Hipster Shop services](../../docs/images/hipster-shop/hipstershop-cell-architect
 Execute the command below to deploy the pre-built cell images in one go. If you are interested in building and running the cell images, execute the steps explained [here](#build-and-deploy-the-hipstershop-cells).
 
 ```
-cellery run wso2cellery/front-end-cell:latest -n front-end-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -l adsCellDep:ads-cell -l checkoutCellDep:checkout-cell -d -y
+cellery run wso2cellery/front-end-cell:0.3.0 -n front-end-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -l adsCellDep:ads-cell -l checkoutCellDep:checkout-cell -d -y
 ```
 Now [view the application](#viewing-the-application).
 
@@ -71,36 +71,36 @@ cd samples/cells/hipster-shop
 ### 2. Build and run <b>ads</b> cell
 ```
 $ cd ads/
-$ cellery build ads.bal wso2cellery/ads-cell:latest  
+$ cellery build ads.bal wso2cellery/ads-cell:0.3.0  
 
-✔ Building image wso2cellery/ads-cell:latest
+✔ Building image wso2cellery/ads-cell:0.3.0
 ✔ Removing old Image
 ✔ Saving new Image to the Local Repository
 
 
-✔ Successfully built cell image: wso2cellery/ads-cell:latest
+✔ Successfully built cell image: wso2cellery/ads-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
 Execute the following command to run the image:
-  $ cellery run wso2cellery/ads-cell:latest
+  $ cellery run wso2cellery/ads-cell:0.3.0
 --------------------------------------------------------
 ```
 
 ```
-$ cellery run wso2cellery/ads-cell:latest -n ads-cell
-✔ Extracting Cell Image wso2cellery/ads-cell:latest
+$ cellery run wso2cellery/ads-cell:0.3.0 -n ads-cell
+✔ Extracting Cell Image wso2cellery/ads-cell:0.3.0
 
 Main Instance: ads-cell
 
-✔ Reading Cell Image wso2cellery/ads-cell:latest
+✔ Reading Cell Image wso2cellery/ads-cell:0.3.0
 ✔ Validating dependencies
 
 Instances to be Used:
 
   INSTANCE NAME           CELL IMAGE            USED INSTANCE   SHARED  
  --------------- ----------------------------- --------------- -------- 
-  ads-cell        wso2cellery/ads-cell:latest   To be Created    -      
+  ads-cell        wso2cellery/ads-cell:0.3.0   To be Created    -      
 
 Dependency Tree to be Used:
 
@@ -111,7 +111,7 @@ Dependency Tree to be Used:
 ✔ Starting main instance ads-cell
 
 
-✔ Successfully deployed cell image: wso2cellery/ads-cell:latest
+✔ Successfully deployed cell image: wso2cellery/ads-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
@@ -123,36 +123,36 @@ Execute the following command to list running cells:
 ### 3. Build and run <b>products</b> cell
 ```
 $ cd ../products/
-$ cellery build products.bal wso2cellery/products-cell:latest
+$ cellery build products.bal wso2cellery/products-cell:0.3.0
 
-✔ Building image wso2cellery/products-cell:latest
+✔ Building image wso2cellery/products-cell:0.3.0
 ✔ Removing old Image
 ✔ Saving new Image to the Local Repository
 
 
-✔ Successfully built cell image: wso2cellery/products-cell:latest
+✔ Successfully built cell image: wso2cellery/products-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
 Execute the following command to run the image:
-  $ cellery run wso2cellery/products-cell:latest
+  $ cellery run wso2cellery/products-cell:0.3.0
 --------------------------------------------------------
 ```
 
 ```
-$ cellery run wso2cellery/products-cell:latest -n products-cell
-✔ Extracting Cell Image wso2cellery/products-cell:latest
+$ cellery run wso2cellery/products-cell:0.3.0 -n products-cell
+✔ Extracting Cell Image wso2cellery/products-cell:0.3.0
 
 Main Instance: products-cell
 
-✔ Reading Cell Image wso2cellery/products-cell:latest
+✔ Reading Cell Image wso2cellery/products-cell:0.3.0
 ✔ Validating dependencies
 
 Instances to be Used:
 
   INSTANCE NAME              CELL IMAGE              USED INSTANCE   SHARED  
  --------------- ---------------------------------- --------------- -------- 
-  products-cell   wso2cellery/products-cell:latest   To be Created    -      
+  products-cell   wso2cellery/products-cell:0.3.0   To be Created    -      
 
 Dependency Tree to be Used:
 
@@ -163,7 +163,7 @@ Dependency Tree to be Used:
 ✔ Starting main instance products-cell
 
 
-✔ Successfully deployed cell image: wso2cellery/products-cell:latest
+✔ Successfully deployed cell image: wso2cellery/products-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
@@ -175,37 +175,37 @@ Execute the following command to list running cells:
 ### 4. Build and run <b>cart</b> cell
 ```
 $ cd ../cart/
-$ cellery build cart.bal wso2cellery/cart-cell:latest
+$ cellery build cart.bal wso2cellery/cart-cell:0.3.0
 Warning: Value is empty for environment variable "CART_SERVICE_ADDR"
 
-✔ Building image wso2cellery/cart-cell:latest
+✔ Building image wso2cellery/cart-cell:0.3.0
 ✔ Removing old Image
 ✔ Saving new Image to the Local Repository
 
 
-✔ Successfully built cell image: wso2cellery/cart-cell:latest
+✔ Successfully built cell image: wso2cellery/cart-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
 Execute the following command to run the image:
-  $ cellery run wso2cellery/cart-cell:latest
+  $ cellery run wso2cellery/cart-cell:0.3.0
 --------------------------------------------------------
 ```
 
 ```
-$ cellery run wso2cellery/cart-cell:latest -n cart-cell
-✔ Extracting Cell Image wso2cellery/cart-cell:latest
+$ cellery run wso2cellery/cart-cell:0.3.0 -n cart-cell
+✔ Extracting Cell Image wso2cellery/cart-cell:0.3.0
 
 Main Instance: cart-cell
 
-✔ Reading Cell Image wso2cellery/cart-cell:latest
+✔ Reading Cell Image wso2cellery/cart-cell:0.3.0
 ✔ Validating dependencies
 
 Instances to be Used:
 
   INSTANCE NAME            CELL IMAGE            USED INSTANCE   SHARED  
  --------------- ------------------------------ --------------- -------- 
-  cart-cell       wso2cellery/cart-cell:latest   To be Created    -      
+  cart-cell       wso2cellery/cart-cell:0.3.0   To be Created    -      
 
 Dependency Tree to be Used:
 
@@ -217,7 +217,7 @@ Warning: Value is empty for environment variable "CART_SERVICE_ADDR"
 ✔ Starting main instance cart-cell
 
 
-✔ Successfully deployed cell image: wso2cellery/cart-cell:latest
+✔ Successfully deployed cell image: wso2cellery/cart-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
@@ -230,29 +230,29 @@ Execute the following command to list running cells:
 ### 5. Build and run <b>checkout</b> cell
 ```
 $ cd ../checkout
-$ cellery build checkout.bal wso2cellery/checkout-cell:latest
+$ cellery build checkout.bal wso2cellery/checkout-cell:0.3.0
 
-✔ Building image wso2cellery/checkout-cell:latest
+✔ Building image wso2cellery/checkout-cell:0.3.0
 ✔ Removing old Image
 ✔ Saving new Image to the Local Repository
 
 
-✔ Successfully built cell image: wso2cellery/checkout-cell:latest
+✔ Successfully built cell image: wso2cellery/checkout-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
 Execute the following command to run the image:
-  $ cellery run wso2cellery/checkout-cell:latest
+  $ cellery run wso2cellery/checkout-cell:0.3.0
 --------------------------------------------------------
 ```
 
 ```
-$ cellery run wso2cellery/checkout-cell:latest -n checkout-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -d
-✔ Extracting Cell Image wso2cellery/checkout-cell:latest
+$ cellery run wso2cellery/checkout-cell:0.3.0 -n checkout-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -d
+✔ Extracting Cell Image wso2cellery/checkout-cell:0.3.0
 
 Main Instance: checkout-cell
 
-✔ Reading Cell Image wso2cellery/checkout-cell:latest
+✔ Reading Cell Image wso2cellery/checkout-cell:0.3.0
 ✔ Validating dependency links
 ✔ Generating dependency tree
 ✔ Validating dependency tree
@@ -261,9 +261,9 @@ Instances to be Used:
 
   INSTANCE NAME              CELL IMAGE                 USED INSTANCE       SHARED  
  --------------- ---------------------------------- ---------------------- -------- 
-  cart-cell       wso2cellery/cart-cell:latest       Available in Runtime    -      
-  products-cell   wso2cellery/products-cell:latest   Available in Runtime    -      
-  checkout-cell   wso2cellery/checkout-cell:latest   To be Created           -      
+  cart-cell       wso2cellery/cart-cell:0.3.0       Available in Runtime    -      
+  products-cell   wso2cellery/products-cell:0.3.0   Available in Runtime    -      
+  checkout-cell   wso2cellery/checkout-cell:0.3.0   To be Created           -      
 
 Dependency Tree to be Used:
 
@@ -277,7 +277,7 @@ Dependency Tree to be Used:
 ✔ Starting main instance checkout-cell
 
 
-✔ Successfully deployed cell image: wso2cellery/checkout-cell:latest
+✔ Successfully deployed cell image: wso2cellery/checkout-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
@@ -289,29 +289,29 @@ Execute the following command to list running cells:
 ### 6. Build and run <b>front-end</b> cell
 ```
 $ cd ../front-end
-$ cellery build front-end.bal wso2cellery/front-end-cell:latest
+$ cellery build front-end.bal wso2cellery/front-end-cell:0.3.0
 
-✔ Building image wso2cellery/front-end-cell:latest
+✔ Building image wso2cellery/front-end-cell:0.3.0
 ✔ Removing old Image
 ✔ Saving new Image to the Local Repository
 
 
-✔ Successfully built cell image: wso2cellery/front-end-cell:latest
+✔ Successfully built cell image: wso2cellery/front-end-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
 Execute the following command to run the image:
-  $ cellery run wso2cellery/front-end-cell:latest
+  $ cellery run wso2cellery/front-end-cell:0.3.0
 --------------------------------------------------------
 ```
 
 ```
-$ cellery run wso2cellery/front-end-cell:latest -n front-end-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -l adsCellDep:ads-cell -l checkoutCellDep:checkout-cell -d
-✔ Extracting Cell Image wso2cellery/front-end-cell:latest
+$ cellery run wso2cellery/front-end-cell:0.3.0 -n front-end-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -l adsCellDep:ads-cell -l checkoutCellDep:checkout-cell -d
+✔ Extracting Cell Image wso2cellery/front-end-cell:0.3.0
 
 Main Instance: front-end-cell
 
-✔ Reading Cell Image wso2cellery/front-end-cell:latest
+✔ Reading Cell Image wso2cellery/front-end-cell:0.3.0
 ⚠ Using a shared instance cart-cell for duplicated alias cartCellDep
 ⚠ Using a shared instance products-cell for duplicated alias productsCellDep
 ✔ Validating dependency links
@@ -322,11 +322,11 @@ Instances to be Used:
 
   INSTANCE NAME               CELL IMAGE                  USED INSTANCE       SHARED  
  ---------------- ----------------------------------- ---------------------- -------- 
-  checkout-cell    wso2cellery/checkout-cell:latest    Available in Runtime    -      
-  products-cell    wso2cellery/products-cell:latest    Available in Runtime   Shared  
-  ads-cell         wso2cellery/ads-cell:latest         Available in Runtime    -      
-  cart-cell        wso2cellery/cart-cell:latest        Available in Runtime   Shared  
-  front-end-cell   wso2cellery/front-end-cell:latest   To be Created           -      
+  checkout-cell    wso2cellery/checkout-cell:0.3.0    Available in Runtime    -      
+  products-cell    wso2cellery/products-cell:0.3.0    Available in Runtime   Shared  
+  ads-cell         wso2cellery/ads-cell:0.3.0         Available in Runtime    -      
+  cart-cell        wso2cellery/cart-cell:0.3.0        Available in Runtime   Shared  
+  front-end-cell   wso2cellery/front-end-cell:0.3.0   To be Created           -      
 
 Dependency Tree to be Used:
 
@@ -342,7 +342,7 @@ Dependency Tree to be Used:
 ✔ Starting main instance front-end-cell
 
 
-✔ Successfully deployed cell image: wso2cellery/front-end-cell:latest
+✔ Successfully deployed cell image: wso2cellery/front-end-cell:0.3.0
 
 What's next?
 --------------------------------------------------------
@@ -358,50 +358,50 @@ Now all the application cells are deployed. Run the following command to see the
 $ cellery list instances
  INSTANCE                 CELL IMAGE               STATUS               GATEWAY               COMPONENTS            AGE           
  ---------------- ----------------------------------- -------- --------------------------------- ------------ ----------------------- 
-  ads-cell         wso2cellery/ads-cell:latest         Ready    ads-cell--gateway-service         1            52 minutes 22 seconds  
-  cart-cell        wso2cellery/cart-cell:latest        Ready    cart-cell--gateway-service        2            18 minutes 30 seconds  
-  checkout-cell    wso2cellery/checkout-cell:latest    Ready    checkout-cell--gateway-service    5            11 minutes 10 seconds  
-  front-end-cell   wso2cellery/front-end-cell:latest   Ready    front-end-cell--gateway-service   1            3 minutes 19 seconds   
-  products-cell    wso2cellery/products-cell:latest    Ready    products-cell--gateway-service    2            26 minutes 55 seconds 
+  ads-cell         wso2cellery/ads-cell:0.3.0         Ready    ads-cell--gateway-service         1            52 minutes 22 seconds  
+  cart-cell        wso2cellery/cart-cell:0.3.0        Ready    cart-cell--gateway-service        2            18 minutes 30 seconds  
+  checkout-cell    wso2cellery/checkout-cell:0.3.0    Ready    checkout-cell--gateway-service    5            11 minutes 10 seconds  
+  front-end-cell   wso2cellery/front-end-cell:0.3.0   Ready    front-end-cell--gateway-service   1            3 minutes 19 seconds   
+  products-cell    wso2cellery/products-cell:0.3.0    Ready    products-cell--gateway-service    2            26 minutes 55 seconds 
 ```
 
 Run cellery view command to see the components of your cell. This will open a HTML page in a browser and you can visualize the components and the dependent cells of the cell.
 
 ```
-$ cellery view wso2cellery/ads-cell:latest
+$ cellery view wso2cellery/ads-cell:0.3.0
 ```
 
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/ads-cell-view.png)](../../docs/images/hipster-shop/ads-cell-view.png)
 
 ```
-$ cellery view wso2cellery/products-cell:latest
+$ cellery view wso2cellery/products-cell:0.3.0
 ```
 
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/products-cell-view.png)](../../docs/images/hipster-shop/products-cell-view.png)
 
 ```
-$ cellery view wso2cellery/cart-cell:latest
+$ cellery view wso2cellery/cart-cell:0.3.0
 ```
 
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/cart-cell-view.png)](../../docs/images/hipster-shop/cart-cell-view.png)
 
 ```
-cellery view wso2cellery/checkout-cell:latest
+cellery view wso2cellery/checkout-cell:0.3.0
 ```
 
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/checkout-cell-view.png)](../../docs/images/hipster-shop/checkout-cell-view.png)
 
 ```
-cellery view wso2cellery/front-end-cell:latest
+cellery view wso2cellery/front-end-cell:0.3.0
 ```
 
 [![Cell architecture of Hipstershop services](../../docs/images/hipster-shop/front-end-cell-view.png)](../../docs/images/hipster-shop/front-end-cell-view.png)
 
 
 ### 8. View the application
-You would have already added the `/etc/host` entries during the cellery installation as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/local-setup.md#configure-host-entries), 
-[GCP](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/gcp-setup.md#configure-host-entries) and
-[existing kubernetes cluster](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/existing-cluster.md#configure-host-entries). 
+You would have already added the `/etc/host` entries during the cellery installation as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/local-setup.md#configure-host-entries), 
+[GCP](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and
+[existing kubernetes cluster](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries). 
 You will also need to add the entry `my-hipstershop.com` to the `/etc/host` file as shown below.
 
 ```
@@ -417,7 +417,7 @@ Access url [http://my-hipstershop.com/](http://my-hipstershop.com/) from a brows
 ## Observability
 The hipster shop cells and components can be observed in runtime, and it provides overview about the cells, components, metrics, and distributed tracing. Below are 
 some of the screenshots of observability provided by [http://cellery-dashboard](http://cellery-dashboard). You can find more information about the observability 
-[here](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md). 
+[here](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/cellery-observability.md). 
 
 ---
 Cells overview.

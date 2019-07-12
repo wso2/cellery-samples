@@ -39,9 +39,9 @@ This Pet store sample includes,
 
 ## Quick run 
 1. Pet store application can be started by executing the single command as shown below. For more details about flags 
-refer [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-run).
+refer [here](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/cli-reference.md#cellery-run).
 ```
- $ cellery run wso2cellery/pet-fe-cell:latest -n pet-fe -l petStoreBackend:pet-be -d -y
+ $ cellery run wso2cellery/pet-fe-cell:0.3.0 -n pet-fe -l petStoreBackend:pet-be -d -y
 ```
 2. Executed `cellery list instances` and make sure pet-be and pet-fe cells are `Ready` as shown below.
 ```
@@ -49,8 +49,8 @@ refer [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.
   
   INSTANCE             CELL IMAGE             STATUS           GATEWAY           COMPONENTS           AGE
  ---------- -------------------------------- -------- ------------------------- ------------ ---------------------
-  pet-be     wso2cellery/pet-be-cell:latest   Ready    pet-be--gateway-service   4            2 hours 47 minutes
-  pet-fe     wso2cellery/pet-fe-cell:latest   Ready    pet-fe--gateway-service   1            3 hours 16 minutes
+  pet-be     wso2cellery/pet-be-cell:0.3.0   Ready    pet-be--gateway-service   4            2 hours 47 minutes
+  pet-fe     wso2cellery/pet-fe-cell:0.3.0   Ready    pet-fe--gateway-service   1            3 hours 16 minutes
 ```
 3. Now view the application by following the [instructions](#view-application).
 
@@ -92,7 +92,7 @@ orders endpoint of the Petstore backend by following the instructions given [her
 
 ## [Observability](../../docs/pet-store/observability.md)
 You can observe the pet-store application in runtime, and view cell overeview, request traces, metrics, dependency diagram and much more. 
-Cellery observability mainly supported by [Cellery Dashboard](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md#use-cellery-dashboard). 
+Cellery observability mainly supported by [Cellery Dashboard](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/cellery-observability.md#use-cellery-dashboard). 
 Please follow the instructions provided [here](../../docs/pet-store/observability.md) to use observability with pet-store. 
 
 ## [Update cell with new version](../../docs/pet-store/cell-component-update-and-adv-deployment.md)
