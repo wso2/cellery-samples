@@ -53,7 +53,7 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
             cells: {
-                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "latest" }
+                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "latest-dev" }
             }
         }
     };
