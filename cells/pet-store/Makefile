@@ -65,12 +65,12 @@ cellery-build.$(ADVANCED_CELL):
 .PHONY: cellery-push.$(PET_BE_CELL)
 cellery-push.$(PET_BE_CELL):
 	cd  $(PET_BE_CELL); \
-	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION) -u $(CELLERY_USER) -p $(CELLERY_USER_PASS) -k
+	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
 
 .PHONY: cellery-push.$(PET_FE_CELL)
 cellery-push.$(PET_FE_CELL):
 	cd  $(PET_FE_CELL); \
-	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION) -u $(CELLERY_USER) -p $(CELLERY_USER_PASS) -k
+	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_FE_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
 
 .PHONY: cellery-push.$(ADVANCED_CELL)
 cellery-push.$(ADVANCED_CELL):
