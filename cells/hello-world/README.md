@@ -35,7 +35,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component helloComponent = {
         name: "hello",
         source: {
-            image: "wso2cellery/samples-hello-world-webapp:latest"
+            image: "wso2cellery/samples-hello-world-webapp:latest-dev"
         },
         ingresses: {
             webUI: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
