@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component loadGenComponent = {
         name: "load-gen",
         source: {
-            image: "wso2cellery/samples-pet-store-load-gen:latest"
+            image: "wso2cellery/samples-pet-store-load-gen:latest-dev"
         },
         envVars: {
             DURATION: { value: "5m" },
