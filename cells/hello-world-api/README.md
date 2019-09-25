@@ -33,8 +33,8 @@ public function build(cellery:ImageName iName) returns error? {
             image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:latest"
         },
         ingresses: {
-            helloApi: <cellery:HttpApiIngress>{ port: 9090,
-                context: "hello",
+            ingress: <cellery:HttpApiIngress>{ port: 9090,
+                context: "/hello",
                 definition: {
                     resources: [
                         {

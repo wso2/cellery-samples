@@ -69,9 +69,9 @@ public function build(cellery:ImageName iName) returns error? {
             image: "wso2cellery/samples-pet-store-controller:latest"
         },
         ingresses: {
-            controller: <cellery:HttpApiIngress>{
+            ingress: <cellery:HttpApiIngress>{
                 port: 80,
-                context: "controller",
+                context: "/controller",
                 expose: "local",
                 definition: <cellery:ApiDefinition>cellery:readSwaggerFile(
                                                        "./resources/pet-store.swagger.json")
