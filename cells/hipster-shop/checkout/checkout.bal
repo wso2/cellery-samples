@@ -134,8 +134,8 @@ public function build(cellery:ImageName iName) returns error? {
         dependencies: {
             components: [emailServiceComponent, paymentServiceComponent, shippingServiceComponent, currencyServiceComponent],
             cells: {
-                productsCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "products-cell", ver: "latest"},
-                cartCellDep: <cellery:ImageName> { org: "wso2cellery", name: "cart-cell", ver: "latest" }
+                productsCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "products-cell", ver: "latest-dev"},
+                cartCellDep: <cellery:ImageName> { org: "wso2cellery", name: "cart-cell", ver: "latest-dev" }
             }
         }
     };
