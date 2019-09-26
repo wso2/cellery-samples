@@ -71,7 +71,7 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(petStoreFrontendCell, untaint iName);
 }
 
-public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
     cellery:CellImage petStoreFrontendCell = check cellery:constructCellImage(untaint iName);
     cellery:Component portalComponent = petStoreFrontendCell.components.portal;
     string vhostName = config:getAsString("VHOST_NAME");
@@ -92,5 +92,5 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     };
     portalIngress.gatewayConfig.oidc.clientSecret = dcrConfig;
 
-    return cellery:createInstance(petStoreFrontendCell, iName, instances);
+    return cellery:createInstance(petStoreFrontendCell, iName, instances, startDependencies, shareDependencies);
 }

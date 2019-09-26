@@ -60,7 +60,7 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(helloCell, untaint iName);
 }
 
-public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
     cellery:CellImage helloCell = check cellery:constructCellImage(untaint iName);
     string vhostName = config:getAsString("VHOST_NAME");
     if (vhostName !== "") {
@@ -72,7 +72,7 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     if (helloName !== "") {
         helloCell.components.helloComp.envVars.HELLO_NAME.value = helloName;
     }
-    return cellery:createInstance(helloCell, iName, instances);
+    return cellery:createInstance(helloCell, iName, instances, startDependencies, shareDependencies);
 }
 ```
 ---

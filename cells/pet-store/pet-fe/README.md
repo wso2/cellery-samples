@@ -71,7 +71,7 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(petStoreFrontendCell, untaint iName);
 }
 
-public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
     cellery:CellImage petStoreFrontendCell = check cellery:constructCellImage(untaint iName);
     cellery:Component portalComponent = petStoreFrontendCell.components.portal;
     string vhostName = config:getAsString("VHOST_NAME");
@@ -83,16 +83,16 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     }
 
     cellery:WebIngress portalIngress = <cellery:WebIngress>portalComponent.ingresses.portal;
-    portalIngress.gatewayConfig.oidc.providerUrl = config:getAsString("providerUrl", default =
+    portalIngress.gatewayConfig.oidc.providerUrl = config:getAsString("providerUrl", defaultValue =
         "https://idp.cellery-system/oauth2/token");
-    portalIngress.gatewayConfig.oidc.clientId = config:getAsString("clientId", default = "petstoreapplication");
+    portalIngress.gatewayConfig.oidc.clientId = config:getAsString("clientId", defaultValue = "petstoreapplication");
     cellery:DCR dcrConfig = {
-        dcrUser: config:getAsString("dcrUser", default = "admin"),
-        dcrPassword: config:getAsString("dcrPassword", default = "admin")
+        dcrUser: config:getAsString("dcrUser", defaultValue = "admin"),
+        dcrPassword: config:getAsString("dcrPassword", defaultValue = "admin")
     };
     portalIngress.gatewayConfig.oidc.clientSecret = dcrConfig;
 
-    return cellery:createInstance(petStoreFrontendCell, iName, instances);
+    return cellery:createInstance(petStoreFrontendCell, iName, instances, startDependencies, shareDependencies);
 }
 ```
 
