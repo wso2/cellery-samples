@@ -51,3 +51,8 @@ public function build(cellery:ImageName iName) returns error? {
     io:println("Building Hello World Cell ...");
     return cellery:createImage(helloCell, untaint iName);
 }
+
+public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
+    cellery:CellImage helloWorldApiCel = check cellery:constructCellImage(untaint iName);
+    return cellery:createInstance(helloWorldApiCel, iName, instances, startDependencies, shareDependencies);
+}

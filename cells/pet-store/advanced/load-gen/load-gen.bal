@@ -40,7 +40,7 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(loadGenCell, untaint iName);
 }
 
-public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
     cellery:CellImage loadGenImage = check cellery:constructCellImage(untaint iName);
     cellery:Component loadGenComponent = loadGenImage.components.loadGen;
 
@@ -58,6 +58,6 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances) r
     if (petStoreInstance !== "") {
             loadGenComponent.envVars.PET_STORE_INST.value = petStoreInstance;
     }
-    return cellery:createInstance(loadGenImage, iName, instances);
+    return cellery:createInstance(loadGenImage, iName, instances, startDependencies, shareDependencies);
 }
 

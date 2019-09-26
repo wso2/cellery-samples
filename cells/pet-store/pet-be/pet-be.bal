@@ -102,26 +102,28 @@ public function build(cellery:ImageName iName) returns error? {
     return cellery:createImage(petStoreBackendCell, untaint iName);
 }
 
-public function run(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
     cellery:CellImage petStoreBackendCell = check cellery:constructCellImage(untaint iName);
-    return cellery:createInstance(petStoreBackendCell, iName, instances);
+    return cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
 }
 
-public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
-    cellery:Test petBeTest = {
-        name: "pet-be-test",
-        source: {
-            image: "docker.io/wso2cellery/pet-be-tests"
-        },
-        envVars: {
-            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(iName).controller_api_url }
-        }
-    };
-    cellery:TestSuite petBeTestSuite = {
-        tests: [petBeTest]
-    };
+// Todo: update to new ballerina run function
 
-    cellery:ImageName[] instanceList = cellery:runInstances(iName, instances);
-    error? a = cellery:runTestSuite(iName, petBeTestSuite);
-    return cellery:stopInstances(iName, instanceList);
-}
+//public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
+//    cellery:Test petBeTest = {
+//        name: "pet-be-test",
+//        source: {
+//            image: "docker.io/wso2cellery/pet-be-tests"
+//        },
+//        envVars: {
+//            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(iName).controller_api_url }
+//        }
+//    };
+//    cellery:TestSuite petBeTestSuite = {
+//        tests: [petBeTest]
+//    };
+//
+//    cellery:ImageName[] instanceList = cellery:runInstances(iName, instances);
+//    error? a = cellery:runTestSuite(iName, petBeTestSuite);
+//    return cellery:stopInstances(iName, instanceList);
+//}
