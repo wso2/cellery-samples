@@ -31,9 +31,11 @@ import {StaticRouter} from "react-router-dom";
 import {MuiThemeProvider, createGenerateClassName} from "@material-ui/core/styles";
 import {generateTheme, renderFullPage} from "../utils";
 import * as express from "express";
+import * as morgan from "morgan";
 import * as path from "path";
 import * as petStoreApi from "../gen/petStoreApi";
 import * as proxy from "express-http-proxy";
+import * as rotatingFileStream from "rotating-file-stream";
 
 const CELLERY_USER_HEADER = "x-cellery-auth-subject";
 
@@ -74,6 +76,31 @@ const createServer = (port) => {
     const petStoreCellUrl = process.env.PET_STORE_CELL_URL;
 
     app.use("/app", express.static(path.join(__dirname, "/app")));
+
+    // Logger for access logs
+    const accessLogStream = rotatingFileStream("access.log", {
+        interval: "1d",
+        path: path.join(__dirname, "log")
+    });
+    app.use(morgan("combined", {
+        stream: accessLogStream
+    }));
+
+    // Logger for 4xx and 5xx responses
+    morgan.token("log-level", (req, res) => {
+        let logLevel;
+        if (res.statusCode >= 500) {
+            logLevel = "ERROR";
+        } else if (res.statusCode >= 400 && res.statusCode < 500) {
+            logLevel = "WARN";
+        } else  {
+            logLevel = "INFO";
+        }
+        return logLevel;
+    });
+    app.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
+        skip: (req, res) => res.statusCode < 400
+    }));
 
     // Proxy API requests to controller
     const parsedPetStoreCellUrl = new URL(petStoreCellUrl);

@@ -22,11 +22,13 @@
     "express": "^4.16.4",
     "express-http-proxy": "^1.5.1",
     "jss": "^9.8.7",
+    "morgan": "^1.9.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-jss": "^8.6.1",
-    "react-router-dom": "^5.0.0"
+    "react-router-dom": "^5.0.0",
+    "rotating-file-stream": "^1.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
