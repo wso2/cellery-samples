@@ -107,23 +107,38 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances, b
     return cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
 }
 
-// Todo: update to new ballerina run function
+public function test(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns error? {
+    cellery:Test petBeDockerTests = {
+        name: "pet-be-test",
+        source: {
+            image: "docker.io/wso2cellery/pet-be-tests"
+        },
+        envVars: {
+            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(iName).controller_ingress_api_url }
+        }
+    };
+    cellery:Test petBeInlineTests = {
+        name: "pet-be-test",
+        source : <cellery:FileSource> {
+            filepath: "tests/"
+        }
+    };
+    cellery:TestSuite petBeTestSuite = {
+        tests: [petBeDockerTests, petBeInlineTests]
+    };
 
-//public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
-//    cellery:Test petBeTest = {
-//        name: "pet-be-test",
-//        source: {
-//            image: "docker.io/wso2cellery/pet-be-tests"
-//        },
-//        envVars: {
-//            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(iName).controller_api_url }
-//        }
-//    };
-//    cellery:TestSuite petBeTestSuite = {
-//        tests: [petBeTest]
-//    };
-//
-//    cellery:ImageName[] instanceList = cellery:runInstances(iName, instances);
-//    error? a = cellery:runTestSuite(iName, petBeTestSuite);
-//    return cellery:stopInstances(iName, instanceList);
-//}
+    cellery:InstanceState[]|error? result = run(iName, instances, startDependencies, shareDependencies);
+    cellery:InstanceState[] instanceList = [];
+    if (result is error) {
+        cellery:InstanceState iNameState = {
+            iName : iName,
+            isRunning: true
+        };
+        instanceList = [iNameState];
+    } else {
+        instanceList = <cellery:InstanceState[]>result;
+    }
+
+    error? a = cellery:runTestSuite(instanceList, petBeTestSuite);
+    return cellery:stopInstances(instanceList);
+}
