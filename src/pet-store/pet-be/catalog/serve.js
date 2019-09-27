@@ -16,12 +16,40 @@
 
 const express = require("express");
 const fs = require("fs");
+const morgan = require("morgan");
+const path = require("path");
+const rotatingFileStream = require("rotating-file-stream");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3001;
 const catalogDataFile = "data/catalog.json";
 
 service.use(express.json());
+
+// Logger for access logs
+const accessLogStream = rotatingFileStream("access.log", {
+    interval: "1d",
+    path: path.join(__dirname, "log")
+});
+service.use(morgan("combined", {
+    stream: accessLogStream
+}));
+
+// Logger for 4xx and 5xx responses
+morgan.token("log-level", (req, res) => {
+    let logLevel;
+    if (res.statusCode >= 500) {
+        logLevel = "ERROR";
+    } else if (res.statusCode >= 400 && res.statusCode < 500) {
+        logLevel = "WARN";
+    } else  {
+        logLevel = "INFO";
+    }
+    return logLevel;
+});
+service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
+    skip: (req, res) => res.statusCode < 400
+}));
 
 /**
  * Handle a success response from the API invocation.
