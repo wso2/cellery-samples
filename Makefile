@@ -23,9 +23,11 @@ CELLERY_VERSION ?= latest-dev
 
 SRC_DIR := src
 CELLS_DIR := cells
+COMPOSITES_DIR := composites
 TESTS_DIR := tests
 SAMPLES_SRC := pet-store hello-world hello-world-api
 SAMPLES_CELLS := pet-store hello-world hello-world-api hipster-shop
+SAMPLES_COMPOSITES := pet-store
 SAMPLES_TESTS := pet-store
 
 CLEAN_TARGETS := $(addprefix clean., $(SAMPLES_SRC))
@@ -33,8 +35,10 @@ CHECK_STYLE_TARGETS := $(addprefix check-style., $(SAMPLES_SRC))
 BUILD_TARGETS := $(addprefix build., $(SAMPLES_SRC))
 DOCKER_TARGETS := $(addprefix docker., $(SAMPLES_SRC))
 DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(SAMPLES_SRC))
-CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(SAMPLES_CELLS))
-CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(SAMPLES_CELLS))
+CELLERY_BUILD_CELL_TARGETS := $(addprefix cellery-build., $(SAMPLES_CELLS))
+CELLERY_BUILD_COMPOSITE_TARGETS := $(addprefix cellery-composite-build., $(SAMPLES_COMPOSITES))
+CELLERY_PUSH_CELL_TARGETS := $(addprefix cellery-push., $(SAMPLES_CELLS))
+CELLERY_PUSH_COMPOSITE_TARGETS := $(addprefix cellery-composite-push., $(SAMPLES_COMPOSITES))
 TEST_CLEAN_TARGETS := $(addprefix clean-tests., $(SAMPLES_TESTS))
 TEST_CHECK_STYLE_TARGETS := $(addprefix check-style-tests., $(SAMPLES_TESTS))
 TEST_DOCKER_TARGETS := $(addprefix docker-tests., $(SAMPLES_TESTS))
@@ -71,10 +75,10 @@ docker-push: $(DOCKER_PUSH_TARGETS)
 docker-push-tests: $(TEST_DOCKER_PUSH_TARGETS)
 
 .PHONY: cellery-build
-cellery-build: $(CELLERY_BUILD_TARGETS)
+cellery-build: $(CELLERY_BUILD_CELL_TARGETS) $(CELLERY_BUILD_COMPOSITE_TARGETS)
 
 .PHONY: cellery-push
-cellery-push: $(CELLERY_PUSH_TARGETS)
+cellery-push: $(CELLERY_PUSH_CELL_TARGETS)
 
 
 ## Sample Level Targets
@@ -133,16 +137,30 @@ $(TEST_DOCKER_PUSH_TARGETS):
 	@cd $(TESTS_DIR)/$(SAMPLE); \
 	DOCKER_REPO=$(DOCKER_REPO) DOCKER_IMAGE_TAG=$(DOCKER_IMAGE_TAG) $(MAKE) docker-push-tests
 
-.PHONY: $(CELLERY_BUILD_TARGETS)
-$(CELLERY_BUILD_TARGETS):
+.PHONY: $(CELLERY_BUILD_CELL_TARGETS)
+$(CELLERY_BUILD_CELL_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-build.%,%,$@))
 	@cd $(CELLS_DIR)/$(SAMPLE); \
 	CELLERY_ORG=$(CELLERY_ORG) CELLERY_VERSION=$(CELLERY_VERSION) $(MAKE) cellery-build
 
-.PHONY: $(CELLERY_PUSH_TARGETS)
-$(CELLERY_PUSH_TARGETS):
+.PHONY: $(CELLERY_BUILD_COMPOSITE_TARGETS)
+$(CELLERY_BUILD_COMPOSITE_TARGETS):
+	$(eval SAMPLE=$(patsubst cellery-composite-build.%,%,$@))
+	@cd $(COMPOSITES_DIR)/$(SAMPLE); \
+	CELLERY_ORG=$(CELLERY_ORG) CELLERY_VERSION=$(CELLERY_VERSION) $(MAKE) cellery-build
+
+.PHONY: $(CELLERY_PUSH_CELL_TARGETS)
+$(CELLERY_PUSH_CELL_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-push.%,%,$@))
 	@cd $(CELLS_DIR)/$(SAMPLE); \
+	CELLERY_REGISTRY=$(CELLERY_REGISTRY) CELLERY_ORG=$(CELLERY_ORG) CELLERY_VERSION=$(CELLERY_VERSION) \
+	CELLERY_USER=$(CELLERY_USER) CELLERY_USER_PASS=$(CELLERY_USER_PASS) \
+	$(MAKE) cellery-push
+
+.PHONY: $(CELLERY_PUSH_COMPOSITES_TARGETS)
+$(CELLERY_PUSH_COMPOSITES_TARGETS):
+	$(eval SAMPLE=$(patsubst cellery-composite-push.%,%,$@))
+	@cd $(COMPOSITES_DIR)/$(SAMPLE); \
 	CELLERY_REGISTRY=$(CELLERY_REGISTRY) CELLERY_ORG=$(CELLERY_ORG) CELLERY_VERSION=$(CELLERY_VERSION) \
 	CELLERY_USER=$(CELLERY_USER) CELLERY_USER_PASS=$(CELLERY_USER_PASS) \
 	$(MAKE) cellery-push
