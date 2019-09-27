@@ -88,14 +88,13 @@ const createServer = (port) => {
 
     // Logger for 4xx and 5xx responses
     morgan.token("log-level", (req, res) => {
-        let logLevel;
+        let logLevel = "INFO";
         if (res.statusCode >= 500) {
             logLevel = "ERROR";
         } else if (res.statusCode >= 400 && res.statusCode < 500) {
             logLevel = "WARN";
-        } else  {
-            logLevel = "INFO";
         }
+
         return logLevel;
     });
     app.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
@@ -104,8 +103,9 @@ const createServer = (port) => {
 
     // Proxy API requests to controller
     const parsedPetStoreCellUrl = new URL(petStoreCellUrl);
+    const petStoreContext = parsedPetStoreCellUrl.pathname === "/" ? "" : parsedPetStoreCellUrl.pathname;
     app.use("/api", proxy(parsedPetStoreCellUrl.host, {
-        proxyReqPathResolver: (req) => parsedPetStoreCellUrl.pathname + req.url
+        proxyReqPathResolver: (req) => petStoreContext + req.url
     }));
 
     /*

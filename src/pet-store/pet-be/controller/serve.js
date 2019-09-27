@@ -60,14 +60,13 @@ service.use(morgan("combined", {
 
 // Logger for 4xx and 5xx responses
 morgan.token("log-level", (req, res) => {
-    let logLevel;
+    let logLevel = "INFO";
     if (res.statusCode >= 500) {
         logLevel = "ERROR";
     } else if (res.statusCode >= 400 && res.statusCode < 500) {
         logLevel = "WARN";
-    } else  {
-        logLevel = "INFO";
     }
+
     return logLevel;
 });
 service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
