@@ -57,7 +57,7 @@ function testInsertOrder() {
     cellery:Reference petFeUrls = <cellery:Reference>cellery:getGatewayHost(instanceList);
     
     string PET_FE_GATEWAY_ENDPOINT = "http://" + <string>petFeUrls.gateway_host;
-    string PET_BE_CONTROLLER_ENDPOINT= <string>petBeUrls.controller_controller_api_url;
+    string PET_BE_CONTROLLER_ENDPOINT= <string>petBeUrls.controller_ingress_api_url;
     io:println(PET_FE_GATEWAY_ENDPOINT);
     io:println(PET_BE_CONTROLLER_ENDPOINT);
 
