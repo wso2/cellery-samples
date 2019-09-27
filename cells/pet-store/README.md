@@ -41,7 +41,7 @@ This Pet store sample includes,
 1. Pet store application can be started by executing the single command as shown below. For more details about flags 
 refer [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-run).
 ```
- $ cellery run wso2cellery/pet-fe-cell:latest -n pet-fe -l petStoreBackend:pet-be -d -y
+ $ cellery run wso2cellery/pet-fe-cell:latest -n pet-fe -l petStoreBackend:pet-be -d
 ```
 2. Executed `cellery list instances` and make sure pet-be and pet-fe cells are `Ready` as shown below.
 ```

@@ -45,13 +45,13 @@ pet-be--controller-autoscalepolicy-hpa   Deployment/pet-be--controller-deploymen
 You can also optionally pass the `-f` flag to point to the file location to be used to store the policy as explained 
 [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-export-policy). 
 ```
- $ cellery export-policy autoscale pet-be 
+ $ cellery export-policy autoscale cell pet-be 
 ```
 4) Run a [load generator cell](../../cells/pet-store/advanced/load-gen/load-gen.bal) which invokes the pet-be's 
 `catalog` component in a high concurrency. There are optional environmental variables can be passed to the load-gen 
 cell to configure the duration (default 5minutes), concurrency (default 40) of the load test, and pet-store instance name (default pet-be). 
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -n load-gen -y 
+$ cellery run wso2cellery/load-gen-cell:latest -n load-gen 
 ```
  OR
 ```

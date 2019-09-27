@@ -25,7 +25,7 @@ $ cellery pull wso2cellery/pet-be-cell:latestv2
 
 2) Update the currently running `pet-be` instance with below command.
 ```
-cellery update pet-be wso2cellery/pet-be-cell:latestv2
+$ cellery patch pet-be controller --container-image wso2cellery/petbe-controller:latestv2
 ```
 3) Now execute `kubectl get pods` and you can see the pods of the `pet-be` are getting initialized. And finally, older pods are getting terminated.
 ```
@@ -69,7 +69,7 @@ $ cellery run wso2cellery/pet-be-auto-scale-cell:latest -n pet-be-as
 3) Cell `pet-fe` was linked to `pet-be` instance as pet store application was started as shown [here](../../cells/pet-store/README.md#quick-run).
  Let us route the 50% of the traffic to the new `pet-be-as` cell instance as shown below. 
 ```
-$ cellery route-traffic pet-be -p pet-be-as=50
+$ cellery route-traffic -d pet-be -t pet-be-as -p 50
 ```
 
 4) Now you can check the pet-store application is up and running by following the instructions [here](../../cells/pet-store/README.md#view-application).
@@ -79,7 +79,7 @@ gateway component in each cell instances to validate this.
 
 ```
 // Logs from pet-be cell gateway. Note the timestamp of last logs.
-$ kubectl logs pet-be--gateway-deployment-7f787575c6-pwvw7 cell-gateway
+$ kubectl logs pet-be--gateway-deployment-7f787575c6-pwvw7 envoy-gateway
 2019-07-05 13:24:22,270 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [3561fa90-06c2-4589-ab0d-5b0b4a51fb51] Throttling latency: 2ms
 2019-07-05 13:24:22,273 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [3561fa90-06c2-4589-ab0d-5b0b4a51fb51] Throttling latency: 0ms
 2019-07-05 13:24:22,273 DEBUG [ballerina/http] - Cached response not found for: 'GET /orders'
@@ -90,7 +90,7 @@ $ kubectl logs pet-be--gateway-deployment-7f787575c6-pwvw7 cell-gateway
 
 ```
 // Logs from pet-be-as cell gateway. Note the timestamp of last logs.
-$ kubectl logs pet-be--gateway-deployment-7f787575c6-pwvw7 cell-gateway
+$ kubectl logs pet-be-as--gateway-deployment-7f787575c6-pwvw7 cell-gateway
 2019-07-05 13:24:24,764 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [33801ec3-1be0-46b8-9559-e6b74ae7c929] Request is not throttled
 2019-07-05 13:24:24,764 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [33801ec3-1be0-46b8-9559-e6b74ae7c929] Throttling latency: 5ms
 2019-07-05 13:24:24,765 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [33801ec3-1be0-46b8-9559-e6b74ae7c929] Throttling latency: 1ms
@@ -121,7 +121,7 @@ $ kubectl logs pet-be--gateway-deployment-7f787575c6-pwvw7 cell-gateway
 
 ```
 // Logs from pet-be-as cell gateway. Note the timestamp of last logs, and it has been updated from step-5.
-$ kubectl logs pet-be--gateway-deployment-7f787575c6-pwvw7 cell-gateway
+$ kubectl logs pet-be-as--gateway-deployment-7f787575c6-pwvw7 cell-gateway
 2019-07-05 13:30:37,450 DEBUG [wso2/gateway:0.0.0] - [ThrottleUtil] [26d9f835-2269-46fb-b09f-e60a72fea52f] Throttle out event is sent to the queue.
 2019-07-05 13:30:37,450 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [26d9f835-2269-46fb-b09f-e60a72fea52f] Request is not throttled
 2019-07-05 13:30:37,450 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [26d9f835-2269-46fb-b09f-e60a72fea52f] Throttling latency: 2ms
