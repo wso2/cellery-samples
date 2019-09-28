@@ -51,7 +51,7 @@ cellery-build.$(USE_CASES):
 
 .PHONY: cellery-push.$(USE_CASES)
 cellery-push.$(USE_CASES):
-	cd  $(PET_BE_CELL); \
+	cd  $(USE_CASES); \
 	if test -f $(PET_BE_COMP).bal; \
     then cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_COMP):$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS); \
     fi; \
