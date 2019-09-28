@@ -38,7 +38,7 @@ DOCKER_PUSH_TARGETS := $(addprefix docker-push., $(SAMPLES_SRC))
 CELLERY_BUILD_CELL_TARGETS := $(addprefix cellery-build., $(SAMPLES_CELLS))
 CELLERY_BUILD_COMPOSITE_TARGETS := $(addprefix cellery-composite-build., $(SAMPLES_COMPOSITES))
 CELLERY_PUSH_CELL_TARGETS := $(addprefix cellery-push., $(SAMPLES_CELLS))
-CELLERY_PUSH_COMPOSITE_TARGETS := $(addprefix cellery-composite-push., $(SAMPLES_COMPOSITES))
+CELLERY_PUSH_COMPOSITES_TARGETS := $(addprefix cellery-composite-push., $(SAMPLES_COMPOSITES))
 TEST_CLEAN_TARGETS := $(addprefix clean-tests., $(SAMPLES_TESTS))
 TEST_CHECK_STYLE_TARGETS := $(addprefix check-style-tests., $(SAMPLES_TESTS))
 TEST_DOCKER_TARGETS := $(addprefix docker-tests., $(SAMPLES_TESTS))
@@ -79,7 +79,6 @@ cellery-build: $(CELLERY_BUILD_CELL_TARGETS) $(CELLERY_BUILD_COMPOSITE_TARGETS)
 
 .PHONY: cellery-push
 cellery-push: $(CELLERY_PUSH_CELL_TARGETS) $(CELLERY_PUSH_COMPOSITE_TARGETS)
-
 
 ## Sample Level Targets
 
