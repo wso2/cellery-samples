@@ -23,11 +23,13 @@ const rotatingFileStream = require("rotating-file-stream");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3003;
+const isGuestModeEnabled = process.env.GUEST_MODE_ENABLED || false;
 const ordersDataDir = "data";
 const ordersDataFile = `${ordersDataDir}/orders.json`;
 
 const DATE_FORMAT = "DD-MM-YYYY";
 const CELLERY_USER_HEADER = "x-cellery-auth-subject";
+const PET_STORE_GUEST_HEADER = "x-pet-store-guest";
 
 fs.mkdirSync(ordersDataDir); // eslint-disable-line no-sync
 fs.writeFileSync(ordersDataFile, "[]", "utf8"); // eslint-disable-line no-sync
@@ -57,6 +59,23 @@ morgan.token("log-level", (req, res) => {
 service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
     skip: (req, res) => res.statusCode < 400
 }));
+
+/**
+ * Get the username of the user who invoked the API.
+ *
+ * @param req The express request object received
+ * @return The username of the user who invoked the API
+ */
+const getUsername = (req) => {
+    let username = null;
+    if (req) {
+        username = req.get(CELLERY_USER_HEADER);
+        if (!username && isGuestModeEnabled) {
+            username = req.get(PET_STORE_GUEST_HEADER);
+        }
+    }
+    return username;
+};
 
 /**
  * Handle a success response from the API invocation.
@@ -110,7 +129,7 @@ service.get("/orders", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            const user = req.get(CELLERY_USER_HEADER);
+            const user = getUsername(req);
             const orderList = orders.filter((order) => order.customer === user);
             handleSuccess(res, orderList);
         }
@@ -127,7 +146,7 @@ service.post("/orders", (req, res) => {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
             // Creating the new order data
-            const user = req.get(CELLERY_USER_HEADER);
+            const user = getUsername(req);
             const maxId = orders.reduce((acc, order) => order.id > acc ? order.id : acc, 0);
             orders.push({
                 ...req.body,
@@ -159,7 +178,7 @@ service.get("/orders/:id", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            const user = req.get(CELLERY_USER_HEADER);
+            const user = getUsername(req);
             let match = orders.filter((order) => order.id === req.params.id && order.customer === user);
             if (match.length === 1) {
                 handleSuccess(res, match[0]);
@@ -179,7 +198,7 @@ service.put("/orders/:id", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            const user = req.get(CELLERY_USER_HEADER);
+            const user = getUsername(req);
             const match = orders.filter((order) => order.id === req.params.id && order.customer === user);
 
             if (match.length === 1) {
@@ -209,7 +228,7 @@ service.delete("/orders/:id", (req, res) => {
         if (err) {
             handleError(res, "Failed to read data file " + ordersDataFile + " due to " + err);
         } else {
-            const user = req.get(CELLERY_USER_HEADER);
+            const user = getUsername(req);
             const newOrders = orders.filter((order) => order.id !== req.params.id || order.customer !== user);
 
             if (newOrders.length === orders.length) {
