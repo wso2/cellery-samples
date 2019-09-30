@@ -17,7 +17,7 @@ Follow the below mentioned steps to update the current running cell pet-be.
 Let's assume the pet-be components should be updated with resource requests and limits as per advanced 
 [pet-be.bal](../../cells/pet-store/advanced/pet-be/pet-be.bal). And now we require to update the current running pet-be bal with this new cell. 
 
-1) You can optionally build the updated pet-be cell `wso2cellery/pet-be-auto-scale-cell:latest` as explained [here](build-and-run.md). 
+1) You can optionally build the updated pet-be cell `wso2cellery/pet-be-cell:latestv2` as explained [here](build-and-run.md). 
 Or you can simply pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
 ```
 $ cellery pull wso2cellery/pet-be-cell:latestv2
