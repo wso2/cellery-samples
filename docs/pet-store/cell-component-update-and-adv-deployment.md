@@ -12,7 +12,7 @@ The components within the cell can updated via rolling update. This will termina
 the changes, and eventually the whole cell will be updated with new version. 
 This is an in-place update mechanism and only considers changes done to docker images which are encapsulated in components.
 
-Follow the below mentioned steps update the current running cell pet-be.  
+Follow the below mentioned steps to update the current running cell pet-be.  
 
 Let's assume the pet-be components should be updated with resource requests and limits as per advanced 
 [pet-be.bal](../../cells/pet-store/advanced/pet-be/pet-be.bal). And now we require to update the current running pet-be bal with this new cell. 
