@@ -15,9 +15,15 @@ Cellery Samples contains various samples that can be deployed in a Cellery Runti
 
 Once you have completed cellery setup, you can proceed with deploying the samples provided below. You can find the following samples in this repository.
 
+# Cells
+
 * [Hello world](cells/hello-world)
 * [Hello world Api](cells/hello-world-api)
 * [Pet store](cells/pet-store)
 * [Hipster shop](cells/hipster-shop)
+
+# Composites
+
+* [Todo service](composites/todo-service)
 
 Please follow the relevant documentation provided in the samples to learn more about the samples and deploy them.
