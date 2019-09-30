@@ -175,7 +175,7 @@ pet-be--sts-deployment-7f4f56b5d5-qwfzw         3/3     Running   0          7m2
 `catalog` component in a high concurrency. There are optional environmental variables can be passed to the load-gen 
 cell to configure the duration (default 5minutes), concurrency (default 40) of the load test, and pet-store instance name (default pet-be). 
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -n load-gen -y 
+$ cellery run wso2cellery/load-gen-cell:latest -n load-gen
 ```
   OR
 ```
