@@ -25,7 +25,9 @@ COMPOSITE_FILE := todo-composite
 all: cellery-build
 
 .PHONY: cellery-build
-cellery-build: cellery build $(COMPOSITE_FILE).bal $(CELLERY_ORG)/$(COMPOSITE_FILE):$(CELLERY_VERSION); \
+cellery-build:
+	cellery build $(COMPOSITE_FILE).bal $(CELLERY_ORG)/$(COMPOSITE_FILE):$(CELLERY_VERSION); \
 
 .PHONY: cellery-push
-cellery-push: cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(COMPOSITE_FILE):$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS); \
+cellery-push:
+	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(COMPOSITE_FILE):$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS); \
