@@ -8,7 +8,7 @@ This readme explains the steps to update the components of the running cell pet-
 - You should have the pet-store application running as explained [here](../../cells/pet-store/README.md).
 
 ## Cell Component Update
-The components within the cell can updated via rolling update. This will terminate the components one-by-one and apply 
+The components within the cell can be updated via rolling update. This will terminate the components one-by-one and apply 
 the changes, and eventually the whole cell will be updated with new version. 
 This is an in-place update mechanism and only considers changes done to docker images which are encapsulated in components.
 
@@ -17,7 +17,7 @@ Follow the below mentioned steps to update the current running cell pet-be.
 Let's assume the pet-be components should be updated with resource requests and limits as per advanced 
 [pet-be.bal](../../cells/pet-store/advanced/pet-be/pet-be.bal). And now we require to update the current running pet-be bal with this new cell. 
 
-1) You can optionally build the updated pet-be cell `wso2cellery/pet-be-cell:latestv2` as explained [here](build-and-run.md). 
+1) You can optionally build the updated pet-be cell `wso2cellery/pet-be-auto-scale-cell:latest` as explained [here](build-and-run.md). 
 Or you can simply pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
 ```
 $ cellery pull wso2cellery/pet-be-cell:latestv2
@@ -25,7 +25,7 @@ $ cellery pull wso2cellery/pet-be-cell:latestv2
 
 2) Update the currently running `pet-be` instance with below command.
 ```
-$ cellery patch pet-be controller --container-image wso2cellery/petbe-controller:latestv2
+$ cellery patch pet-be controller --container-image wso2cellery/samples-pet-store-controller:latestv2
 ```
 3) Now execute `kubectl get pods` and you can see the pods of the `pet-be` are getting initialized. And finally, older pods are getting terminated.
 ```
