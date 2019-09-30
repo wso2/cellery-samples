@@ -22,6 +22,7 @@ const rotatingFileStream = require("rotating-file-stream");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3004;
+const isGuestModeEnabled = process.env.GUEST_MODE_ENABLED || false;
 
 const CATALOG_HOST = process.env.CATALOG_HOST;
 const CATALOG_PORT = process.env.CATALOG_PORT;
@@ -35,6 +36,7 @@ const CUSTOMERS_SERVICE_URL = "http://" + CUSTOMERS_HOST + ":" + CUSTOMERS_PORT;
 const ORDERS_SERVICE_URL = "http://" + ORDERS_HOST + ":" + ORDERS_PORT;
 
 const CELLERY_USER_HEADER = "x-cellery-auth-subject";
+const PET_STORE_GUEST_HEADER = "x-pet-store-guest";
 
 const forwardedHeaders = [
     "Authorization",
@@ -72,6 +74,23 @@ morgan.token("log-level", (req, res) => {
 service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
     skip: (req, res) => res.statusCode < 400
 }));
+
+/**
+ * Get the username of the user who invoked the API.
+ *
+ * @param req The express request object received
+ * @return The username of the user who invoked the API
+ */
+const getUsername = (req) => {
+    let username = null;
+    if (req) {
+        username = req.get(CELLERY_USER_HEADER);
+        if (!username && isGuestModeEnabled) {
+            username = req.get(PET_STORE_GUEST_HEADER);
+        }
+    }
+    return username;
+};
 
 /**
  * Handle a success response from the API invocation.
@@ -250,7 +269,7 @@ service.post("/orders", (req, res) => {
  * API endpoint for getting the user profile.
  */
 service.get("/profile", (req, res) => {
-    const username = req.get(CELLERY_USER_HEADER);
+    const username = getUsername(req);
     const config = {
         url: `/customers/${username}`,
         method: "GET"
@@ -270,7 +289,7 @@ service.get("/profile", (req, res) => {
  * API endpoint for creating the user profile.
  */
 service.post("/profile", (req, res) => {
-    const username = req.get(CELLERY_USER_HEADER);
+    const username = getUsername(req);
     const config = {
         url: "/customers",
         method: "POST",
