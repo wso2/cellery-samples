@@ -358,7 +358,7 @@ Execute below steps to invoke the service from debug pod.
      }
     ```
 
-#4. Push your composite  
+# 4. Push your composite  
 8. As a final step, let's push your todo-composite [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
     $ cellery push <CELLERY_HUB_ORG>/todo-composite:latest
