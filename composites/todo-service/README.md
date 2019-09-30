@@ -155,7 +155,7 @@ Follow below instructions to build, run and push the `todo` composite.
     ```
     ![todo-composite view](../../docs/images/composites/todo-service/todo-composite.png)
     
-#3. Invoke the composite application
+# 3. Invoke the composite application
 
 The todo-composite application can be invoked in several methods as below. Unlike cells, the composites will not have any 
 network boundary and cell gateway. Therefore, inorder to allow the external traffic inside the kubernetes cluster, you need to perform 
@@ -164,11 +164,12 @@ allows you to invoke the service from a container within the kuberrnetes cluster
 
 
 1. [Invoke via API defined in Global APIM](#31-invoke-via-api-defined-in-global-apim)
-2. 
+2. [Invoke by creating an ingress](#32-invoke-by-creating-an-ingress)
+3. [Invoke by creating debug pod](#33-invoke-by-creating-debug-pod)
 
 ## 3.1. Invoke via API defined in Global APIM
 
-[Todo composite via Global APIM](../../docs/images/composites/todo-service/sample-with-gateway.jpg)
+![Todo composite via Global APIM](../../docs/images/composites/todo-service/sample-with-gateway.jpg)
 
 In this approach, user will have to create and publish an API in the global APIM, and then subscribe to that API inorder to invoke it as shown above diagram.
 
@@ -176,13 +177,13 @@ Execute below steps to create and publish `todo-api` in Global APIM.
 
 1. Login to [Global APIM](https://wso2-apim/publisher/) with username: admin and password admin.
 2. Click on `Create New`, and `Design a New REST API`. And Design the API as shown below, and click `Save and Implement`.
-[Design todo-api](../../docs/images/composites/todo-service/design-api.png)
+![Design todo-api](../../docs/images/composites/todo-service/design-api.png)
 3. Implement the API as shown below, and click on `Save and Manage`.
-[Implement api](../../docs/images/composites/todo-service/implement-api.png)
+![Implement api](../../docs/images/composites/todo-service/implement-api.png)
 4. Manage the API as shown below and finally click `Save and Publish`. 
-[Manage api](../../docs/images/composites/todo-service/manage-api.png)
+![Manage api](../../docs/images/composites/todo-service/manage-api.png)
 5. You can now see the published API in the API listing view of the /publisher.
-[Published API](../../docs/images/composites/todo-service/published-api.png)
+![Published API](../../docs/images/composites/todo-service/published-api.png)
 
 Execute below steps to subscribe to the API and invoke it.
 
@@ -233,7 +234,7 @@ Execute below steps to subscribe to the API and invoke it.
    ```
 
 ## 3.2. Invoke by creating an ingress
-[Allow traffic via NGinx Ingress](../../docs/images/composites/todo-service/sample-with-ingress.jpg) 
+![Allow traffic via NGinx Ingress](../../docs/images/composites/todo-service/sample-with-ingress.jpg) 
 
 As shown below, an ingress can be created to allow the external traffic into the todo-composite. Note, this method do not have any security checks as the first method, and 
 hence it simply opens up the service to external access.
@@ -304,7 +305,7 @@ and create it accordingly.
       ```
 
 ## 3.3. Invoke by creating debug pod
-[Invoke from another pod](../../docs/images/composites/todo-service/sample-with-external-pod.jpg)
+![Invoke from another pod](../../docs/images/composites/todo-service/sample-with-external-pod.jpg)
 
 This approach is different from the above approaches, where this does not allow the external traffic inside the cluster, 
 rather creates a debug pod inside the kubernetes cluster which allows you to execute the services.
