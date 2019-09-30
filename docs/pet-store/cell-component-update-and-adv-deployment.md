@@ -8,7 +8,7 @@ This readme explains the steps to update the components of the running cell pet-
 - You should have the pet-store application running as explained [here](../../cells/pet-store/README.md).
 
 ## Cell Component Update
-The components within the cell can be updated via rolling update. This will terminate the components one-by-one and apply 
+Selected components within a cell can be updated via rolling update. This will terminate the components one-by-one and apply 
 the changes, and eventually the whole cell will be updated with new version. 
 This is an in-place update mechanism and only considers changes done to docker images which are encapsulated in components.
 
