@@ -91,7 +91,7 @@ public function build(cellery:ImageName iName) returns error? {
     };
 
     // Cell Initialization
-    cellery:CellImage petStoreBackendCell = 
+    cellery:CellImage petStoreBackendCell = {
         components: {
             catalog: catalogComponent,
             customer: customersComponent,
