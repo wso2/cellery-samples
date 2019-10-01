@@ -24,6 +24,7 @@ Once you have completed cellery setup, you can proceed with deploying the sample
 
 # Composites
 
+* [Hello world](composites/hello-world)
 * [Todo service](composites/todo-service)
 
 Please follow the relevant documentation provided in the samples to learn more about the samples and deploy them.

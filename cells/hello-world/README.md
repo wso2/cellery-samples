@@ -151,7 +151,7 @@ as shown below to change the hello-world cell's default behaviour.
 Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/local-setup.md), 
 [gcp](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and [existing cluster](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries).
 
-8. As a final step, let's push your first cell project to your [cellery hub](https://hub.cellery.io/) account as shown below.
+6. As a final step, let's push your first cell project to your [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
     $ cellery push <CELLERY_HUB_ORG>/hello-world-cell:latest
     ✔ Connecting to registry-1.docker.io

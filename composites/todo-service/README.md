@@ -387,5 +387,5 @@ Congratulations! You have successfully created your own composite!
  
 
 ## What's Next? 
-1. [Try hello world Api](../hello-world-api)
-2. [Try pet store](../pet-store)
+1. [Try hello world cell](../../cells/hello-world)
+2. [Try hello world Api cell](../../cells/hello-world-api)

@@ -102,7 +102,7 @@ $ kubectl logs pet-be-as--gateway-deployment-7f787575c6-pwvw7 cell-gateway
 
 6) You can completely switch the traffic to 100% to the `pet-be-as` as shown below. 
 ```
-$ cellery route-traffic pet-be -p pet-be-as=100
+$ cellery route-traffic -d pet-be -t pet-be-as -p 100
 ```
 
 7) Again you can access the pet-store application as mentioned in step-4, and get the logs as setp-5. Now you can see 
