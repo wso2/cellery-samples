@@ -23,7 +23,7 @@ const rotatingFileStream = require("rotating-file-stream");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3003;
-const isGuestModeEnabled = process.env.GUEST_MODE_ENABLED || false;
+const isGuestModeEnabled = Boolean(process.env.GUEST_MODE_ENABLED) || false;
 const ordersDataDir = "data";
 const ordersDataFile = `${ordersDataDir}/orders.json`;
 
@@ -69,9 +69,10 @@ service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[c
 const getUsername = (req) => {
     let username = null;
     if (req) {
-        username = req.get(CELLERY_USER_HEADER);
-        if (!username && isGuestModeEnabled) {
+        if (isGuestModeEnabled) {
             username = req.get(PET_STORE_GUEST_HEADER);
+        } else {
+            username = req.get(CELLERY_USER_HEADER);
         }
     }
     return username;

@@ -293,7 +293,7 @@
         "no-underscore-dangle": [
             "error",
             {
-                "allow": ["__BASE_PATH__", "__INITIAL_STATE__"]
+                "allow": ["__BASE_PATH__", "__INITIAL_STATE__", "__GUEST_MODE_ENABLED__"]
             }
         ],
         "no-unmodified-loop-condition": "error",

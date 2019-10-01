@@ -22,7 +22,8 @@
 import createServer from "./server/app";
 
 const webPortalPort = process.env.PORTAL_PORT || 3000;
-const server = createServer(webPortalPort);
+const isGuestModeEnabled = Boolean(process.env.GUEST_MODE_ENABLED) || false;
+const server = createServer(webPortalPort, isGuestModeEnabled);
 
 // Listening for os Signals to gracefully shutdown
 const shutdownServer = () => {
