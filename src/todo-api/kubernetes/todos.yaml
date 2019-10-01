@@ -1,0 +1,48 @@
+apiVersion: mesh.cellery.io/v1alpha2
+kind: Composite
+metadata:
+  name: todos
+spec:
+  components:
+  - metadata:
+      name: mysql-db
+    spec:
+      scalingPolicy:
+        replicas: 1
+      template:
+        containers:
+        - image: docker.io/wso2cellery/samples-todoapp-mysql:latest
+          name: mysql-db
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: "root"
+      ports:
+      - port: 3306
+        protocol: TCP
+        targetPort: 3306
+  - metadata:
+      name: todos
+    spec:
+      scalingPolicy:
+        replicas: 1
+      template:
+        containers:
+        - image: docker.io/wso2cellery/samples-todoapp-todos:latest
+          name: todos
+          env:
+          - name: PORT
+            value: "8080"
+          - name: DATABASE_HOST
+            value: "todos--mysql-db-service"
+          - name: DATABASE_PORT
+            value: "3306"
+          - name: DATABASE_USERNAME
+            value: "root"
+          - name: DATABASE_PASSWORD
+            value: "root"
+          - name: DATABASE_NAME
+            value: "todos_db"
+      ports:
+      - port: 80
+        protocol: TCP
+        targetPort: 8080
