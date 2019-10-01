@@ -343,12 +343,12 @@ Execute below steps to invoke the service from debug pod.
         "done": false
       }
     ]
-    root@debug-tools:/# curl -X POST https://todos--todos-service/todos -k -d '{"title":"Coursework submission","content":"Submit the course work at 9:00p.m","done":false}'
+    root@debug-tools:/# curl -X POST http://todos--todos-service/todos -k -d '{"title":"Coursework submission","content":"Submit the course work at 9:00p.m","done":false}'
     {
      "message": "successfully created"
     }
     
-    root@debug-tools:/# curl https://todos--todos-service/todos/3 -k 
+    root@debug-tools:/# curl http://todos--todos-service/todos/3 -k 
      {
        "id": 3,
        "title": "Coursework submission",
@@ -356,7 +356,7 @@ Execute below steps to invoke the service from debug pod.
        "done": false
      }
      
-    root@debug-tools:/# curl -X PUT https://todos--todos-service/todos/3 -k -d '{"title":"Submission","content":"Submit the course work at 9:00p.m","done":true}'
+    root@debug-tools:/# curl -X PUT http://todos--todos-service/todos/3 -k -d '{"title":"Submission","content":"Submit the course work at 9:00p.m","done":true}'
      {
        "message": "successfully updated"
      }
