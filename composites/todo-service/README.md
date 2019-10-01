@@ -267,7 +267,7 @@ and create it accordingly (e.g. `my-todos--todos-service`).
 
    ```
       // Get the list of todo items
-      $ curl https://todo-service.com/todos -k  
+      $ curl http://todo-service.com/todos -k  
       [
         {
           "id": 1,
@@ -284,13 +284,13 @@ and create it accordingly (e.g. `my-todos--todos-service`).
       ]
       
       // Add a new todo item
-      $ curl -X POST https://todo-service.com/todos -k -d '{"title":"Coursework submission","content":"Submit the course work at 9:00p.m","done":false}'
+      $ curl -X POST http://todo-service.com/todos -k -d '{"title":"Coursework submission","content":"Submit the course work at 9:00p.m","done":false}'
       {
         "message": "successfully created"
       }
       
       // Get a todo item details
-      $ curl https://todo-service.com/todos/3 -k 
+      $ curl http://todo-service.com/todos/3 -k 
         {
           "id": 3,
           "title": "Coursework submission",
@@ -299,7 +299,7 @@ and create it accordingly (e.g. `my-todos--todos-service`).
         }
         
       // Update a todo item
-      $ curl -X PUT https://todo-service.com/todos/3 -k -d '{"title":"Submission","content":"Submit the course work at 9:00p.m","done":true}'
+      $ curl -X PUT http://todo-service.com/todos/3 -k -d '{"title":"Submission","content":"Submit the course work at 9:00p.m","done":true}'
       {
         "message": "successfully updated"
       }
