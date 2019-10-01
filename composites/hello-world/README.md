@@ -133,7 +133,7 @@ as shown below to change the hello-world components's default behaviour.
     ```
     $ cellery view <CELLERY_HUB_ORG>/hello-world-composite:latest
     ```
-    ![hello world composite view](../../docs/images/composites/hello-world/hello-worl-cellery-view.png)
+    ![hello world composite view](../../docs/images/composites/hello-world/hello-world-view.png)
     
 5. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/hello-world/hello-world-ingress.yaml) 
    ingress is created to direct the traffic to kubernetes service `hello--hello-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `hello`, 
@@ -141,20 +141,20 @@ as shown below to change the hello-world components's default behaviour.
    and create it accordingly (e.g. `my-hello--hello-service`).
    
     ```
-       $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/hello-world/hello-world-ingress.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/hello-world/hello-world-ingress.yaml
     ```
 
 6. Check the ingress rules are correctly applied by getting the list of ingresses as shown below.
-       ```
-       kubectl get ingress 
-       NAME                HOSTS                       ADDRESS     PORTS   AGE
-       hello-web-ingress   hello-world-composite.com   localhost   80      25m
-       ```
+    ```
+    $ kubectl get ingress 
+    NAME                HOSTS                       ADDRESS     PORTS   AGE
+    hello-web-ingress   hello-world-composite.com   localhost   80      25m
+    ```
        
 7. Add the IP address shown in the ingress to your /etc/hosts, therefore you can invoke the service. 
-       ```
-       127.0.0.1 hello-world-composite.com
-       ```
+     ```
+     127.0.0.1 hello-world-composite.com
+     ```
 8. Now access the web page by accessing to [http://hello-world-composite.com]([http://hello-world-composite.com).
     
 9. As a final step, let us push your first composite project to your [cellery hub](https://hub.cellery.io/) account as shown below.
