@@ -30,6 +30,7 @@ import {StateProvider} from "../components/common/state";
 import {StaticRouter} from "react-router-dom";
 import {MuiThemeProvider, createGenerateClassName} from "@material-ui/core/styles";
 import {generateTheme, renderFullPage} from "../utils";
+import * as cookieParser from "cookie-parser";
 import * as express from "express";
 import * as morgan from "morgan";
 import * as path from "path";
@@ -38,6 +39,8 @@ import * as proxy from "express-http-proxy";
 import * as rotatingFileStream from "rotating-file-stream";
 
 const CELLERY_USER_HEADER = "x-cellery-auth-subject";
+const PET_STORE_GUEST_HEADER = "x-pet-store-guest";
+const PET_STORE_GUEST_COOKIE_NAME = "psgc";
 
 const forwardedHeaders = [
     "Authorization",
@@ -50,7 +53,26 @@ const forwardedHeaders = [
     "x-ot-span-context"
 ];
 
-const renderApp = (req, res, initialState, basePath) => {
+/**
+ * Get the username of the user who invoked the API.
+ *
+ * @param req The express request object received
+ * @param isGuestModeEnabled True if guest mode is enabled
+ * @return The username of the user who invoked the API
+ */
+const getUsername = (req, isGuestModeEnabled) => {
+    let username = null;
+    if (req) {
+        if (isGuestModeEnabled) {
+            username = req.cookies[PET_STORE_GUEST_COOKIE_NAME];
+        } else {
+            username = req.get(CELLERY_USER_HEADER);
+        }
+    }
+    return username;
+};
+
+const renderApp = (req, res, initialState, basePath, isGuestModeEnabled) => {
     const sheetsRegistry = new SheetsRegistry();
     const sheetsManager = new Map();
     const context = {};
@@ -59,7 +81,8 @@ const renderApp = (req, res, initialState, basePath) => {
             <MuiThemeProvider theme={generateTheme()} sheetsManager={sheetsManager}>
                 <CssBaseline/>
                 <StaticRouter context={context} location={req.url}>
-                    <StateProvider catalog={initialState.catalog} user={initialState.user}>
+                    <StateProvider catalog={initialState.catalog} user={initialState.user}
+                        isGuestModeEnabled={isGuestModeEnabled}>
                         <App/>
                     </StateProvider>
                 </StaticRouter>
@@ -68,12 +91,15 @@ const renderApp = (req, res, initialState, basePath) => {
     );
     const html = ReactDOMServer.renderToString(app);
     const css = sheetsRegistry.toString();
-    res.send(renderFullPage(css, html, initialState, basePath));
+    res.send(renderFullPage(css, html, initialState, basePath, isGuestModeEnabled));
 };
 
-const createServer = (port) => {
+const createServer = (port, isGuestModeEnabled) => {
     const app = express();
     const petStoreCellUrl = process.env.PET_STORE_CELL_URL;
+
+    app.use(express.json());
+    app.use(cookieParser());
 
     app.use("/app", express.static(path.join(__dirname, "/app")));
 
@@ -105,7 +131,17 @@ const createServer = (port) => {
     const parsedPetStoreCellUrl = new URL(petStoreCellUrl);
     const petStoreContext = parsedPetStoreCellUrl.pathname === "/" ? "" : parsedPetStoreCellUrl.pathname;
     app.use("/api", proxy(parsedPetStoreCellUrl.host, {
-        proxyReqPathResolver: (req) => petStoreContext + req.url
+        proxyReqPathResolver: (req) => petStoreContext + req.url,
+        filter: (req) => !/^\/guest.*/i.test(req.path),
+        proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+            if (isGuestModeEnabled) {
+                const guestUser = srcReq.cookies[PET_STORE_GUEST_COOKIE_NAME];
+                if (guestUser) {
+                    proxyReqOpts.headers[PET_STORE_GUEST_HEADER] = guestUser;
+                }
+            }
+            return proxyReqOpts;
+        }
     }));
 
     /*
@@ -113,7 +149,7 @@ const createServer = (port) => {
      */
     app.get(/^(?!(\/app|\/api)).*/i, (req, res) => {
         const initialState = {
-            user: req.get(CELLERY_USER_HEADER)
+            user: getUsername(req, isGuestModeEnabled)
         };
         const basePath = process.env.BASE_PATH;
 
@@ -139,12 +175,36 @@ const createServer = (port) => {
                 initialState.catalog = {
                     accessories: responseBody.data.accessories
                 };
-                renderApp(req, res, initialState, basePath);
+                renderApp(req, res, initialState, basePath, isGuestModeEnabled);
             })
             .catch((e) => {
                 console.log(`[ERROR] Failed to fetch the catalog due to ${e}`);
             });
     });
+
+    if (isGuestModeEnabled) {
+        app.post("/api/guest", (req, res) => {
+            if (req.body && req.body.username) {
+                res.cookie(PET_STORE_GUEST_COOKIE_NAME, req.body.username, {
+                    httpOnly: true
+                }).send(JSON.stringify({
+                    status: "SUCCESS"
+                }));
+            } else {
+                res.status(400).send(JSON.stringify({
+                    status: "ERROR",
+                    message: "User data not provided"
+                }));
+            }
+        });
+
+        app.delete("/api/guest", (req, res) => {
+            res.clearCookie(PET_STORE_GUEST_COOKIE_NAME);
+            res.send(JSON.stringify({
+                status: "SUCCESS"
+            }));
+        });
+    }
 
     /*
      * Binding to a port and listening for requests
