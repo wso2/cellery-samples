@@ -1,8 +1,0 @@
-# Fix for mysql not working in PERMISSIVE mode. See https://istio.io/faq/security/#mysql-with-mtls
-apiVersion: authentication.istio.io/v1alpha1
-kind: Policy
-metadata:
-  name: todos--mysql-db-service
-spec:
-  targets:
-  - name: todos--mysql-db-service
