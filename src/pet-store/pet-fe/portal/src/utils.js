@@ -37,16 +37,16 @@ const generateTheme = () => createMuiTheme({
 });
 
 const renderFullPage = (css, content, initialState, basePath, isGuestModeEnabled) => (
-    "<!DOCTYPE html>"
+    `${"<!DOCTYPE html>"
     + "<html lang='en'>"
     + "<head>"
     + "<meta charset='utf-8'>"
     + "<link rel='shortcut icon' href='./app/assets/favicon.ico'/>"
     + "<title>Pet Store</title>"
     + `<script>window.__INITIAL_STATE__=${JSON.stringify(initialState)}</script>`
-    + `<script>window.__GUEST_MODE_ENABLED__=${JSON.stringify(isGuestModeEnabled)}</script>`
-    + (basePath ? (`<script>window.__BASE_PATH__=${JSON.stringify(basePath)}</script>`) : "")
-    + `<style id='jss-server-side'>${css}</style>`
+    + `<script>window.__GUEST_MODE_ENABLED__=${JSON.stringify(isGuestModeEnabled)}</script>`}${
+        basePath ? (`<script>window.__BASE_PATH__=${JSON.stringify(basePath)}</script>`) : ""
+    }<style id='jss-server-side'>${css}</style>`
     + "</head>"
     + "<body>"
     + `<div id='app'>${content}</div>`

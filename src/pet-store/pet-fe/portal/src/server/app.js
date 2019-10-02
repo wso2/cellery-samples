@@ -56,9 +56,9 @@ const forwardedHeaders = [
 /**
  * Get the username of the user who invoked the API.
  *
- * @param req The express request object received
- * @param isGuestModeEnabled True if guest mode is enabled
- * @return The username of the user who invoked the API
+ * @param {Object} req The express request object received
+ * @param {boolean} isGuestModeEnabled True if guest mode is enabled
+ * @returns {string} The username of the user who invoked the API
  */
 const getUsername = (req, isGuestModeEnabled) => {
     let username = null;
@@ -132,7 +132,7 @@ const createServer = (port, isGuestModeEnabled) => {
     const petStoreContext = parsedPetStoreCellUrl.pathname === "/" ? "" : parsedPetStoreCellUrl.pathname;
     app.use("/api", proxy(parsedPetStoreCellUrl.host, {
         proxyReqPathResolver: (req) => petStoreContext + req.url,
-        filter: (req) => !/^\/guest.*/i.test(req.path),
+        filter: (req) => !(/^\/guest.*/i).test(req.path),
         proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
             if (isGuestModeEnabled) {
                 const guestUser = srcReq.cookies[PET_STORE_GUEST_COOKIE_NAME];
