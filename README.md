@@ -20,6 +20,7 @@ Once you have completed cellery setup, you can proceed with deploying the sample
 * [Hello world](cells/hello-world)
 * [Hello world Api](cells/hello-world-api)
 * [Pet store](cells/pet-store)
+* [Todo Application](cells/todo-service)
 * [Hipster shop](cells/hipster-shop)
 
 # Composites
