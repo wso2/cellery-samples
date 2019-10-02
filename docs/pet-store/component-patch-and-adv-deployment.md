@@ -1,29 +1,21 @@
-# Updating Cell and Advanced Deployemt Patterns
-This readme explains the steps to update the components of the running cell pet-be and how to try out advanced deployments such as Blue-Green and Canary with pet-be.
-- [Cell component update](#cell-component-update)
+# Component Patching and Advanced Deployemt Patterns
+This readme explains the steps to patch the components of the running cell pet-be and how to try out advanced deployments such as Blue-Green and Canary with pet-be.
+- [Component Patching](#component-patching)
 - [Blue-Green deployment](#blue-green-and-canary-deployment)
 - [Canary deployment](#blue-green-and-canary-deployment)
 
 ### Pre Requisites
 - You should have the pet-store application running as explained [here](../../cells/pet-store/README.md).
 
-## Cell Component Update
-Selected components within a cell can be updated via rolling update. This will terminate the components one-by-one and apply 
-the changes, and eventually the whole cell will be updated with new version. 
-This is an in-place update mechanism and only considers changes done to docker images which are encapsulated in components.
+## Component Patching
+Selected components within a cell can be patched via rolling update. This will terminate the intended component of the cell and apply 
+the changes. With this you can patch the component's docker image and environmental variables by passing those information as inline parameters.
 
-Follow the below mentioned steps to update the current running cell pet-be.  
+Follow the below mentioned steps to patch the controller component of the running cell pet-be.  
 
-Let's assume the pet-be components should be updated with resource requests and limits as per advanced 
-[pet-be.bal](../../cells/pet-store/advanced/pet-be/pet-be.bal). And now we require to update the current running pet-be bal with this new cell. 
+Let us assume the pet-be instance's controller component should be updated with docker image `wso2cellery/samples-pet-store-controller:latestv2`. 
 
-1) You can optionally build the updated pet-be cell `wso2cellery/pet-be-cell:latestv2` as explained [here](build-and-run.md). 
-Or you can simply pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
-```
-$ cellery pull wso2cellery/pet-be-cell:latestv2
-```
-
-2) Update the currently running `pet-be` instance with below command.
+1) Patch the currently running `pet-be` instance's controller component with below command.
 ```
 $ cellery patch pet-be controller --container-image wso2cellery/samples-pet-store-controller:latestv2
 ```
@@ -31,14 +23,11 @@ $ cellery patch pet-be controller --container-image wso2cellery/samples-pet-stor
 ```
 $ kubectl get pods
 NAME                                             READY   STATUS            RESTARTS   AGE
-pet-be--catalog-deployment-54b8cd64-knhnc        0/2     PodInitializing   0          4s
 pet-be--catalog-deployment-67b8565469-fq86w      2/2     Running           0          26m
 pet-be--controller-deployment-6f89fdb47c-rn4mn   2/2     Running           0          24m
 pet-be--controller-deployment-75f5db95f4-2dt96   0/2     PodInitializing   0          4s
 pet-be--customers-deployment-7997974649-22hft    2/2     Running           0          26m
-pet-be--customers-deployment-7d8df7fb84-h48xs    0/2     PodInitializing   0          4s
 pet-be--gateway-deployment-7f787575c6-vmg4p      2/2     Running           0          26m
-pet-be--orders-deployment-7d874dfd98-vnhdw       0/2     PodInitializing   0          4s
 pet-be--orders-deployment-7d9fd8f5ff-4czdx       2/2     Running           0          26m
 pet-be--sts-deployment-7f4f56b5d5-bjhww          3/3     Running           0          26m
 pet-fe--gateway-deployment-67ccf688fb-dnhhw      2/2     Running           0          4h6m
@@ -47,6 +36,8 @@ pet-fe--sts-deployment-59dbb995c7-g7tc7          3/3     Running           0    
 ```
 
 4) Now you can check the pet-store application is up and running by following the instructions [here](../../cells/pet-store/README.md#view-application).
+
+Refer to [CLI docs](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-patch) for a complete guide on performing updates on cell instances.
 
 ## Blue-Green and Canary deployment
 Blue-Green and Canary are advanced deployment patterns which can used to perform updates to running cell instances. 
@@ -58,6 +49,8 @@ Inorder to test this, let us assume that the pet-be cell should be updated with 
 a new pet-be cell instance, and having a canary deployment by having 50% traffic routed to the new and old cell instances. 
 Then, we completely switch 100% traffic to new deployment and still have the both cell instances running as per the blue-green deployment pattern. 
 Finally, terminate old instance.
+
+Please start the cell pet-store cell it is not running already as mentioned [here](../../cells/pet-store#quick-run). 
 
 1) You can optionally build cell with `wso2cellery/pet-be-auto-scale-cell:latest` from cell file [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) 
 as explained [here](build-and-run.md). Or you can simply run directly which will pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
@@ -136,6 +129,9 @@ $ kubectl logs pet-be-as--gateway-deployment-7f787575c6-pwvw7 cell-gateway
 ```
 cellery terminate pet-be
 ```
+
+Refer to [CLI docs](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-route-traffic) for a complete guide on route-traffic for cell instances.
+
 
 # What's Next?
 - [Scale pet-be cell](scale-cell.md) - walks through the steps to scale pet-be cell with horizontal pod autoscaler, and zero scaling with Knative. 
