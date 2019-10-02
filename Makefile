@@ -27,7 +27,7 @@ COMPOSITES_DIR := composites
 TESTS_DIR := tests
 SAMPLES_SRC := pet-store hello-world hello-world-api
 SAMPLES_CELLS := pet-store hello-world hello-world-api hipster-shop
-SAMPLES_COMPOSITES := pet-store todo-service
+SAMPLES_COMPOSITES := pet-store todo-service hello-world
 SAMPLES_TESTS := pet-store
 
 CLEAN_TARGETS := $(addprefix clean., $(SAMPLES_SRC))
