@@ -118,7 +118,7 @@ public function build(cellery:ImageName iName) returns error? {
     $ cellery list instances
                         INSTANCE                                   CELL IMAGE                   STATUS                            GATEWAY                               COMPONENTS           AGE
        ------------------------------------------ -------------------------------------------- -------- ----------------------------------------------------------------- ------------ ----------------------
-        hello-world-api-cell-1-0-0-676b2131           sinthuja/hello-world-api-cell:latest       Ready    sinthuja-hello-world-api-cell-latest-676b2131--gateway-service   1            10 minutes 1 seconds
+        hello-world-api-cell           sinthuja/hello-world-api-cell:latest       Ready    sinthuja-hello-world-api-cell-latest-676b2131--gateway-service   1            10 minutes 1 seconds
     ```
 4. Execute `cellery view` to see the components of your cell. This will open a HTML page in a browser and you can visualize the components and dependent cells of the cell image.
     ```
@@ -136,12 +136,12 @@ before proceeding to the following steps.
        
 1. Login to the [API Store](https://wso2-apim/store/) as admin user (username: admin, password: admin).
     
-2. Click on ‘hello_world_api_cell_global_1_0_0_hello’ to create a subscription and generate a token. 
+2. Click on ‘hello_world_api_cell_global__hello’ to create a subscription and generate a token. 
 (See  [Subscribing to an API](https://docs.wso2.com/display/AM260/Subscribe+to+an+API))
        
 3. Once you have subscribed to the API and generated a token, invoke the API passing the same as a Bearer token:
    ```
-   $ curl -H "Authorization: Bearer <token>" https://wso2-apim-gateway/hello-world-api-cell/hello/ -k
+   $ curl -H "Authorization: Bearer <token>" https://wso2-apim-gateway/hello-world-api-cell/hello/0.1 -k
    Hello World!
    ```
 
