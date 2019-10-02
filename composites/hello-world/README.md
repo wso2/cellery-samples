@@ -69,7 +69,7 @@ Follow below instructions to build, run and push the hello world composite.
 
 1. Build the composite image for hello-world project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build hello-world.bal <CELLERY_HUB_ORG>/hello-world-composite:latest
+    $ cellery build hello-world-composite.bal <CELLERY_HUB_ORG>/hello-world-composite:latest
     Hello World Cell Built successfully.
     
     ✔ Building image <CELLERY_HUB_ORG>/hello-world-composite:latest
