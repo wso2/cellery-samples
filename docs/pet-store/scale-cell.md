@@ -230,8 +230,8 @@ $ cellery terminate pet-be
 
 # What's Next?
 - [Observe the pet-store](observability.md) - shows how you can observe and understand the runtime operations to the pet-store application.
-- [Update pet-be cell](cell-component-update-and-adv-deployment.md#cell-component-update) - provides the steps to update the components of the pet-be cell.
-- [Advanced deployments with pet-be cell](cell-component-update-and-adv-deployment.md#blue-green-and-canary-deployment) - perform advanced deployments with pet-be cell.
+- [Update pet-be cell](component-patch-and-adv-deployment.md#cell-component-update) - provides the steps to update the components of the pet-be cell.
+- [Advanced deployments with pet-be cell](component-patch-and-adv-deployment.md#blue-green-and-canary-deployment) - perform advanced deployments with pet-be cell.
 - [Pet store sample](../../cells/pet-store/README.md) - provides the instructions to work with pet-store sample.
 - [Hipster shop sample](../../cells/hipster-shop/README.md) - is a sample that shows the cellery usage with the original 
 micro services demo [here](https://github.com/GoogleCloudPlatform/microservices-demo).

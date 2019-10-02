@@ -145,7 +145,7 @@ instructions [here](../../cells/pet-store/README.md#view-application)
 ## What's Next?
 - [Cell Test](test-be-cell.md) - perform pet-be cell test and shows the results in the log file.
 - [Observe the pet-store](observability.md) - this shows how you can observe and understand the runtime operations to the pet-store application.
-- [Update pet-be cell](cell-component-update-and-adv-deployment.md#cell-component-update) - provides the steps to update the components of the pet-be cell.
-- [Advanced deployments with pet-be cell](cell-component-update-and-adv-deployment.md#blue-green-and-canary-deployment) - perform advanced deployments with pet-be cell.
+- [Update pet-be cell](component-patch-and-adv-deployment.md#cell-component-update) - provides the steps to update the components of the pet-be cell.
+- [Advanced deployments with pet-be cell](component-patch-and-adv-deployment.md#blue-green-and-canary-deployment) - perform advanced deployments with pet-be cell.
 - [Scale pet-be cell](scale-cell.md) - walks through the steps to scale pet-be cell with horizontal pod autoscaler, and zero scaling with Knative. 
 - [Pet store sample](../../cells/pet-store/README.md) - provides the instructions to work with pet-store sample.
