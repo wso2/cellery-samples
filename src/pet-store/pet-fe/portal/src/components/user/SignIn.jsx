@@ -19,6 +19,7 @@
 import Notification from "../common/Notification";
 import ProgressIndicator from "../common/ProgressIndicator";
 import React from "react";
+import withState from "../common/state";
 import * as utils from "../../utils";
 
 class SignIn extends React.Component {
@@ -44,28 +45,49 @@ class SignIn extends React.Component {
 
     componentDidMount() {
         const self = this;
-        const {history} = self.props;
-        const config = {
-            url: "/profile",
-            method: "GET"
-        };
-        utils.callApi(config)
-            .then((response) => {
+        const {isGuestModeEnabled} = self.props;
+        const checkProfile = () => {
+            utils.callApi({
+                url: "/profile",
+                method: "GET"
+            }).then((response) => {
                 if (response.data.profile) {
-                    history.replace("/");
+                    window.location.href = window.__BASE_PATH__;
                 } else {
-                    history.replace("/sign-up");
+                    window.location.href = `${window.__BASE_PATH__}/sign-up`;
                 }
-            })
-            .catch(() => {
+            }).catch(() => {
                 self.setState({
                     notification: {
                         open: true,
                         message: "Failed to check if profile exists"
                     }
                 });
-                history.replace("/");
+                window.location.href = window.__BASE_PATH__;
             });
+        };
+        if (isGuestModeEnabled) {
+            const randomUserId = Math.floor((Math.random() * 1000000) + 1);
+            utils.callApi({
+                url: "/guest",
+                method: "POST",
+                data: {
+                    username: `guest${randomUserId}`
+                }
+            }).then(() => {
+                checkProfile();
+            }).catch(() => {
+                self.setState({
+                    notification: {
+                        open: true,
+                        message: "Failed to sign in as guest"
+                    }
+                });
+            });
+        } else {
+            // If guest mode is not enabled, Pet Store relies on default Cellery OIDC capabilities.
+            checkProfile();
+        }
     }
 
     render() {
@@ -81,4 +103,4 @@ class SignIn extends React.Component {
 
 }
 
-export default SignIn;
+export default withState(SignIn);

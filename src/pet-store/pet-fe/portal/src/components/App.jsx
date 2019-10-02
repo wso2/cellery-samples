@@ -19,6 +19,7 @@
 import Cart from "./orders/cart";
 import CartView from "./orders/CartView";
 import Catalog from "./catalog/Catalog";
+import Notification from "./common/Notification";
 import Orders from "./orders/Orders";
 import React from "react";
 import SignIn from "./user/SignIn";
@@ -29,6 +30,7 @@ import {AccountCircle, ArrowBack, Pets, ShoppingCart} from "@material-ui/icons";
 import {AppBar, Avatar, Badge, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import * as PropTypes from "prop-types";
+import * as utils from "../utils";
 
 const styles = (theme) => ({
     appBar: {
@@ -69,7 +71,11 @@ class App extends React.Component {
 
         this.state = {
             accountPopoverElement: null,
-            cartItemsCount: props.cart.getItems().length
+            cartItemsCount: props.cart.getItems().length,
+            notification: {
+                open: false,
+                message: ""
+            }
         };
     }
 
@@ -81,6 +87,15 @@ class App extends React.Component {
     componentWillUnmount = () => {
         const {cart} = this.props;
         cart.removeListener(this.handleCartUpdates);
+    };
+
+    handleNotificationClose = () => {
+        this.setState({
+            notification: {
+                open: false,
+                message: ""
+            }
+        });
     };
 
     handleCartUpdates = (items) => {
@@ -106,12 +121,29 @@ class App extends React.Component {
     };
 
     signOut = () => {
-        window.location.href = `${window.__BASE_PATH__}/_auth/logout`;
+        const {isGuestModeEnabled} = this.props;
+        if (isGuestModeEnabled) {
+            utils.callApi({
+                url: "/guest",
+                method: "DELETE"
+            }).then(() => {
+                window.location.href = window.__BASE_PATH__;
+            }).catch(() => {
+                self.setState({
+                    notification: {
+                        open: true,
+                        message: "Failed to sign out"
+                    }
+                });
+            });
+        } else {
+            window.location.href = `${window.__BASE_PATH__}/_auth/logout`;
+        }
     };
 
     render() {
-        const {classes, history, location, user} = this.props;
-        const {accountPopoverElement, cartItemsCount} = this.state;
+        const {classes, history, location, user, isGuestModeEnabled} = this.props;
+        const {accountPopoverElement, cartItemsCount, notification} = this.state;
 
         const isAccountPopoverOpen = Boolean(accountPopoverElement);
         const backButtonHiddenRoutes = ["/", "/sign-up", "/sign-in"];
@@ -177,7 +209,9 @@ class App extends React.Component {
                                     </div>
                                 )
                                 : (
-                                    <Button style={{color: "#ffffff"}} onClick={this.signIn}>Sign In</Button>
+                                    <Button style={{color: "#ffffff"}} onClick={this.signIn}>
+                                        Sign In{isGuestModeEnabled ? " as Guest" : ""}
+                                    </Button>
                                 )
                         }
                     </Toolbar>
@@ -196,6 +230,8 @@ class App extends React.Component {
                         <Redirect from={"*"} to={"/"}/>
                     </Switch>
                 </main>
+                <Notification open={notification.open} onClose={this.handleNotificationClose}
+                    message={notification.message}/>
             </div>
         );
     }
@@ -203,6 +239,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+    isGuestModeEnabled: PropTypes.bool.isRequired,
     classes: PropTypes.string.isRequired,
     cart: PropTypes.instanceOf(Cart),
     location: PropTypes.shape({

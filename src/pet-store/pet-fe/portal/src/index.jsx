@@ -37,6 +37,9 @@ if (!window.__BASE_PATH__) {
     window.__BASE_PATH__ = window.__BASE_PATH__.substr(0, window.__BASE_PATH__.length - 1);
 }
 
+const isGuestModeEnabled = Boolean(window.__GUEST_MODE_ENABLED__);
+Reflect.deleteProperty(window, "__GUEST_MODE_ENABLED__");
+
 class Main extends React.Component {
 
     componentDidMount() {
@@ -58,7 +61,8 @@ ReactDOM.hydrate((
         <MuiThemeProvider theme={generateTheme()}>
             <CssBaseline/>
             <BrowserRouter basename={window.__BASE_PATH__}>
-                <StateProvider catalog={initialState.catalog} user={initialState.user}>
+                <StateProvider catalog={initialState.catalog} user={initialState.user}
+                    isGuestModeEnabled={isGuestModeEnabled}>
                     <Main/>
                 </StateProvider>
             </BrowserRouter>

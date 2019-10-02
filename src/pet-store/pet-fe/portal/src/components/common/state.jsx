@@ -29,17 +29,19 @@ const StateContext = React.createContext({
     user: null
 });
 
-const StateProvider = ({catalog, children, user}) => (
+const StateProvider = ({catalog, children, user, isGuestModeEnabled}) => (
     <StateContext.Provider value={{
         cart: new Cart(),
         catalog: catalog,
-        user: user
+        user: user,
+        isGuestModeEnabled: isGuestModeEnabled
     }}>
         {children}
     </StateContext.Provider>
 );
 
 StateProvider.propTypes = {
+    isGuestModeEnabled: PropTypes.bool.isRequired,
     children: PropTypes.any.isRequired,
     catalog: PropTypes.shape({
         accessories: PropTypes.arrayOf(PropTypes.shape({
