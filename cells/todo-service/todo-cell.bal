@@ -101,12 +101,6 @@ public function build(cellery:ImageName iName) returns error? {
             DATABASE_PORT: {
                 value: mysqlPort
             },
-            DATABASE_USERNAME: {
-                value: "root"
-            },
-            DATABASE_PASSWORD: {
-                value: mysqlPassword
-            },
             DATABASE_NAME: {
                 value: "todos_db"
             },
