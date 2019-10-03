@@ -42,18 +42,12 @@ $(CELL_CELLERY_BUILD_TARGETS):
     $(foreach file, $(BAL_FILES),  $(call celleryBuild, $(file), $(SAMPLE))) \
 
 
-.PHONY: cellery-push.$(CELL_CELLERY_PUSH_TARGETS)
-cellery-push.$(CELL_CELLERY_PUSH_TARGETS):
+.PHONY: $(CELL_CELLERY_PUSH_TARGETS)
+$(CELL_CELLERY_PUSH_TARGETS):
+	$(eval SAMPLE=$(patsubst cellery-push.%,%,$@))
 	cd  $(USE_CASES); \
-	if test -f $(PET_BE_COMP).bal; \
-    then cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_BE_COMP):$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS); \
-    fi; \
-    if test -f $(PET_FE_COMP).bal; \
-    then cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_FE_COMP):$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS); \
-    fi; \
-    if test -f $(PET_FE_CELL).bal; \
-    then cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(PET_FE_CELL):$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS); \
-    fi; \
+	$(eval BAL_FILES:=$(wildcard $(SAMPLE)/*.bal)) \
+    $(foreach file, $(BAL_FILES),  $(call celleryPush, $(file), $(SAMPLE))) \
 
 define celleryBuild
     $(eval BAL_FILE:=$(word 1, $(subst ., ,$(word 2,$(subst /, ,$(1)););)))
