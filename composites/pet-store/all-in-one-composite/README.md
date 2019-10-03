@@ -156,7 +156,7 @@ Some important points to be noted in the Composite,
 - The components will be using `HttpPortIngress` which do not have APIs created in gateways.
 - Instead of the `cellery:Cell` construct, all components are grouped as `cellery:Composite` and then passed into the createImage method. 
 
-Now let us quick run or build and run the composites. And finally let us also observe the composites. 
+Now let us quick run or build and run the composites. And also observe the composites. 
 
 1. [Quick Run](#quick-run)
 2. [Create Ingress](#create-ingress)
@@ -169,18 +169,18 @@ Now let us quick run or build and run the composites. And finally let us also ob
 please go [here](#build-and-run-the-pet-store-composite).
 
 ```
-$ cellery run wso2cellery/pet-store-composite-composite:latest -n pet-store 
+$ cellery run wso2cellery/pet-store-composite:latest -n pet-store 
 ```
 Now [create the ingress](#create-ingress) to access the pet-store application. 
 
 ## Create Ingress
 1. You need to create the ingress to allow the external traffic to the pet-store application by below command. 
-Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/pet-store-ingress.yaml) 
+Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml) 
 ingress is created to direct the traffic to kubernetes service `pet-store--portal-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `pet-store`, 
 the service name will be `pet-store--portal-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-pet-store`), you will have to modify the ingress service name, 
 and create it accordingly (e.g. `pet-store--portal-service`).
 ```
- $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/pet-store-ingress.yaml
+ $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml
 ```
 2. Check the ingress rules are correctly applied by getting the list of ingresses as shown below.
 ```
