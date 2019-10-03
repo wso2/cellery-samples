@@ -9,7 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
 spec:
   rules:
-    - host: pet-store.com
+    - host: pet-store-composite.com
       http:
         paths:
           - backend:
