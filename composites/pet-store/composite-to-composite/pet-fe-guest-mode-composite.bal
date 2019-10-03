@@ -38,7 +38,7 @@ public function build(cellery:ImageName iName) returns error? {
             },
             dependencies: {
                 composites: {
-                    petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-guest-mode-composite", ver: "latest-dev" }
+                    petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-guest-mode-composite", ver: "latest" }
                 }
         }
     };
