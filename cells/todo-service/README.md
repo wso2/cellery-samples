@@ -25,6 +25,12 @@ The `todo cell` contains two components `todo` and `mysql`. The `todo` component
 which is written in Go Lang and it is a simple micro service that add/list/update todo items by connecting to database. The `mysql` component is a MySQL database that is used to 
 persists the todo items received by the `todo` component.
 
+This example uses three types of volumes as described below.
+
+   1. Configuration: `sqlconfig` configuration is used to mount the [init.sql](mysql/init.sql) script to mysql component.        
+   2. Volume Claim: A persistence volume claim `volumeClaim` is mounted to `/var/lib/mysql` path of the mysql component to persist mysql data.
+   3. Secret: The database credentials are mounted as a secret to `todoServiceComponet` in the path `/credentials`.    
+
 ```ballerina
 // Composite file that wraps a to do micro service and mysql database.
 import celleryio/cellery;
@@ -116,12 +122,6 @@ public function build(cellery:ImageName iName) returns error? {
             DATABASE_PORT: {
                 value: mysqlPort
             },
-            DATABASE_USERNAME: {
-                value: "root"
-            },
-            DATABASE_PASSWORD: {
-                value: mysqlPassword
-            },
             DATABASE_NAME: {
                 value: "todos_db"
             },
@@ -180,7 +180,54 @@ function readFile(string filePath) returns (string) {
 
 Follow below instructions to build, run and push the `todo` cell.
 
-1. Build the cell image for todo-cell project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
+1. Create a volume according to your setup as described below. 
+    
+    #### Docker for mac
+    1. Create a mysql folder in /tmp directory.
+    ```bash
+       $ mkdir -p /tmp/mysql
+    ```
+    2. Create the volume by deploying pv-docker-desktop.yaml
+    ```bash
+       $ kubctl create -f pv-docker-desktop.yaml
+           storageclass.storage.k8s.io/local-storage created
+           persistentvolume/mysql-pv-volume created
+    ```
+    
+    #### Local Setup
+    1. SSH in to kubernetes node. Enter the password as ```vagrant``` when prompted.
+    ```bash
+       $ ssh vagrant@192.168.56.10
+       vagrant@192.168.56.10's password:
+    ```       
+    2. Create a mysql folder in /tmp directory.
+    ```bash
+       $ mkdir -p /tmp/mysql
+    ```
+    3. Create the volume by deploying pv-docker-desktop.yaml
+    ```bash
+       $ kubctl create -f pv-local.yaml
+       storageclass.storage.k8s.io/local-storage created
+       persistentvolume/mysql-pv-volume created
+    ```
+   
+   #### GCP
+    1. GCP has dynamic provisioning enabled by default. Therefore comment the `storageClass` from the `todo-cell.bal` file. 
+    Final `volumeClaim` code segment in `mysql` component look like below.
+    ```ballerina
+       volumeClaim: {
+           path: "/var/lib/mysql",
+           readOnly: false,
+           volume:<cellery:K8sNonSharedPersistence>{
+                name:"data-vol",
+                // storageClass:"local-storage", 
+                accessMode: ["ReadWriteOnce"],
+                request:"1G"
+           }
+       }  
+    ``` 
+
+2. After creating the persistence volume. Build the cell image for todo-cell project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
     $ cellery build todo-cell.bal <CELLERY_HUB_ORG>/todo-cell:latest
     Hello World Cell Built successfully.
@@ -196,20 +243,7 @@ Follow below instructions to build, run and push the `todo` cell.
     Execute the following command to run the image:
       $ cellery run <CELLERY_HUB_ORG>/todo-cell:latest
     --------------------------------------------------------
-    ```
-2. Once the todo-cell create a volume according to your setup as decribed below. 
-    
-    #### Docker for mac
-    1. Create a mysql folder in /tmp directory.
-    ```bash
-       mkdir -p /tmp/mysql
-    ```
-    2. Create the volume by deploying pv.yaml
-    ```bash
-       $ kubctl create -f pv.yaml
-           storageclass.storage.k8s.io/local-storage created
-           persistentvolume/mysql-pv-volume created
-    ```
+    ```    
 
 2. Once the todo-cell is built, you can run the cell and create the `todos` instance by below command. 
     ```
@@ -295,8 +329,6 @@ Execute below steps to create and publish `todo-api` in Global APIM.
      }
      
    ```
-
-
 
 # 4. Push your cell  
 8. As a final step, let's push your todo-cell [cellery hub](https://hub.cellery.io/) account as shown below.
