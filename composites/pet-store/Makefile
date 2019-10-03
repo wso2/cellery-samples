@@ -37,7 +37,11 @@ cellery-push: $(CELLERY_PUSH_TARGETS)
 $(CELLERY_BUILD_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-build.%,%,$@))
 	cd $(SAMPLE); \
-	$(eval BAL_FILES:=$(wildcard $(SAMPLE)/*.bal)) \
+	$(eval BAL_FILES:=$(wildcard $(SAMPLE)/pet-be*.bal)) \
+    $(foreach file, $(BAL_FILES),  $(call celleryBuild, $(file), $(SAMPLE))) \
+    $(eval BAL_FILES:=$(wildcard $(SAMPLE)/pet-fe*.bal)) \
+    $(foreach file, $(BAL_FILES),  $(call celleryBuild, $(file), $(SAMPLE))) \
+    $(eval BAL_FILES:=$(wildcard $(SAMPLE)/pet-store*.bal)) \
     $(foreach file, $(BAL_FILES),  $(call celleryBuild, $(file), $(SAMPLE))) \
 
 
