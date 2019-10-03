@@ -19,31 +19,30 @@ GIT_REVISION := $(shell git rev-parse --verify HEAD)
 CELLERY_ORG ?= wso2cellery
 CELLERY_VERSION ?= latest
 
-SAMPLE := pet-store
 USE_CASES := all-in-one-composite cell-to-composite composite-to-composite
 
-CELL_CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(USE_CASES))
-CELL_CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(USE_CASES))
+CELLERY_BUILD_TARGETS := $(addprefix cellery-build., $(USE_CASES))
+CELLERY_PUSH_TARGETS := $(addprefix cellery-push., $(USE_CASES))
 
 all: cellery-build
 
 .PHONY: cellery-build
-cellery-build: $(CELL_CELLERY_BUILD_TARGETS)
+cellery-build: $(CELLERY_BUILD_TARGETS)
 
 .PHONY: cellery-push
-cellery-push: $(CELL_CELLERY_PUSH_TARGETS)
+cellery-push: $(CELLERY_PUSH_TARGETS)
 
 
-.PHONY: $(CELL_CELLERY_BUILD_TARGETS)
-$(CELL_CELLERY_BUILD_TARGETS):
+.PHONY: $(CELLERY_BUILD_TARGETS)
+$(CELLERY_BUILD_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-build.%,%,$@))
 	cd $(SAMPLE); \
 	$(eval BAL_FILES:=$(wildcard $(SAMPLE)/*.bal)) \
     $(foreach file, $(BAL_FILES),  $(call celleryBuild, $(file), $(SAMPLE))) \
 
 
-.PHONY: $(CELL_CELLERY_PUSH_TARGETS)
-$(CELL_CELLERY_PUSH_TARGETS):
+.PHONY: $(CELLERY_PUSH_TARGETS)
+$(CELLERY_PUSH_TARGETS):
 	$(eval SAMPLE=$(patsubst cellery-push.%,%,$@))
 	cd  $(USE_CASES); \
 	$(eval BAL_FILES:=$(wildcard $(SAMPLE)/*.bal)) \
