@@ -28,16 +28,15 @@ and deployed in three different combinations as mentioned below.
 In this approach, all 5 components involved in the pet-store application is grouped together as a single composite. As this is a single composite in this,
 users will have to create the ingress rules to allow the external traffic into the pet-store application. You can find more information about the detailed steps [here](all-in-one-composite). 
 
-### 2. [Cell to Composite](cell-to-composite)
-In this approach, the frontend(portal) application of the pet-store is deployed as a Cell and the backend components are grouped as Composite. Since the front end
-application is deployed as a Cell, the ingress rules are created by default by Cellery similar to the [Pet-store cells sample](../../cells/pet-store). 
-You can find more information about the detailed steps [here](cell-to-composite).
-
-### 3. [Composite to Composite](composite-to-composite)
+### 2. [Composite to Composite](composite-to-composite)
 In this approach, both frontend and backend components have been separated into two composites and deployed. We will have to create the 
 ingress manually to allow the external traffic into the portal application as we have performed in [All-in-one Compsite](#1-all-in-one-compositeall-in-one-composite). 
 You can find more information about the detailed steps [here](composite-to-composite). 
 
+### 3. [Cell to Composite](cell-to-composite)
+In this approach, the frontend(portal) application of the pet-store is deployed as a Cell and the backend components are grouped as Composite. Since the front end
+application is deployed as a Cell, the ingress rules are created by default by Cellery similar to the [Pet-store cells sample](../../cells/pet-store). 
+You can find more information about the detailed steps [here](cell-to-composite).
 
 # Did you try? 
 1. [Hello world composite](../hello-world)

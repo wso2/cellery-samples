@@ -227,6 +227,9 @@ Now proceed to [Create Ingress](#create-ingress) to allow the access to the pet-
 Similar to Cells, the Composites can also be observed. You can login to the [Cellery Dashboard](http://cellery-dashboard) to see the observability.
 Please follow the instructions provided [here](../all-in-one-composite#observability) to visualize the observability data. 
 
-# What's Next?
+# Did you try?
 - [Composite to Composite pet-store](../composite-to-composite) - This will demonstrate how we can split the all-in-one composite into two composites and deploy into the runtime.
+
+# What's Next?
 - [Cell to Composite pet-store](../cell-to-composite) - This will demonstrate how cells and composites can be deployed together and interacted in a runtime.
+- [Pet-store Cell Sample](../../../cells/pet-store/README.md) - This will demonstrate how pet-store application can be easily deployed as cells.
