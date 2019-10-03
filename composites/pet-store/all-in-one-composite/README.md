@@ -36,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component ordersComponent = {
         name: "orders",
         source: {
-            image: "wso2cellery/samples-pet-store-orders:latest-dev"
+            image: "wso2cellery/samples-pet-store-orders:latest"
         },
         ingresses: {
             orders:  <cellery:HttpPortIngress>{
@@ -54,7 +54,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component customersComponent = {
         name: "customers",
         source: {
-            image: "wso2cellery/samples-pet-store-customers:latest-dev"
+            image: "wso2cellery/samples-pet-store-customers:latest"
         },
         ingresses: {
             customers: <cellery:HttpPortIngress>{
@@ -72,7 +72,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component catalogComponent = {
         name: "catalog",
         source: {
-            image: "wso2cellery/samples-pet-store-catalog:latest-dev"
+            image: "wso2cellery/samples-pet-store-catalog:latest"
         },
         ingresses: {
             catalog: <cellery:HttpPortIngress>{
@@ -88,7 +88,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component controllerComponent = {
         name: "controller",
         source: {
-            image: "wso2cellery/samples-pet-store-controller:latest-dev"
+            image: "wso2cellery/samples-pet-store-controller:latest"
         },
         ingresses: {
             ingress: <cellery:HttpPortIngress>{
@@ -112,7 +112,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component portalComponent = {
             name: "portal",
             source: {
-                image: "wso2cellery/samples-pet-store-portal:latest-dev"
+                image: "wso2cellery/samples-pet-store-portal:latest"
             },
             ingresses: {
                 portal: <cellery:HttpPortIngress>{
@@ -161,8 +161,8 @@ Now let us quick run or build and run the composites. And also observe the compo
 1. [Quick Run](#quick-run)
 2. [Create Ingress](#create-ingress)
 3. [Access pet-store Composite](#access-the-pet-store-web-application)
-3. [Build and Run the Composite](#build-and-run-the-pet-store-composite)
-4. [Observe the Composite](#observability)
+4. [Build and Run the Composite](#build-and-run-the-pet-store-composite)
+5. [Observe the Composite](#observability)
 
 ## Quick Run
 1. Execute below command to pull the image from [Cellery Hub](https://hub.cellery.io/) and run. If you want to build and run the composite in your own, 
@@ -199,7 +199,7 @@ Now you are all set, you can try to [access the pet-store application](#access-t
 1. Go to [http://pet-store-composite.com/](http://pet-store-composite.com/) and view the application.
 ![pet-store-webapp.png](../../../docs/images/composites/pet-store/pet-store-webapp.png)
 
-2. Sign-in As Guest and try out the application by purchasing some accessories. 
+2. Sign-in As Guest and try out the application by purchasing some pet accessories. 
 
 ## Build and Run the Pet-store Composite
 You can perform a [Quick Run](#quick-run) or build and run the pet-store composite in your own. Please perform below operations to be build your composite.
