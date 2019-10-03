@@ -291,9 +291,8 @@ Follow below instructions to build, run and push the `todo` cell.
     
 # 3. Invoke the cell application
 
-In this approach, user will have to create and publish an API in the global APIM, and then subscribe to that API inorder to invoke it as shown above diagram.
-
-Execute below steps to create and publish `todo-api` in Global APIM.
+The cell is published as an unsure API in the Global APIM.
+Execute below steps to invoke `todo-api` in Global APIM.
 
    ```bash
    // Get the list of todo items
