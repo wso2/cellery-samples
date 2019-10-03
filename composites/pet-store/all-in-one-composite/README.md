@@ -164,7 +164,7 @@ Now let us quick run or build and run the composites. And finally let us also ob
 3. [Build and Run the Composite](#build-and-run-the-pet-store-composite)
 4. [Observe the Composite](#observability)
 
-##Quick Run
+## Quick Run
 1. Execute below command to pull the image from [Cellery Hub](https://hub.cellery.io/) and run. If you want to build and run the composite in your own, 
 please go [here](#build-and-run-the-pet-store-composite).
 
@@ -173,7 +173,7 @@ $ cellery run wso2cellery/pet-store-composite-composite:latest -n pet-store
 ```
 Now [create the ingress](#create-ingress) to access the pet-store application. 
 
-##Create Ingress
+## Create Ingress
 1. You need to create the ingress to allow the external traffic to the pet-store application by below command. 
 Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/pet-store-ingress.yaml) 
 ingress is created to direct the traffic to kubernetes service `pet-store--portal-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `pet-store`, 
@@ -195,13 +195,13 @@ and create it accordingly (e.g. `pet-store--portal-service`).
 
 Now you are all set, you can try to [access the pet-store application](#access-the-pet-store-web-application).
 
-##Access the Pet-store web application
+## Access the Pet-store web application
 1. Go to [http://pet-store-composite.com/](http://pet-store-composite.com/) and view the application.
 ![pet-store-webapp.png](../../../docs/images/composites/pet-store/pet-store-webapp.png)
 
 2. Sign-in As Guest and try out the application by purchasing some accessories. 
 
-##Build and Run the Pet-store Composite
+## Build and Run the Pet-store Composite
 You can perform a [Quick Run](#quick-run) or build and run the pet-store composite in your own. Please perform below operations to be build your composite.
 
 1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository.
@@ -273,7 +273,7 @@ You can perform a [Quick Run](#quick-run) or build and run the pet-store composi
 
 Now proceed to [Create Ingress](#create-ingress) to allow the access to the pet-store application, and then [access the application](#access-the-pet-store-web-application).
 
-##Observability
+## Observability
 Similar to Cells, the Composites can also be observed. You can login to the [Cellery Dashboard](http://cellery-dashboard) to see the observability.
 
 *Note:*
@@ -314,6 +314,6 @@ Follow below steps to try out the [Cellery Dashboard](http://cellery-dashboard)
 ![Timeline view](../../../docs/images/composites/pet-store/all-in-one/timeline-view.png)
 ![Dependency diagram view](../../../docs/images/composites/pet-store/all-in-one/dependency-distributed-trace.png)
 
-#What's Next?
+# What's Next?
 - [Composite to Composite pet-store](../composite-to-composite) - This will demonstrate how we can split the all-in-one composite into two composites and deploy into the runtime.
 - [Cell to Composite pet-store](../cell-to-composite) - This will demonstrate how cells and composites can be deployed together and interacted in a runtime.
