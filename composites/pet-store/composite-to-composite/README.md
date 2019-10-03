@@ -1,4 +1,4 @@
-All-in-one Pet-store Composite
+Composite to Composite in Pet-store
 =========
 
 This sample demonstrates how the components can be grouped together and installed as simple Composites. 
@@ -34,7 +34,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component portalComponent = {
             name: "portal",
             source: {
-                image: "wso2cellery/samples-pet-store-portal:latest-dev"
+                image: "wso2cellery/samples-pet-store-portal:latest"
             },
             ingresses: {
                 portal: <cellery:HttpPortIngress>{
@@ -50,7 +50,7 @@ public function build(cellery:ImageName iName) returns error? {
             },
             dependencies: {
                 composites: {
-                    petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-guest-mode-composite", ver: "latest-dev" }
+                    petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-guest-mode-composite", ver: "latest" }
                 }
         }
     };
@@ -79,7 +79,7 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances, b
 ```
 
 Some important points to be noted in the above Composite,
-- Dependencies section includes `wso2cellery/pet-be-guest-mode-composite` cell image.
+- Dependencies section includes `wso2cellery/pet-be-guest-mode-composite` composite image.
 - The actual endpoint of the composite is resolved via loading the cellery:Reference of the `petStoreBackend` dependency alias.
 
 Now let us quick run or build and run the composites. And also observe the composites. 
@@ -87,12 +87,12 @@ Now let us quick run or build and run the composites. And also observe the compo
 1. [Quick Run](#quick-run)
 2. [Create Ingress](#create-ingress)
 3. [Access pet-store Composite](#access-the-pet-store-web-application)
-3. [Build and Run the Composite](#build-and-run-the-pet-be-guest)
-4. [Observe the Composite](#observability)
+4. [Build and Run the Composite](#build-and-run-the-composite)
+5. [Observe the Composite](#observability)
 
 ## Quick Run
 1. Execute below command to pull the image from [Cellery Hub](https://hub.cellery.io/) and run. If you want to build and run the composite in your own, 
-please go [here](#build-and-run-the-pet-be-guest).
+please go [here](#build-and-run-the-composite).
 
 ```
 $ cellery run wso2cellery/pet-fe-guest-mode-composite:latest -n pet-fe-guest -l petStoreBackend:pet-be-guest -d
@@ -102,9 +102,9 @@ Now [create the ingress](#create-ingress) to access the pet-store application.
 ## Create Ingress
 1. You need to create the ingress to allow the external traffic to the pet-store application by below command. 
 Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/composite-to-composite/pet-store-guest-ingress.yaml) 
-ingress is created to direct the traffic to kubernetes service `pet-store--portal-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `pet-store`, 
-the service name will be `pet-store--portal-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-pet-store`), you will have to modify the ingress service name, 
-and create it accordingly (e.g. `pet-store--portal-service`).
+ingress is created to direct the traffic to kubernetes service `pet-fe-guest--portal-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `pet-fe-guest`, 
+the service name will be `pet-fe-guest--portal-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-pet-fe-guest`), you will have to modify the ingress service name, 
+and create it accordingly (e.g. `my-pet-fe-guest--portal-service`).
 ```
  $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/composite-to-composite/pet-store-guest-ingress.yaml
 ```
@@ -125,9 +125,9 @@ Now you are all set, you can try to [access the pet-store application](#access-t
 1. Go to [http://pet-be-guest.com/](http://pet-be-guest.com/) and view the application.
 ![pet-store-webapp.png](../../../docs/images/composites/pet-store/pet-store-webapp.png)
 
-2. Sign-in As Guest and try out the application by purchasing some accessories. 
+2. Sign-in As Guest and try out the application by purchasing some pet accessories. 
 
-## Build and Run the Pet-store Composite
+## Build and Run the Composite
 You can perform a [Quick Run](#quick-run) or build and run the pet-store composite in your own. Please perform below operations to be build your composite.
 
 1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository.
@@ -169,7 +169,7 @@ You can perform a [Quick Run](#quick-run) or build and run the pet-store composi
     
     ```
 
-2. Once the pet-store is built, you can run the composite and create the `pet-store` instance by below command. 
+2. Once the pet-store is built, you can run the composite and create the `pet-fe-guest` instance by below command. 
 ```
 $ cellery run wso2cellery/pet-fe-guest-mode-composite:latest -n pet-fe-guest -l petStoreBackend:pet-be-guest -d
   ✔ Extracting Cell Image wso2cellery/pet-fe-guest-mode-composite:latest
