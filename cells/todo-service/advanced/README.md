@@ -1,9 +1,9 @@
-# TODO-Service Cell
+# TODO-Service Cell Advanced
 
 The TODO Cell consists of a simple 'todo' micro service and mysql server. Todo micro service is written in go, and  this service
 receives requests to add/list/update a todo items. These todo items are stored in mysql database.
 
-![Todo cell view](../../docs/images/todo-cell/todo-cell.png)
+![Todo cell view](../../../docs/images/todo-cell/todo-cell.png)
 
 Now let's look at the steps required to try this todo-cell.
 
@@ -28,19 +28,18 @@ This example uses three types of volumes as described below.
 
    1. Configuration: `sqlconfig` configuration is used to mount the [init.sql](mysql/init.sql) script to mysql component.        
    2. Volume Claim: A persistence volume claim `volumeClaim` is mounted to `/var/lib/mysql` path of the mysql component to persist mysql data.
-   3. Secret: The database credentials are mounted as a secret to `todoServiceComponet` in the path `/credentials`.    
+   3. Secret: The database credentials are mounted as a secret to `todoServiceComponet` in the path `/credentials`. 
+   The secret is created at runtime using the environment variables `MYSQL_USERNAME` and `MYSQL_PASSWORD`.
 
 ```ballerina
-// Composite file that wraps a to do micro service and mysql database.
 import celleryio/cellery;
 import ballerina/io;
+import ballerina/config;
 
 public function build(cellery:ImageName iName) returns error? {
     int mysqlPort = 3306;
     string mysqlPassword = "root";
-
-    string mysqlScript = readFile("./mysql/init.sql");
-
+    string mysqlScript = readFile("../mysql/init.sql");
     //Mysql database service which stores the todos that were added via the todos service
     cellery:Component mysqlComponent = {
         name: "mysql-db",
@@ -62,18 +61,18 @@ public function build(cellery:ImageName iName) returns error? {
                 path: "/docker-entrypoint-initdb.d",
                 readOnly: false,
                 volume:<cellery:NonSharedConfiguration>{
-                                 name:"init-sql",
-                                 data:{
-                                    "init.sql":mysqlScript
-                                 }
-                             }
+                     name:"init-sql",
+                     data:{
+                        "init.sql":mysqlScript
+                     }
+                }
             },
             volumeClaim: {
                 path: "/var/lib/mysql",
                 readOnly: false,
                 volume:<cellery:K8sNonSharedPersistence>{
                      name:"data-vol",
-                     storageClass:"local-storage",
+                    //  storageClass:"local-storage",
                      accessMode: ["ReadWriteOnce"],
                      request:"1G"
                 }
@@ -124,7 +123,7 @@ public function build(cellery:ImageName iName) returns error? {
             DATABASE_NAME: {
                 value: "todos_db"
             },
-            DATABASE_CREDENTIALS_PATH:{
+            DATABASE_CREDENTIALS_PATH: {
                 value: "/credentials"
             }
         },
@@ -132,12 +131,8 @@ public function build(cellery:ImageName iName) returns error? {
             secret: {
                 path: "/credentials",
                 readOnly: false,
-                volume:<cellery:NonSharedSecret>{
-                    name:"db-credentials",
-                    data:{
-                        username:"root",
-                        password:"root"
-                    }
+                volume:<cellery:SharedSecret>{
+                    name:"db-credentials"
                 }
             }
         },
@@ -158,8 +153,22 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
 returns (cellery:InstanceState[] | error?) {
-    cellery:Composite composite = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(composite, iName, instances, startDependencies, shareDependencies);
+    // Read db credentials at runtime from env.
+    string db_user = config:getAsString("MYSQL_USERNAME");
+    string db_pwd = config:getAsString("MYSQL_PASSWORD");
+    if (db_user == "" || db_pwd == "") {
+        panic error("MYSQL_USERNAME or MYSQL_PASSWORD not found in environment");
+    }
+    cellery:NonSharedSecret mysqlCreds = {
+        name: "db-credentials",
+        data: {
+            username: db_user,
+            password: db_pwd
+        }
+    };
+    error? e = cellery:createSecret(mysqlCreds);
+    cellery:CellImage todoCell = check cellery:constructImage(untaint iName);
+    return cellery:createInstance(todoCell, iName, instances, startDependencies, shareDependencies);
 }
 
 
@@ -171,7 +180,7 @@ function readFile(string filePath) returns (string) {
     if (readOutput is string) {
         return readOutput;
     } else {
-        return "Error: Unable to read file "+filePath;
+        return "Error: Unable to read file " + filePath;
     }
 }
 ```
@@ -226,7 +235,8 @@ Follow below instructions to build, run and push the `todo` cell.
        }  
     ``` 
 
-2. After creating the persistence volume. Build the cell image for todo-cell project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
+2. After creating the persistence volume. Build the cell image for todo-cell project by executing the `cellery build` command as shown below.
+ Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
     $ cellery build todo-cell.bal <CELLERY_HUB_ORG>/todo-cell:latest
     Hello World Cell Built successfully.
@@ -244,7 +254,13 @@ Follow below instructions to build, run and push the `todo` cell.
     --------------------------------------------------------
     ```    
 
-2. Once the todo-cell is built, you can run the cell and create the `todos` instance by below command. 
+3. Once the todo-cell is built, export the `MYSQL_USERNAME` and `MYSQL_PASSWORD`.
+    ```bash
+       $ export MYSQL_USERNAME=root
+       $ export MYSQL_PASSWORD=root 
+   ```
+
+4. Once the credentials are exporeted, you can run the cell and create the `todos` instance by below command. 
     ```
     $ cellery run wso2cellery/todo-cell:latest -n todos
        ✔ Extracting Cell Image wso2cellery/todo-cell:latest
@@ -272,7 +288,7 @@ Follow below instructions to build, run and push the `todo` cell.
        --------------------------------------------------------
     ```
     
-3. Now todo-cell is deployed, execute `cellery list instances` to see the status of the deployed cell instance.
+5. Now todo-cell is deployed, execute `cellery list instances` to see the status of the deployed cell instance.
     ```
     $ cellery list instances
     
@@ -282,7 +298,7 @@ Follow below instructions to build, run and push the `todo` cell.
          todos      wso2cellery/todo-cell:latest   Ready    2            1 minutes 40 seconds
     ```
     
-4. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components of the cell image.
+6. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components of the cell image.
     ```
     $ cellery view <CELLERY_HUB_ORG>/todo-cell:latest
     ```
