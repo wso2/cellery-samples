@@ -212,7 +212,7 @@ You can perform a [Quick Run](#quick-run) or build and run the pet-store composi
    ```
 1. Build the cell image for pet-store project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [Cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build pet-store.bal <CELLERY_HUB_ORG>/pet-store-composite:latest
+    $ cellery build pet-store-composite.bal <CELLERY_HUB_ORG>/pet-store-composite:latest
     Hello World Cell Built successfully.
     
     ✔ Building image <CELLERY_HUB_ORG>/pet-store-composite:latest
