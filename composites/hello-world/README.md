@@ -5,6 +5,8 @@ The hello-world composite contains one component hello. The hello component is d
 
 Now let's look at the steps required to try this hello-world cell.
 
+![Hello World Composite Architecture Diagram](../../docs/images/composites/hello-world/hello-world-architecture.jpg)
+
 ## Try hello world composite
 
 ### 1. Checkout the Sample
