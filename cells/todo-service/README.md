@@ -325,6 +325,12 @@ Execute below steps to invoke `todo-api` in Global APIM.
        "content": "Submit the course work at 9:00p.m",
        "done": false
      }
+
+   // Update a todo item
+   $ curl -X PUT https://wso2-apim-gateway/todo/0.1/todos/3 -k -d '{"title":"Submission","content":"Submit the course work at 9:00p.m","done":true}'
+   {
+     "message": "successfully updated"
+   }
      
    ```
 
