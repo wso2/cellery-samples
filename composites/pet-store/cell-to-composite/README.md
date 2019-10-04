@@ -19,6 +19,8 @@ in the frontend cell can enable OIDC flow, unlike composites [all-in-composite](
 
 Let us focus on the [pet-fe-cell-to-composite.bal](pet-fe-cell-to-composite.bal), which uses composite reference to link to pet-be-composite.
 
+![pet-store-diagram](../../../docs/images/composites/pet-store/cell-to-comp/petstore-comp-cell.jpg)
+
 ```ballerina
 import celleryio/cellery;
 import ballerina/config;
