@@ -260,7 +260,7 @@ Follow below instructions to build, run and push the `todo` cell.
 
 3. Once the todo-cell is built,, you can run the cell and create the `todos` instance by below command. 
     ```
-    $ cellery run wso2cellery/todo-cell:latest -n todos
+    $ cellery run wso2cellery/todo-cell:latest -n todos -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=root                                                        
        ✔ Extracting Cell Image wso2cellery/todo-cell:latest
        ✔ Reading Image wso2cellery/todo-cell:latest
        Info: Main Instance: todos
