@@ -118,7 +118,7 @@ and create it accordingly (e.g. `my-pet-fe-guest--portal-service`).
 ```
 3. Add the IP address shown in the ingress to your /etc/hosts, therefore you can invoke the service. 
 ```
-   127.0.0.1 pet-be-guest.com
+   127.0.0.1 pet-store-guest.com
 ```
 
 Now you are all set, you can try to [access the pet-store application](#access-the-pet-store-web-application).
