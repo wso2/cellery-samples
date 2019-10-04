@@ -233,8 +233,6 @@ Follow below instructions to build, run and push the `todo` cell.
 2. After creating the persistence volume. Build the cell image for todo-cell project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
     $ cellery build todo-cell.bal <CELLERY_HUB_ORG>/todo-cell:latest
-    Hello World Cell Built successfully.
-    
     ✔ Building image <CELLERY_HUB_ORG>/todo-cell:latest
     ✔ Saving new Image to the Local Repository
     
@@ -339,7 +337,7 @@ Execute below steps to invoke `todo-api` in Global APIM.
    ```
 
 # 4. Push your cell  
-8. As a final step, let's push your todo-cell [cellery hub](https://hub.cellery.io/) account as shown below.
+1. Let's push your todo-cell [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
     $ cellery push <CELLERY_HUB_ORG>/todo-cell:latest
     ✔ Connecting to registry-1.docker.io
@@ -358,8 +356,18 @@ Execute below steps to invoke `todo-api` in Global APIM.
     --------------------------------------------------------
     ```
 Congratulations! You have successfully created your own cell!
- 
+
+# 5. Clean up the setup.
+1. As a final step, delete the cell and volume claim and volume.
+    ```bash
+    $ cellery terminate todos
+    $ kubectl delete pvc todos--mysql-db-data-vol-pvc
+    $ kubectl delete pv -f pv-local.yaml
+    ```
+   
+Try the [advanced todo service](./advanced) next to learn how to create volumes at runtime.
 
 ## What's Next? 
-1. [Try hello world Api](../hello-world-api)
-2. [Try pet store](../pet-store)
+1. [Try advanced todo service](./advanced)
+2. [Try hello world Api](../hello-world-api)
+3. [Try pet store](../pet-store)
