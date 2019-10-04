@@ -3,7 +3,7 @@
 The TODO Cell consists of a simple 'todo' micro service and mysql server. Todo micro service is written in go, and  this service
 receives requests to add/list/update a todo items. These todo items are stored in mysql database.
 
-![Todo cell view](../../docs/images/todo-cell/todo-cell-gateway.jpg)
+![Todo cell view](../../docs/images/todo-cell/todo-cell-unshared.jpg)
 
 Now let's look at the steps required to try this todo-cell.
 
