@@ -161,12 +161,13 @@ $ cellery run wso2cellery/pet-fe-cell-to-composite:latest -n pet-fe-comp-cell -l
   Info: Main Instance: pet-fe-comp-cell
   Info: Validating dependencies
   Info: Instances to be Used
-  ------------------------------------------------------------------------------------------------------------------------
-  INSTANCE NAME                  CELL IMAGE                          USED INSTANCE             KIND            SHARED
-  ------------------------------------------------------------------------------------------------------------------------
-  pet-be-comp                   wso2cellery/pet-be-composite:latest To be Created             Composite       -
-  pet-fe-comp-cell                   wso2cellery/pet-fe-cell-to-composite:latest To be Created             Composite       -
-  ------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+INSTANCE NAME     CELL IMAGE                                       USED INSTANCE     KIND           SHARED         
+------------------------------------------------------------------------------------------------------------------------
+pet-be-comp       wso2cellery/pet-be-composite:latest              To be Created     Composite      -              
+pet-fe-comp-cell  wso2cellery/pet-fe-cell-to-composite:latest      To be Created     Cell           -              
+------------------------------------------------------------------------------------------------------------------------
+
   Info: Dependency Tree to be Used
   
   pet-fe-comp-cell
@@ -190,11 +191,15 @@ $ cellery run wso2cellery/pet-fe-cell-to-composite:latest -n pet-fe-comp-cell -l
 ```
  $ cellery list instances
  
+ Cell Instances:
+   INSTANCE            IMAGE                                    STATUS              GATEWAY              COMPONENTS   AGE     
+ ------------------ ------------------------------------------- ----- --------------------------------- ------------ -------
+  pet-fe-comp-cell  wso2cellery/pet-fe-cell-to-composite:latest Ready pet-fe-comp-cell--gateway-service     1       45 seconds 
+ 
  Composite Instances:
-    INSTANCE                         IMAGE                        STATUS   COMPONENTS           AGE
- -------------- ------------------------------------------------ -------- ------------ ---------------------
-  pet-be-comp        wso2cellery/pet-be-composite:latest           Ready    4            1 minutes 8 seconds
-  pet-fe-comp-cell   wso2cellery/pet-fe-cell-to-composite:latest   Ready    1            1 minutes
+   INSTANCE                 IMAGE                    STATUS   COMPONENTS      AGE      
+ ------------- ------------------------------------ -------- ------------ ------------ 
+  pet-be-comp   wso2cellery/pet-be-composite:latest   Ready    4            1 minutes   
   
 ```
     
