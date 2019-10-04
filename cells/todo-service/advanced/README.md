@@ -103,6 +103,10 @@ public function build(cellery:ImageName iName) returns error? {
                           {
                               path: "/*",
                               method: "GET"
+                          },
+                          {
+                              path: "/*",
+                              method: "PUT"
                           }
                        ]
                    },
@@ -341,6 +345,12 @@ Execute below steps to invoke `todo-api` in Global APIM.
        "content": "Submit the course work at 9:00p.m",
        "done": false
      }
+
+   // Update a todo item
+   $ curl -X PUT https://wso2-apim-gateway/todos/todos/0.1/todos/2 -k -d '{"title":"Pay Utility Bills","content":"Pay electricity, water and telephone bills","done":true}'
+   {
+     "message": "successfully updated"
+   }
      
    ```
 
