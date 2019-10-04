@@ -258,13 +258,7 @@ Follow below instructions to build, run and push the `todo` cell.
     --------------------------------------------------------
     ```    
 
-3. Once the todo-cell is built, export the `MYSQL_USERNAME` and `MYSQL_PASSWORD`.
-    ```bash
-       $ export MYSQL_USERNAME=root
-       $ export MYSQL_PASSWORD=root 
-   ```
-
-4. Once the credentials are exporeted, you can run the cell and create the `todos` instance by below command. 
+3. Once the todo-cell is built,, you can run the cell and create the `todos` instance by below command. 
     ```
     $ cellery run wso2cellery/todo-cell:latest -n todos
        ✔ Extracting Cell Image wso2cellery/todo-cell:latest
@@ -292,7 +286,7 @@ Follow below instructions to build, run and push the `todo` cell.
        --------------------------------------------------------
     ```
     
-5. Now todo-cell is deployed, execute `cellery list instances` to see the status of the deployed cell instance.
+4. Now todo-cell is deployed, execute `cellery list instances` to see the status of the deployed cell instance.
     ```
     $ cellery list instances
     
@@ -302,7 +296,7 @@ Follow below instructions to build, run and push the `todo` cell.
          todos      wso2cellery/todo-cell:latest   Ready    2            1 minutes 40 seconds
     ```
     
-6. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components of the cell image.
+5. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components of the cell image.
     ```
     $ cellery view <CELLERY_HUB_ORG>/todo-cell:latest
     ```
@@ -355,7 +349,7 @@ Execute below steps to invoke `todo-api` in Global APIM.
    ```
 
 # 4. Push your cell  
-8. As a final step, let's push your todo-cell [cellery hub](https://hub.cellery.io/) account as shown below.
+As a final step, let's push your todo-cell [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
     $ cellery push <CELLERY_HUB_ORG>/todo-cell:latest
     ✔ Connecting to registry-1.docker.io
