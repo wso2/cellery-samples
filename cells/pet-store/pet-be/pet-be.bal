@@ -108,25 +108,6 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances, b
 }
 
 public function test(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns error? {
-    cellery:Test petBeDockerTests = {
-        name: "pet-be-test",
-        source: {
-            image: "docker.io/wso2cellery/pet-be-tests"
-        },
-        envVars: {
-            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(iName).controller_ingress_api_url }
-        }
-    };
-    cellery:Test petBeInlineTests = {
-        name: "pet-be-test",
-        source : <cellery:FileSource> {
-            filepath: "tests/"
-        }
-    };
-    cellery:TestSuite petBeTestSuite = {
-        tests: [petBeDockerTests, petBeInlineTests]
-    };
-
     cellery:InstanceState[]|error? result = run(iName, instances, startDependencies, shareDependencies);
     cellery:InstanceState[] instanceList = [];
     if (result is error) {
@@ -138,6 +119,26 @@ public function test(cellery:ImageName iName, map<cellery:ImageName> instances, 
     } else {
         instanceList = <cellery:InstanceState[]>result;
     }
+
+    cellery:ImageName img = <cellery:ImageName>cellery:getCellImage();
+    cellery:Test petBeDockerTests = {
+        name: "pet-be-test",
+        source: {
+            image: "docker.io/wso2cellery/pet-be-tests"
+        },
+        envVars: {
+            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(img).controller_ingress_api_url }
+        }
+    };
+    cellery:Test petBeInlineTests = {
+        name: "pet-be-test",
+        source : <cellery:FileSource> {
+            filepath: "tests/"
+        }
+    };
+    cellery:TestSuite petBeTestSuite = {
+        tests: [petBeDockerTests, petBeInlineTests]
+    };
 
     error? a = cellery:runTestSuite(instanceList, petBeTestSuite);
     return cellery:stopInstances(instanceList);

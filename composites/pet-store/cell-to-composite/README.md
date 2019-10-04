@@ -19,6 +19,8 @@ in the frontend cell can enable OIDC flow, unlike composites [all-in-composite](
 
 Let us focus on the [pet-fe-cell-to-composite.bal](pet-fe-cell-to-composite.bal), which uses composite reference to link to pet-be-composite.
 
+![pet-store-diagram](../../../docs/images/composites/pet-store/cell-to-comp/petstore-comp-cell.jpg)
+
 ```ballerina
 import celleryio/cellery;
 import ballerina/config;
@@ -212,7 +214,7 @@ Please follow the instructions provided [here](../all-in-one-composite#observabi
 
 # Did you try?
 - [All in one Composite](../all-in-one-composite) - This wraps all components of the pet-store application into one composite
-- [Composite to Composite pet-store](../cell-to-composite) - This will demonstrate how we can split the all-in-one composite into two composites and deploy into the runtime.
+- [Composite to Composite pet-store](../composite-to-composite) - This will demonstrate how we can split the all-in-one composite into two composites and deploy into the runtime.
 
 # What's Next?
 - [Pet-store Cell Sample](../../../cells/pet-store/README.md) - This will demonstrate how pet-store application can be easily deployed as cells.

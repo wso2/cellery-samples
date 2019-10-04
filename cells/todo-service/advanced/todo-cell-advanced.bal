@@ -14,13 +14,12 @@
 // Composite file that wraps a todo micro service and mysql database.
 import celleryio/cellery;
 import ballerina/io;
+import ballerina/config;
 
 public function build(cellery:ImageName iName) returns error? {
     int mysqlPort = 3306;
     string mysqlPassword = "root";
-
     string mysqlScript = readFile("./mysql/init.sql");
-
     //Mysql database service which stores the todos that were added via the todos service
     cellery:Component mysqlComponent = {
         name: "mysql-db",
@@ -42,11 +41,11 @@ public function build(cellery:ImageName iName) returns error? {
                 path: "/docker-entrypoint-initdb.d",
                 readOnly: false,
                 volume:<cellery:NonSharedConfiguration>{
-                                 name:"init-sql",
-                                 data:{
-                                    "init.sql":mysqlScript
-                                 }
-                             }
+                     name:"init-sql",
+                     data:{
+                        "init.sql":mysqlScript
+                     }
+                }
             },
             volumeClaim: {
                 path: "/var/lib/mysql",
@@ -66,7 +65,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component todoServiceComponent = {
         name: "todos",
         source: {
-            image: "docker.io/mirage20/samples-todoapp-todos:latest"
+            image: "docker.io/wso2cellery/samples-todoapp-todos:latest-dev"
         },
         ingresses: {
             todo:  <cellery:HttpApiIngress>{
@@ -108,7 +107,7 @@ public function build(cellery:ImageName iName) returns error? {
             DATABASE_NAME: {
                 value: "todos_db"
             },
-            DATABASE_CREDENTIALS_PATH:{
+            DATABASE_CREDENTIALS_PATH: {
                 value: "/credentials"
             }
         },
@@ -116,12 +115,8 @@ public function build(cellery:ImageName iName) returns error? {
             secret: {
                 path: "/credentials",
                 readOnly: false,
-                volume:<cellery:NonSharedSecret>{
-                    name:"db-credentials",
-                    data:{
-                        username:"root",
-                        password:"root"
-                    }
+                volume:<cellery:SharedSecret>{
+                    name:"db-credentials"
                 }
             }
         },
@@ -142,8 +137,21 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
 returns (cellery:InstanceState[] | error?) {
-    cellery:CellImage cell = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(cell, iName, instances, startDependencies, shareDependencies);
+    string db_user = config:getAsString("MYSQL_USERNAME");
+    string db_pwd = config:getAsString("MYSQL_PASSWORD");
+    if (db_user == "" || db_pwd == "") {
+            panic error("MYSQL_USERNAME or MYSQL_PASSWORD not found in environment");
+    }
+    cellery:NonSharedSecret mysqlCreds = {
+        name: "db-credentials",
+        data: {
+            username: db_user,
+            password: db_pwd
+        }
+    };
+    error? e = cellery:createSecret(mysqlCreds);
+    cellery:CellImage todoCell = check cellery:constructImage(untaint iName);
+    return cellery:createInstance(todoCell, iName, instances, startDependencies, shareDependencies);
 }
 
 
@@ -155,6 +163,6 @@ function readFile(string filePath) returns (string) {
     if (readOutput is string) {
         return readOutput;
     } else {
-        return "Error: Unable to read file "+filePath;
+        return "Error: Unable to read file " + filePath;
     }
 }

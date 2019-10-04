@@ -22,26 +22,29 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
+
 	//"strconv"
 	"strings"
 )
 
 const (
 	// Env variables
-	Port              = "PORT"
-	Database_Host     = "DATABASE_HOST"
-	Database_Port     = "DATABASE_PORT"
-	Database_Username = "DATABASE_USERNAME"
-	Database_Password = "DATABASE_PASSWORD"
-	Database_Name     = "DATABASE_NAME"
+	Port                      = "PORT"
+	Database_Host             = "DATABASE_HOST"
+	Database_Port             = "DATABASE_PORT"
+	Database_Credentials_Path = "DATABASE_CREDENTIALS_PATH"
+	Database_Name             = "DATABASE_NAME"
 )
 
-var env = loadEnv(Port, Database_Host, Database_Port, Database_Username, Database_Password, Database_Name)
+var env = loadEnv(Port, Database_Host, Database_Port, Database_Credentials_Path, Database_Name)
 
 type Todo struct {
 	ID      int    `json:"id"`
@@ -169,14 +172,20 @@ func loadEnv(keys ...string) map[string]string {
 }
 
 func init() {
+	var err error
+
+	usernameBytes, err := ioutil.ReadFile(filepath.Join(env[Database_Credentials_Path], "username"))
+	fatal(err)
+	passwordBytes, err := ioutil.ReadFile(filepath.Join(env[Database_Credentials_Path], "password"))
+	fatal(err)
+
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?autocommit=true",
-		env[Database_Username],
-		env[Database_Password],
+		strings.TrimSuffix(string(usernameBytes), "\n"),
+		strings.TrimSuffix(string(passwordBytes), "\n"),
 		env[Database_Host],
 		env[Database_Port],
 		env[Database_Name],
 	)
-	var err error
 	db, err = sql.Open("mysql", dsn)
 	fatal(err)
 }
@@ -187,13 +196,13 @@ func fatal(err error) {
 	}
 }
 
-func makeInternalErrorResponse(w http.ResponseWriter, errs ... error) {
+func makeInternalErrorResponse(w http.ResponseWriter, errs ...error) {
 	makeErrorResponse(w, http.StatusInternalServerError, errs...)
 }
 
-func makeErrorResponse(w http.ResponseWriter, statusCode int, errs ... error) {
+func makeErrorResponse(w http.ResponseWriter, statusCode int, errs ...error) {
 	m := make(map[string][]string)
-	var strErrs [] string
+	var strErrs []string
 	for _, err := range errs {
 		strErrs = append(strErrs, err.Error())
 	}
