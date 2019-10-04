@@ -145,7 +145,7 @@ cluster name: cellery-admin@cellery
 
 2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-scaling.md#enable-zero-scaling).
 
-### Run auto scaling enabled pet-be
+### Run zero scaling enabled pet-be
 1) Run `pet-be` cell instance with cell image `wso2cellery/pet-be-zero-scale-cell:latest`. You can optionally build the [pet-be-zero-scale.bal](../../cells/pet-store/advanced/pet-be-zero-scale/pet-be-zero-scale.bal) 
 as mentioned [here](build-and-run.md).
 ```
