@@ -25,6 +25,8 @@ sample that allows users to by-pass the login flow and let them in as Guest.
 
 Let us focus on the [pet-fe-guest-mode-composite.bal](pet-fe-guest-mode-composite.bal), which uses composite reference to link to another composite.
 
+![pet-store-diagram](../../../docs/images/composites/pet-store/comp-to-comp/petstore-comp-comp.jpg)
+
 ```ballerina
 import celleryio/cellery;
 

@@ -21,6 +21,7 @@ demonstrated in the [pet-store cells](../../cells/pet-store/pet-fe#build-method)
 the pet-store applications. As the OIDC flow is not automatically performed with Composites, we have enabled the guest mode for this 
 sample that allows users to by-pass the login flow and let them in as Guest. 
 
+![pet-store diagram](../../../docs/images/composites/pet-store/all-in-one/petstore-all-in-one.jpg)
 
 ```ballerina
 
