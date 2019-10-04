@@ -65,7 +65,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component todoServiceComponent = {
         name: "todos",
         source: {
-            image: "docker.io/mirage20/samples-todoapp-todos:latest"
+            image: "docker.io/wso2cellery/samples-todoapp-todos:latest-dev"
         },
         ingresses: {
             todo:  <cellery:HttpApiIngress>{
@@ -133,16 +133,11 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
 returns (cellery:InstanceState[] | error?) {
-    string db_user = config:getAsString("MYSQL_USERNAME");
-    string db_pwd = config:getAsString("MYSQL_PASSWORD");
-    if (db_user == "" || db_pwd == "") {
-            panic error("MYSQL_USERNAME or MYSQL_PASSWORD not found in environment");
-    }
     cellery:NonSharedSecret mysqlCreds = {
         name: "db-credentials",
         data: {
-            username: db_user,
-            password: db_pwd
+            username: "@encrypted:AgCTLJ0bOw4p3v3xmkwPKvqHL6RdEFqfYwN0m3mh1XaTiWdf5P/cq/plQl9Kfhm6A//xjabLcKaUTvOtYKzp5o9B007hMeL4n3Bn7UoU3fhVcaFD0Hemj4k9MYSTh7UrnSgd2orKtRC7JzPPfWNdIYiIPkERfVwCID9m3rNOxl/p5FSCLLqtOqjBzedf9c+wUstDiSmrWdazp3AJAibpX85Ra3Z5mZya4Ar8uSWVTcfGWjumd1Kc++4vIK2n71ICxE1jBzOOMi98TGaBMHWr8lA+2LRnnQQQUt+4X8v/WTLMbDNCiaeRpXp6VAVeTLMMuQFG1ImI5bc7/V3tOMflIhMLqRNTL9aXwoCKP1TNVDytXXWN/jCjySbwsZRyEn7HMt2zFykMpzGT2t46ka3lV7mNowWR5FqlxRzpGpCtrS+tGE1nW3G9ZJsZMRN+qKFDla4XStxifd+XHKriqbp3U+TI3gp6cFOAgGs4F3NxFe2/YKYHoCFCbP7dTIbY7yGSFCf8nETUjFLUe8xfbJodvcWtEhHlR6AsWaHIt/Z7bdAHaJiXIH6khxXXlAjqYdNETtgvGFohTR8FKSq+6s4CcD6HhxOlQqccIwomKlLmM3c3lgAjaPvvImoIE9dYsYL9PjrKefDV/FVOKf42r8p1pcGW/9C+qW2GTBjY6HOb/dMTydQKna+f+bJGDEjlVSErwNwjrSivaw==",
+            password: "@encrypted:AgCcLoxoq507i7V0WuRX6Pprgtsea0qf1HCscHD8XDWVr6NVFjHrblejhWIyHXjF+u+e2L6cWKnECqZfyrChYlK7Yf4df7nCdRo4ZYM0XcGUOkIoV4nY+9R6DHyJ87vi9qWGZcDyTiGnPAE2rsN7oAfN5TT59gAVsdXWuyBtd2LCuQtZAyDzGxIB3DbdLbnOOAwRqqlcpa+epe18Fq9Zj/+mnnuQ96o6Nj3Xpj90oJfYqFkTndZsXZqEfbQ0V4BMOjxQa/+3btA+be/qbl/Ukp1RFL2d+QAbUMz65YbKR8d5EqT9KElHB59n6xAB+kGcHwC2rbVED2u/hz6f5f9Gaq9fWq49z5MmSceyXNaLWolrLs0GIo0oKFtNPatvpf7MdBYuw7vJoquliC2f1JV6My9G2pHdyqztC5kw4ztv8Fe9bCCpTxDQvikDNE1J1tTJ12PHmwuP4FWDCMcHbnB0nN1EI1oI76kMTXaVdo1SrARcHPkMxQOCg2HXtPbzaJDGpDteGBBtJ3ebkBEFAsp/ojz7Izuh/rW4cZNtgn+DctVLNqVn37wh51+3a/3Q0sPVmstjjsP0RYy0nLoW1T8CWCvRs36WMzUTdtXLV4AgWEZh4yDtehxlkPadogZW+wLyrh94w3N3VZNldZ8gXtGXHNM+ts2A/NWURrMfZf2P/eV/jVyBAr+qhqzYaQya4LEeRV+NQ1Gt/g=="
         }
     };
     error? e = cellery:createSecret(mysqlCreds);
