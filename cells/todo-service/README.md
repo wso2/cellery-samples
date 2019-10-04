@@ -192,9 +192,8 @@ Follow below instructions to build, run and push the `todo` cell.
     ```
     2. Create the volume by deploying pv-docker-desktop.yaml
     ```bash
-       $ kubctl create -f pv-docker-desktop.yaml
-           storageclass.storage.k8s.io/local-storage created
-           persistentvolume/mysql-pv-volume created
+       $ kubectl create -f https://raw.githubusercontent.com/wso2-cellery/samples/master/cells/todo-service/pv-docker-desktop.yaml
+         
     ```
     
     #### Local Setup
@@ -209,9 +208,7 @@ Follow below instructions to build, run and push the `todo` cell.
     ```
     3. Create the volume by deploying pv-docker-desktop.yaml
     ```bash
-       $ kubctl create -f pv-local.yaml
-       storageclass.storage.k8s.io/local-storage created
-       persistentvolume/mysql-pv-volume created
+       $ kubctl create -f https://raw.githubusercontent.com/wso2-cellery/samples/master/cells/todo-service/pv-local.yaml
     ```
    
    #### GCP
@@ -292,7 +289,7 @@ Follow below instructions to build, run and push the `todo` cell.
     
 # 3. Invoke the cell application
 
-The cell is published as an unsure API in the Global APIM.
+The cell is published as an unsecure API in the Global APIM.
 Execute below steps to invoke `todo-api` in Global APIM.
 
    ```bash
