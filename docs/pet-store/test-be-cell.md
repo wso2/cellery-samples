@@ -2,7 +2,6 @@
 
 ### Prerequisites:
  
- * Ballerina 0.991.0 installed
  * [Telepresence 0.101](https://www.telepresence.io/reference/install) dependencies.
  
     Cellery testing uses Telepresence. Hence Telepresence dependencies have to be installed. In order to
@@ -21,10 +20,11 @@
      ```bash
      sudo apt-get install $(apt-cache depends telepresence | grep Depends | sed "s/.*ends:\ //" | tr '\n' ' ')
      ```
-
+ * A Cellery runtime must be running. (Local, GCP, etc..)
+ 
  * Note : If you have set your DNS to ```8.8.8.8```, remove it before proceeding. (You can use any other DNS except
   ```8.8.8.8```). This is due to a bug in Telepresence which emerges since we set ```8.8.8.8``` as cluster DNS.
- * A Cellery runtime must be running. (Local, GCP, etc..)
+
  
  ### Quick Test Run
  
