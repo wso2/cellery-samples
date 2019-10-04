@@ -91,7 +91,7 @@ Checkout the application source of the [pet-fe](../../src/pet-store/pet-fe/porta
 and feel free to play around the source code.  Follow the instructions provided [here](../../src/pet-store) to build from source. 
 
 ## [Run cell integration tests](../../docs/pet-store/test-be-cell.md)
-You can test the cell endpoints by running cell integration tests. Try running the first test case to validate the 
+You can test the cell endpoints by running cell integration tests. Try running integration tests to validate the 
 orders endpoint of the Petstore backend by following the instructions given [here](../../docs/pet-store/test-be-cell.md).
 
 ## [Observability](../../docs/pet-store/observability.md)
