@@ -137,11 +137,16 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
 returns (cellery:InstanceState[] | error?) {
+    string db_user = config:getAsString("MYSQL_USERNAME");
+    string db_pwd = config:getAsString("MYSQL_PASSWORD");
+    if (db_user == "" || db_pwd == "") {
+            panic error("MYSQL_USERNAME or MYSQL_PASSWORD not found in environment");
+    }
     cellery:NonSharedSecret mysqlCreds = {
         name: "db-credentials",
         data: {
-            username: "root",
-            password: "root"
+            username: db_user,
+            password: db_pwd
         }
     };
     error? e = cellery:createSecret(mysqlCreds);
