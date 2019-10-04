@@ -124,7 +124,7 @@ and create it accordingly (e.g. `my-pet-fe-guest--portal-service`).
 Now you are all set, you can try to [access the pet-store application](#access-the-pet-store-web-application).
 
 ## Access the Pet-store web application
-1. Go to [http://pet-be-guest.com/](http://pet-be-guest.com/) and view the application.
+1. Go to [http://pet-store-guest.com/](http://pet-store-guest.com/) and view the application.
 ![pet-store-webapp.png](../../../docs/images/composites/pet-store/pet-store-webapp.png)
 
 2. Sign-in As Guest and try out the application by purchasing some pet accessories. 
