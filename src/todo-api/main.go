@@ -41,10 +41,12 @@ const (
 	Database_Host             = "DATABASE_HOST"
 	Database_Port             = "DATABASE_PORT"
 	Database_Credentials_Path = "DATABASE_CREDENTIALS_PATH"
+	Database_Username         = "DATABASE_USERNAME"
+	Database_Password         = "DATABASE_PASSWORD"
 	Database_Name             = "DATABASE_NAME"
 )
 
-var env = loadEnv(Port, Database_Host, Database_Port, Database_Credentials_Path, Database_Name)
+var env = loadEnv(Port, Database_Host, Database_Port, Database_Name)
 
 type Todo struct {
 	ID      int    `json:"id"`
@@ -173,15 +175,30 @@ func loadEnv(keys ...string) map[string]string {
 
 func init() {
 	var err error
+	var username string
+	var password string
+	envDbUser, ok := os.LookupEnv(Database_Username)
+	if ok {
+		username = envDbUser
+	}
+	envDbPass, ok := os.LookupEnv(Database_Password)
+	if ok {
+		password = envDbPass
+	}
 
-	usernameBytes, err := ioutil.ReadFile(filepath.Join(env[Database_Credentials_Path], "username"))
-	fatal(err)
-	passwordBytes, err := ioutil.ReadFile(filepath.Join(env[Database_Credentials_Path], "password"))
-	fatal(err)
+	credPath, ok := os.LookupEnv(Database_Credentials_Path)
+	if ok {
+		usernameBytes, err := ioutil.ReadFile(filepath.Join(credPath, "username"))
+		fatal(err)
+		passwordBytes, err := ioutil.ReadFile(filepath.Join(credPath, "password"))
+		fatal(err)
+		username = strings.TrimSuffix(string(usernameBytes), "\n")
+		password = strings.TrimSuffix(string(passwordBytes), "\n")
+	}
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?autocommit=true",
-		strings.TrimSuffix(string(usernameBytes), "\n"),
-		strings.TrimSuffix(string(passwordBytes), "\n"),
+		username,
+		password,
 		env[Database_Host],
 		env[Database_Port],
 		env[Database_Name],
