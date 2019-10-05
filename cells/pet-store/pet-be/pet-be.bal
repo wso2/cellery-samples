@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component ordersComponent = {
         name: "orders",
         source: {
-            image: "wso2cellery/samples-pet-store-orders:latest-dev"
+            image: "wso2cellery/samples-pet-store-orders:0.4.0"
         },
         ingresses: {
             orders: <cellery:HttpApiIngress>{
@@ -37,7 +37,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component customersComponent = {
         name: "customers",
         source: {
-            image: "wso2cellery/samples-pet-store-customers:latest-dev"
+            image: "wso2cellery/samples-pet-store-customers:0.4.0"
         },
         ingresses: {
             customers: <cellery:HttpApiIngress>{
@@ -51,7 +51,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component catalogComponent = {
         name: "catalog",
         source: {
-            image: "wso2cellery/samples-pet-store-catalog:latest-dev"
+            image: "wso2cellery/samples-pet-store-catalog:0.4.0"
         },
         ingresses: {
             catalog: <cellery:HttpApiIngress>{
@@ -66,7 +66,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component controllerComponent = {
         name: "controller",
         source: {
-            image: "wso2cellery/samples-pet-store-controller:latest-dev"
+            image: "wso2cellery/samples-pet-store-controller:0.4.0"
         },
         ingresses: {
             ingress: <cellery:HttpApiIngress>{

@@ -17,9 +17,9 @@
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 GIT_REVISION := $(shell git rev-parse --verify HEAD)
 DOCKER_REPO ?= wso2cellery
-DOCKER_IMAGE_TAG ?= latest-dev
+DOCKER_IMAGE_TAG ?= 0.4.0
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= latest-dev
+CELLERY_VERSION ?= 0.4.0
 
 SRC_DIR := src
 CELLS_DIR := cells

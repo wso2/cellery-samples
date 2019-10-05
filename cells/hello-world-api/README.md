@@ -30,7 +30,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component helloComponent = {
         name: "hello-api",
         source: {
-            image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:latest"
+            image: "docker.io/wso2cellery/samples-hello-world-api-hello-service:0.4.0"
         },
         ingresses: {
             ingress: <cellery:HttpApiIngress>{ port: 9090,
@@ -63,29 +63,29 @@ public function build(cellery:ImageName iName) returns error? {
 
 1. Build the cellery image for hello world project by executing the cellery build command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build hello-world-api.bal <CELLERY_HUB_ORG>/hello-world-api-cell:latest
+    $ cellery build hello-world-api.bal <CELLERY_HUB_ORG>/hello-world-api-cell:0.4.0
     
-    ✔ Building image <CELLERY_HUB_ORG>/hello-world-api-cell:latest
+    ✔ Building image <CELLERY_HUB_ORG>/hello-world-api-cell:0.4.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/hello-world-api-cell:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/hello-world-api-cell:0.4.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/helloworld:latest
+      $ cellery run <CELLERY_HUB_ORG>/helloworld:0.4.0
     --------------------------------------------------------
     ```
 
 2. Run the cell image by executing `cellery run` command as shown below.
     ```
-    $ cellery run <CELLERY_HUB_ORG>/hello-world-api-cell:latest -n hello-world-api-cell
-       ✔ Extracting Cell Image  <CELLERY_HUB_ORG/hello-world-api-cell:latest
+    $ cellery run <CELLERY_HUB_ORG>/hello-world-api-cell:0.4.0 -n hello-world-api-cell
+       ✔ Extracting Cell Image  <CELLERY_HUB_ORG/hello-world-api-cell:0.4.0
        
        Main Instance: my-hello-world
        
-       ✔ Reading Cell Image  <CELLERY_HUB_ORG/hello-world-api-cell:latest
+       ✔ Reading Cell Image  <CELLERY_HUB_ORG/hello-world-api-cell:0.4.0
        ✔ Validating environment variables
        ✔ Validating dependencies
        
@@ -93,7 +93,7 @@ public function build(cellery:ImageName iName) returns error? {
        
          INSTANCE NAME                     CELL IMAGE                         USED INSTANCE   SHARED
        ---------------------- --------------------------------------------- --------------- --------
-        hello-world-api-cell    <CELLERY_HUB_ORG>/hello-world-api-cell:latest   To be Created    -
+        hello-world-api-cell    <CELLERY_HUB_ORG>/hello-world-api-cell:0.4.0   To be Created    -
        
        Dependency Tree to be Used:
        
@@ -104,7 +104,7 @@ public function build(cellery:ImageName iName) returns error? {
        ✔ Starting main instance my-hello-world
        
        
-       ✔ Successfully deployed cell image:  <CELLERY_HUB_ORG>/hello-world-api-cell:latest
+       ✔ Successfully deployed cell image:  <CELLERY_HUB_ORG>/hello-world-api-cell:0.4.0
        
        What's next?
        --------------------------------------------------------
@@ -118,11 +118,11 @@ public function build(cellery:ImageName iName) returns error? {
     $ cellery list instances
                         INSTANCE                                   CELL IMAGE                   STATUS                            GATEWAY                               COMPONENTS           AGE
        ------------------------------------------ -------------------------------------------- -------- ----------------------------------------------------------------- ------------ ----------------------
-        hello-world-api-cell           sinthuja/hello-world-api-cell:latest       Ready    sinthuja-hello-world-api-cell-latest-676b2131--gateway-service   1            10 minutes 1 seconds
+        hello-world-api-cell           sinthuja/hello-world-api-cell:0.4.0       Ready    sinthuja-hello-world-api-cell-0.4.0-676b2131--gateway-service   1            10 minutes 1 seconds
     ```
 4. Execute `cellery view` to see the components of your cell. This will open a HTML page in a browser and you can visualize the components and dependent cells of the cell image.
     ```
-    $ cellery view <CELLERY_HUB_ORG>/hello-world-api-cell:latest
+    $ cellery view <CELLERY_HUB_ORG>/hello-world-api-cell:0.4.0
     ```
     ![hello world api cell view](../../docs/images/hello-world-api/hello-world-cell-api-docs-view.png)
     

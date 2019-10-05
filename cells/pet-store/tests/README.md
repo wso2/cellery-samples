@@ -33,7 +33,7 @@
    execution of tests.
  
  ```bash
-cellery test wso2cellery/pet-be-cell:latest -n pet-be
+cellery test wso2cellery/pet-be-cell:0.4.0 -n pet-be
 ```
  
  If you keep observing the pods in your cluster, you will see there are pods which are related to pet-fe-cell are
@@ -42,7 +42,7 @@ cellery test wso2cellery/pet-be-cell:latest -n pet-be
  
 ### Writing Cellery tests
  
-As outlined in [Cellery Testing](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md), developer
+As outlined in [Cellery Testing](https://github.com/wso2-cellery/sdk/blob/v0.4.0/docs/cell-testing.md), developer
  has the flexibility to write two separate types of integration tests along with a combination of those two.
  
  1) [In-line integration tests](#writing-in-line-tests-for-pet-store-backend-cell)
@@ -94,15 +94,15 @@ pet-store
 
 Next step is to write the actual content of the test file. ie pet-be-test.bal file. Developer writes test
  file assuming the services which are exposed by the Cell gateway is running in the developer local machine. Final
-  pet-be-test.bal would look like [this](https://github.com/wso2-cellery/samples/blob/master/cells/pet-store/pet-be/tests/pet-be-test.bal). Let's walk through each section and figure out what is taking place.
+  pet-be-test.bal would look like [this](https://github.com/wso2-cellery/samples/blob/v0.4.0/cells/pet-store/pet-be/tests/pet-be-test.bal). Let's walk through each section and figure out what is taking place.
   
 
 The below snippet of code is meant to run before the actual tests run and ```@test:BeforeSuite``` is used to
  denote it.  
 
  Image / Instance name is retrieved through the [```getCellImage``` helper function](https://github.com/wso2-cellery
- /sdk/blob/master/docs/cell-testing.md#functiongetcellimage)  and the [```run```](https://github.com/wso2-cellery/sdk
- /blob/master/docs/cell-testing.md#functionrun) method is executed in order to deploy / run the actual Cell in the
+ /sdk/blob/v0.4.0/docs/cell-testing.md#functiongetcellimage)  and the [```run```](https://github.com/wso2-cellery/sdk
+ /blob/v0.4.0/docs/cell-testing.md#functionrun) method is executed in order to deploy / run the actual Cell in the
   cluster. Image name, dependencies (no dependencies in this case) are passed to the ```run``` method along with
    ```startDependencies=true``` and ```shareDependencies=true```. This returns the list of instances started or
     an error if it doesn't.
@@ -126,8 +126,8 @@ function setup() {
 }  
 ``` 
 Below is the snippet of code where actual integration tests are executed. Endpoints which are exposed through above
- started instances are retrieved through the  [```getGatewayHost``` helper function](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md#functiongetgatewayhost). Out of returned endpoints, the pet-be controller URL is
-  retrieved and used to send out the request. Refer [pet-be-test.bal](https://github.com/wso2-cellery/samples/blob/master/cells/pet-store/pet-be/tests/pet-be-test.bal) for the omitted part of code. 
+ started instances are retrieved through the  [```getGatewayHost``` helper function](https://github.com/wso2-cellery/sdk/blob/v0.4.0/docs/cell-testing.md#functiongetgatewayhost). Out of returned endpoints, the pet-be controller URL is
+  retrieved and used to send out the request. Refer [pet-be-test.bal](https://github.com/wso2-cellery/samples/blob/v0.4.0/cells/pet-store/pet-be/tests/pet-be-test.bal) for the omitted part of code. 
  
 ```ballerina
 @test:Config
@@ -207,7 +207,7 @@ Note: Ballerina does not support remote debugging for tests yet and therefore th
 
  ### Writing docker image based tests for pet-store backend Cell
  
- As outlined in [Cellery Testing](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md), this type of
+ As outlined in [Cellery Testing](https://github.com/wso2-cellery/sdk/blob/v0.4.0/docs/cell-testing.md), this type of
   testing consists of a set of integration tests containerized in a docker image. Below are the steps to be followed
    in order to implement docker based tests for your Cell files.
    
@@ -230,8 +230,8 @@ Note: Ballerina does not support remote debugging for tests yet and therefore th
 ##### 1) Write tests, create a Dockerfile and push it to DockerHub
 
 As highlighted previously developers can select any framework and language to develop the test. For pet-be we have
- used a set of [integration tests](https://github.com/wso2-cellery/samples/blob/master/tests/pet-store/pet-be/order/src/test/java/io/cellery/test/petstore/be/PetBeTest.java) written using Java and TestNG. This set of tests is built
-  as a [docker image](https://github.com/wso2-cellery/samples/blob/master/tests/pet-store/pet-be/Dockerfile) and
+ used a set of [integration tests](https://github.com/wso2-cellery/samples/blob/v0.4.0/tests/pet-store/pet-be/order/src/test/java/io/cellery/test/petstore/be/PetBeTest.java) written using Java and TestNG. This set of tests is built
+  as a [docker image](https://github.com/wso2-cellery/samples/blob/v0.4.0/tests/pet-store/pet-be/Dockerfile) and
    pushed into DockerHub. The name of the image is ```docker.io/wso2cellery/pet-be-tests```.
    
 ##### 2) Define test function in cell bal file
@@ -313,7 +313,7 @@ $ cat pet-be.log
 
 If a combination of in-line and docker based tests are used, the ```.bal``` file has to be updated as below. The full
  implementation of test function in this case can be found from [pet-be-cell.bal](https://github.com/wso2-cellery
- /samples/blob/master/cells/pet-store/pet-be/pet-be.bal) file.
+ /samples/blob/v0.4.0/cells/pet-store/pet-be/pet-be.bal) file.
  
  Developer can define what are the tests which needs to be run while giving the order which they need to be run.
  

@@ -4,10 +4,10 @@ data based on the business logic and logged in user.
 
 ### Development of portal app
 - The front end logic is written in [React](https://reactjs.org/), and it make calls to pet-be.
-- The swagger file of the pet-fe can be fetched by executing command [`cellery extract-resources`](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#extract-resources) 
+- The swagger file of the pet-fe can be fetched by executing command [`cellery extract-resources`](https://github.com/wso2-cellery/sdk/blob/v0.4.0/docs/cli-reference.md#extract-resources) 
 which will extract the swagger file in the same location where you run the command.
   ```
-  cellery extract-resources wso2cellery/cells-pet-fe:latest
+  cellery extract-resources wso2cellery/cells-pet-fe:0.4.0
   ```
 - Then based on the swagger file, the [client source](../../../src/pet-store/pet-fe/portal/src/gen/petStoreApi.js) is generated which can be used to invoke the pet-fe cell.
 
@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component portalComponent = {
         name: "portal",
         source: {
-            image: "wso2cellery/samples-pet-store-portal:latest-dev"
+            image: "wso2cellery/samples-pet-store-portal:0.4.0"
         },
         ingresses: {
             portal: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
@@ -53,7 +53,7 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
             cells: {
-                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "latest" }
+                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "0.4.0" }
             }
         }
     };
