@@ -11,7 +11,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-// Composite file that wraps a todo micro service and mysql database.
+// Cell file that wraps a todo micro service and mysql database.
 import celleryio/cellery;
 import ballerina/io;
 import ballerina/config;
@@ -125,7 +125,7 @@ public function build(cellery:ImageName iName) returns error? {
         }
     };
 
-    // Composite Initialization
+    // Cell Initialization
     cellery:CellImage cellImage = {
         components: {
             mysql: mysqlComponent,
