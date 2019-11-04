@@ -31,7 +31,7 @@ This example uses three types of volumes as described below.
    3. Secret: The database credentials are mounted as a secret to `todoServiceComponet` in the path `/credentials`.    
 
 ```ballerina
-// Composite file that wraps a to do micro service and mysql database.
+// Cell file that wraps a todo micro service and mysql database.
 import celleryio/cellery;
 import ballerina/io;
 
@@ -150,7 +150,7 @@ public function build(cellery:ImageName iName) returns error? {
         }
     };
 
-    // Composite Initialization
+    // Cell Initialization
     cellery:CellImage cellImage = {
         components: {
             mysql: mysqlComponent,
@@ -162,8 +162,8 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
 returns (cellery:InstanceState[] | error?) {
-    cellery:Composite composite = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(composite, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage cell = check cellery:constructImage(untaint iName);
+    return cellery:createInstance(cell, iName, instances, startDependencies, shareDependencies);
 }
 
 

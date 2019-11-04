@@ -32,6 +32,7 @@ This example uses three types of volumes as described below.
    The secret is created at runtime using the environment variables `MYSQL_USERNAME` and `MYSQL_PASSWORD`.
 
 ```ballerina
+// Cell file that wraps a todo micro service and mysql database.
 import celleryio/cellery;
 import ballerina/io;
 import ballerina/config;
@@ -145,7 +146,7 @@ public function build(cellery:ImageName iName) returns error? {
         }
     };
 
-    // Composite Initialization
+    // Cell Initialization
     cellery:CellImage cellImage = {
         components: {
             mysql: mysqlComponent,
