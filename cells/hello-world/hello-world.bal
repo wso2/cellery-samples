@@ -21,7 +21,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This Components exposes the HTML hello world page
     cellery:Component helloComponent = {
         name: "hello",
-        source: {
+        src: {
             image: "wso2cellery/samples-hello-world-webapp:latest-dev"
         },
         ingresses: {
@@ -44,20 +44,20 @@ public function build(cellery:ImageName iName) returns error? {
             helloComp: helloComponent
         }
     };
-    return cellery:createImage(helloCell, untaint iName);
+    return <@untainted> cellery:createImage(helloCell, iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage helloCell = check cellery:constructCellImage(untaint iName);
+    cellery:CellImage helloCell = check cellery:constructCellImage(iName);
     string vhostName = config:getAsString("VHOST_NAME");
     if (vhostName !== "") {
-        cellery:WebIngress web = <cellery:WebIngress>helloCell.components.helloComp.ingresses.webUI;
+        cellery:WebIngress web = <cellery:WebIngress>helloCell.components["helloComp"]["ingresses"]["webUI"];
         web.gatewayConfig.vhost = vhostName;
     }
 
     string helloName = config:getAsString("HELLO_NAME");
     if (helloName !== "") {
-        helloCell.components.helloComp.envVars.HELLO_NAME.value = helloName;
+        helloCell.components["helloComp"]["envVars"]["HELLO_NAME"].value = helloName;
     }
-    return cellery:createInstance(helloCell, iName, instances, startDependencies, shareDependencies);
+    return <@untainted> cellery:createInstance(helloCell, iName, instances, startDependencies, shareDependencies);
 }
