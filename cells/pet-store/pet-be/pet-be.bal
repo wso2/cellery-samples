@@ -22,7 +22,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the orders related functionality.
     cellery:Component ordersComponent = {
         name: "orders",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-orders:latest-dev"
         },
         ingresses: {
@@ -36,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the customers related functionality.
     cellery:Component customersComponent = {
         name: "customers",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-customers:latest-dev"
         },
         ingresses: {
@@ -50,7 +50,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the catalog related functionality.
     cellery:Component catalogComponent = {
         name: "catalog",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-catalog:latest-dev"
         },
         ingresses: {
@@ -65,7 +65,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This exposes useful functionality from the Cell by using the other three components.
     cellery:Component controllerComponent = {
         name: "controller",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-controller:latest-dev"
         },
         ingresses: {
@@ -99,12 +99,12 @@ public function build(cellery:ImageName iName) returns error? {
             controller: controllerComponent
         }
     };
-    return cellery:createImage(petStoreBackendCell, untaint iName);
+    return <@untainted> cellery:createImage(petStoreBackendCell,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage petStoreBackendCell = check cellery:constructCellImage(untaint iName);
-    return cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage petStoreBackendCell = check cellery:constructCellImage( iName);
+    return <@untainted> cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
 }
 
 public function test(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns error? {
@@ -123,16 +123,16 @@ public function test(cellery:ImageName iName, map<cellery:ImageName> instances, 
     cellery:ImageName img = <cellery:ImageName>cellery:getCellImage();
     cellery:Test petBeDockerTests = {
         name: "pet-be-test",
-        source: {
+        src: {
             image: "docker.io/wso2cellery/pet-be-tests"
         },
         envVars: {
-            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(img).controller_ingress_api_url }
+            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(img)["controller_ingress_api_url"] }
         }
     };
     cellery:Test petBeInlineTests = {
         name: "pet-be-test",
-        source : <cellery:FileSource> {
+        src : <cellery:FileSource> {
             filepath: "tests/"
         }
     };
