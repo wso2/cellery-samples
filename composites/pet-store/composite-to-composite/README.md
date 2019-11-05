@@ -70,13 +70,13 @@ public function build(cellery:ImageName iName) returns error? {
         }
     };
 
-    return cellery:createImage(petstore, untaint iName);
+    return <@untainted> cellery:createImage(petstore,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
        returns (cellery:InstanceState[]|error?) {
-    cellery:Composite petFE = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(petFE, iName, instances, startDependencies, shareDependencies);
+    cellery:Composite petFE = check cellery:constructImage( iName);
+    return <@untainted> cellery:createInstance(petFE, iName, instances, startDependencies, shareDependencies);
 }
 ```
 

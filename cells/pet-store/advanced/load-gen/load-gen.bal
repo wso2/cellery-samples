@@ -22,7 +22,7 @@ import ballerina/config;
 public function build(cellery:ImageName iName) returns error? {
     cellery:Component loadGenComponent = {
         name: "load-gen",
-        source: {
+         src: {
             image: "wso2cellery/samples-pet-store-load-gen:latest-dev"
         },
         envVars: {
@@ -37,27 +37,27 @@ public function build(cellery:ImageName iName) returns error? {
             loadGen: loadGenComponent
         }
     };
-    return cellery:createImage(loadGenCell, untaint iName);
+    return <@untainted> cellery:createImage(loadGenCell,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage loadGenImage = check cellery:constructCellImage(untaint iName);
-    cellery:Component loadGenComponent = loadGenImage.components.loadGen;
+    cellery:CellImage loadGenImage = check cellery:constructCellImage( iName);
+    cellery:Component loadGenComponent = <cellery:Component> loadGenImage.components["loadGen"];
 
     string duration = config:getAsString("DURATION");
     if (duration !== "") {
-        loadGenComponent.envVars.DURATION.value = duration;
+        loadGenComponent["envVars"]["DURATION"].value = duration;
     }
 
     string concurrency = config:getAsString("CONCURRENCY");
     if (concurrency !== "") {
-            loadGenComponent.envVars.CONCURRENCY.value = concurrency;
+            loadGenComponent["envVars"]["CONCURRENCY"].value = concurrency;
     }
 
     string petStoreInstance = config:getAsString("PET_STORE_INST");
     if (petStoreInstance !== "") {
-            loadGenComponent.envVars.PET_STORE_INST.value = petStoreInstance;
+            loadGenComponent["envVars"]["PET_STORE_INST"].value = petStoreInstance;
     }
-    return cellery:createInstance(loadGenImage, iName, instances, startDependencies, shareDependencies);
+    return <@untainted> cellery:createInstance(loadGenImage, iName, instances, startDependencies, shareDependencies);
 }
 

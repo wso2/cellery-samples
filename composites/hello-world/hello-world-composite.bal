@@ -21,7 +21,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This Components exposes the HTML hello world page
     cellery:Component helloComponent = {
         name: "hello",
-        source: {
+        src: {
             image: "wso2cellery/samples-hello-world-webapp:latest-dev"
         },
         ingresses: {
@@ -40,15 +40,15 @@ public function build(cellery:ImageName iName) returns error? {
             helloComp: helloComponent
         }
     };
-    return cellery:createImage(helloComposite, untaint iName);
+    return <@untainted> cellery:createImage(helloComposite,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies,
                     boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:Composite helloComposite = check cellery:constructImage(untaint iName);
+    cellery:Composite helloComposite = check cellery:constructImage( iName);
     string helloName = config:getAsString("HELLO_NAME");
     if (helloName !== "") {
-        helloComposite.components.helloComp.envVars.HELLO_NAME.value = helloName;
+        helloComposite.components["helloComp"]["envVars"]["HELLO_NAME"].value = helloName;
     }
-    return cellery:createInstance(helloComposite, iName, instances, startDependencies, shareDependencies);
+    return <@untainted> cellery:createInstance(helloComposite, iName, instances, startDependencies, shareDependencies);
 }

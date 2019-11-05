@@ -25,7 +25,7 @@ public function build(cellery:ImageName iName) returns error? {
     int ordersPort = 80;
     cellery:Component ordersComponent = {
         name: "orders",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-orders:latest-dev"
         },
         ingresses: {
@@ -43,7 +43,7 @@ public function build(cellery:ImageName iName) returns error? {
     int customerPort = 80;
     cellery:Component customersComponent = {
         name: "customers",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-customers:latest-dev"
         },
         ingresses: {
@@ -61,7 +61,7 @@ public function build(cellery:ImageName iName) returns error? {
     int catalogPort = 80;
     cellery:Component catalogComponent = {
         name: "catalog",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-catalog:latest-dev"
         },
         ingresses: {
@@ -80,7 +80,7 @@ public function build(cellery:ImageName iName) returns error? {
     int controllerPort = 80;
     cellery:Component controllerComponent = {
         name: "controller",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-controller:latest-dev"
         },
         ingresses: {
@@ -104,7 +104,7 @@ public function build(cellery:ImageName iName) returns error? {
 
     cellery:Component portalComponent = {
             name: "portal",
-            source: {
+            src: {
                 image: "wso2cellery/samples-pet-store-portal:latest-dev"
             },
             ingresses: {
@@ -113,7 +113,7 @@ public function build(cellery:ImageName iName) returns error? {
               }
             },
             envVars: {
-                PET_STORE_CELL_URL: { value: "http://"+cellery:getHost(controllerComponent)+":"+controllerPort},
+                PET_STORE_CELL_URL: { value: "http://"+cellery:getHost(controllerComponent)+":"+controllerPort.toString()},
                 PORTAL_PORT: { value: 80 },
                 BASE_PATH: { value: "." },
                 GUEST_MODE_ENABLED: {value: isGuestMode}
@@ -134,11 +134,11 @@ public function build(cellery:ImageName iName) returns error? {
             portal: portalComponent
         }
     };
-    return cellery:createImage(petstore, untaint iName);
+    return <@untainted> cellery:createImage(petstore,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
        returns (cellery:InstanceState[]|error?) {
-    cellery:Composite petStore = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(petStore, iName, instances, startDependencies, shareDependencies);
+    cellery:Composite petStore = check cellery:constructImage( iName);
+    return <@untainted> cellery:createInstance(petStore, iName, instances, startDependencies, shareDependencies);
 }

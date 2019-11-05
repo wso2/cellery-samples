@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     int ordersPort = 80;
     cellery:Component ordersComponent = {
         name: "orders",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-orders:latest-dev"
         },
         ingresses: {
@@ -38,7 +38,7 @@ public function build(cellery:ImageName iName) returns error? {
     int customerPort = 80;
     cellery:Component customersComponent = {
         name: "customers",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-customers:latest-dev"
         },
         ingresses: {
@@ -53,7 +53,7 @@ public function build(cellery:ImageName iName) returns error? {
     int catalogPort = 80;
     cellery:Component catalogComponent = {
         name: "catalog",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-catalog:latest-dev"
         },
         ingresses: {
@@ -69,7 +69,7 @@ public function build(cellery:ImageName iName) returns error? {
     int controllerPort = 80;
     cellery:Component controllerComponent = {
         name: "controller",
-        source: {
+        src: {
             image: "wso2cellery/samples-pet-store-controller:latest-dev"
         },
         ingresses: {
@@ -99,11 +99,11 @@ public function build(cellery:ImageName iName) returns error? {
             controller: controllerComponent
         }
     };
-    return cellery:createImage(petBE, untaint iName);
+    return <@untainted> cellery:createImage(petBE,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
        returns (cellery:InstanceState[]|error?) {
-    cellery:Composite petBE = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(petBE, iName, instances, startDependencies, shareDependencies);
+    cellery:Composite petBE = check cellery:constructImage( iName);
+    return <@untainted> cellery:createInstance(petBE, iName, instances, startDependencies, shareDependencies);
 }

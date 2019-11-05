@@ -77,7 +77,7 @@ public function build(cellery:ImageName iName) returns error? {
             portal: portalComponent
         }
     };
-    return cellery:createImage(petStoreFrontendCell, untaint iName);
+    return <@untainted> cellery:createImage(petStoreFrontendCell,  iName);
 }
 
 ...
