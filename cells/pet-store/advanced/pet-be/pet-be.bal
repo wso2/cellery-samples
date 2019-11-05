@@ -22,7 +22,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the orders related functionality.
     cellery:Component ordersComponent = {
         name: "orders",
-        source: {
+         src: {
             image: "wso2cellery/samples-pet-store-orders:latest-devv2"
         },
         ingresses: {
@@ -36,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the customers related functionality.
     cellery:Component customersComponent = {
         name: "customers",
-        source: {
+         src: {
             image: "wso2cellery/samples-pet-store-customers:latest-devv2"
         },
         ingresses: {
@@ -50,7 +50,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the catalog related functionality.
     cellery:Component catalogComponent = {
         name: "catalog",
-        source: {
+         src: {
             image: "wso2cellery/samples-pet-store-catalog:latest-devv2"
         },
         ingresses: {
@@ -65,7 +65,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This exposes useful functionality from the Cell by using the other three components.
     cellery:Component controllerComponent = {
         name: "controller",
-        source: {
+         src: {
             image: "wso2cellery/samples-pet-store-controller:latest-devv2"
         },
         ingresses: {
@@ -99,10 +99,10 @@ public function build(cellery:ImageName iName) returns error? {
             controller: controllerComponent
         }
     };
-    return cellery:createImage(petStoreBackendCell, untaint iName);
+    return <@untainted> cellery:createImage(petStoreBackendCell,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage petStoreBackendCell = check cellery:constructCellImage(untaint iName);
-    return cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage petStoreBackendCell = check cellery:constructCellImage( iName);
+    return <@untainted> cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
 }

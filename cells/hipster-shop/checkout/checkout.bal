@@ -1,5 +1,3 @@
-import ballerina/config;
-import ballerina/io;
 import celleryio/cellery;
 
 public function build(cellery:ImageName iName) returns error? {
@@ -13,7 +11,7 @@ public function build(cellery:ImageName iName) returns error? {
     // Sends users an order confirmation email (mock).
     cellery:Component emailServiceComponent = {
         name: "email",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/emailservice:v0.1.1"
         },
         ingresses: {
@@ -35,7 +33,7 @@ public function build(cellery:ImageName iName) returns error? {
     // Charges the given credit card info (mock) with the given amount and returns a transaction ID.
     cellery:Component paymentServiceComponent = {
         name: "payment",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/paymentservice:v0.1.1"
         },
         ingresses: {
@@ -54,7 +52,7 @@ public function build(cellery:ImageName iName) returns error? {
     // Gives shipping cost estimates based on the shopping cart. Ships items to the given address (mock)
     cellery:Component shippingServiceComponent = {
         name: "shipping",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/shippingservice:v0.1.1"
         },
         ingresses: {
@@ -75,7 +73,7 @@ public function build(cellery:ImageName iName) returns error? {
     // Uses real values fetched from European Central Bank. It's the highest QPS service.
     cellery:Component currencyServiceComponent = {
         name: "currency",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/currencyservice:v0.1.1"
         },
         ingresses: {
@@ -97,7 +95,7 @@ public function build(cellery:ImageName iName) returns error? {
 
     cellery:Component checkoutServiceComponent = {
         name: "checkout",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/checkoutservice:v0.1.1"
         },
         ingresses: {
@@ -112,16 +110,16 @@ public function build(cellery:ImageName iName) returns error? {
             },
             //same-cell components
             EMAIL_SERVICE_ADDR: {
-                value: cellery:getHost(emailServiceComponent) + ":" + emailContainerPort
+                value: cellery:getHost(emailServiceComponent) + ":" + emailContainerPort.toString()
             },
             PAYMENT_SERVICE_ADDR: {
-                value: cellery:getHost(paymentServiceComponent) + ":" + paymentContainerPort
+                value: cellery:getHost(paymentServiceComponent) + ":" + paymentContainerPort.toString()
             },
             SHIPPING_SERVICE_ADDR: {
-                value: cellery:getHost(shippingServiceComponent) + ":" + shippingContainerPort
+                value: cellery:getHost(shippingServiceComponent) + ":" + shippingContainerPort.toString()
             },
             CURRENCY_SERVICE_ADDR: {
-                value: cellery:getHost(currencyServiceComponent) + ":" + currencyContainerPort
+                value: cellery:getHost(currencyServiceComponent) + ":" + currencyContainerPort.toString()
             },
             //components of external cells
             PRODUCT_CATALOG_SERVICE_ADDR: {
@@ -141,10 +139,10 @@ public function build(cellery:ImageName iName) returns error? {
     };
 
     cellery:Reference productReference = cellery:getReference(checkoutServiceComponent, "productsCellDep");
-    checkoutServiceComponent.envVars.PRODUCT_CATALOG_SERVICE_ADDR.value = <string>productReference.gateway_host + ":" +<string>productReference.products_grpc_port;
+    checkoutServiceComponent["envVars"]["PRODUCT_CATALOG_SERVICE_ADDR"].value = <string>productReference["gateway_host"] + ":" +<string>productReference["products_grpc_port"];
 
     cellery:Reference cartReference = cellery:getReference(checkoutServiceComponent, "cartCellDep");
-    checkoutServiceComponent.envVars.CART_SERVICE_ADDR.value = <string>cartReference.gateway_host + ":" +<string>cartReference.cart_grpc_port;
+    checkoutServiceComponent["envVars"]["CART_SERVICE_ADDR"].value = <string>cartReference["gateway_host"] + ":" +<string>cartReference["cart_grpc_port"];
 
     // Cell Initialization
     cellery:CellImage checkoutCell = {
@@ -156,11 +154,11 @@ public function build(cellery:ImageName iName) returns error? {
             checkoutServiceComponent: checkoutServiceComponent
         }
     };
-    return cellery:createImage(checkoutCell, untaint iName);
+    return <@untainted> cellery:createImage(checkoutCell,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage checkoutCell = check cellery:constructCellImage(untaint iName);
-    return cellery:createInstance(checkoutCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage checkoutCell = check cellery:constructCellImage( iName);
+    return <@untainted> cellery:createInstance(checkoutCell, iName, instances, startDependencies, shareDependencies);
 }
 

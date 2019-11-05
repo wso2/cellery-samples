@@ -1,4 +1,3 @@
-import ballerina/config;
 import celleryio/cellery;
 
 public function build(cellery:ImageName iName) returns error? {
@@ -7,7 +6,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component provides text ads based on given context words.
     cellery:Component adsServiceComponent = {
         name: "ads",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/adservice:v0.1.1"
         },
         ingresses: {
@@ -29,10 +28,10 @@ public function build(cellery:ImageName iName) returns error? {
             adsServiceComponent: adsServiceComponent
         }
     };
-    return cellery:createImage(adsCell, untaint iName);
+    return <@untainted> cellery:createImage(adsCell,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage adsCell = check cellery:constructCellImage(untaint iName);
-    return cellery:createInstance(adsCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage adsCell = check cellery:constructCellImage( iName);
+    return <@untainted> cellery:createInstance(adsCell, iName, instances, startDependencies, shareDependencies);
 }

@@ -22,7 +22,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This is the Component which exposes the Pet Store portal
     cellery:Component portalComponent = {
         name: "portal",
-        source: {
+         src: {
             image: "wso2cellery/samples-pet-store-portal:latest-dev"
         },
         ingresses: {
@@ -68,11 +68,11 @@ public function build(cellery:ImageName iName) returns error? {
             portal: portalComponent
         }
     };
-    return cellery:createImage(petStoreFrontendCell, untaint iName);
+    return <@untainted> cellery:createImage(petStoreFrontendCell,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage petStoreFrontendCell = check cellery:constructCellImage(untaint iName);
+    cellery:CellImage petStoreFrontendCell = check cellery:constructCellImage( iName);
     cellery:Component portalComponent = petStoreFrontendCell.components.portal;
     string vhostName = config:getAsString("VHOST_NAME");
     if (vhostName !== "") {
@@ -92,7 +92,7 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances, b
     };
     portalIngress.gatewayConfig.oidc.clientSecret = dcrConfig;
 
-    return cellery:createInstance(petStoreFrontendCell, iName, instances, startDependencies, shareDependencies);
+    return <@untainted> cellery:createInstance(petStoreFrontendCell, iName, instances, startDependencies, shareDependencies);
 }
 ```
 

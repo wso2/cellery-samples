@@ -1,4 +1,3 @@
-import ballerina/config;
 import celleryio/cellery;
 
 public function build(cellery:ImageName iName) returns error? {
@@ -10,7 +9,7 @@ public function build(cellery:ImageName iName) returns error? {
     // from a JSON file and ability to search products and get individual products.
     cellery:Component productCatalogServiceComponent = {
         name: "products",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/productcatalogservice:v0.1.1"
         },
         ingresses: {
@@ -30,7 +29,7 @@ public function build(cellery:ImageName iName) returns error? {
     // Recommends other products based on what's given in the cart.
     cellery:Component recommendationServiceComponent = {
         name: "recommendations",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/recommendationservice:v0.1.1"
         },
         ingresses: {
@@ -45,7 +44,7 @@ public function build(cellery:ImageName iName) returns error? {
             },
             // PRODUCT_CATALOG_SERVICE_ADDR: {value: "hipstershop_productcatalogservice:3550"},
             PRODUCT_CATALOG_SERVICE_ADDR: {
-                value: cellery:getHost(productCatalogServiceComponent) + ":" + productCatalogContainerPort
+                value: cellery:getHost(productCatalogServiceComponent) + ":" + productCatalogContainerPort.toString()
             },
             ENABLE_PROFILER: {
                 value: 0
@@ -63,10 +62,10 @@ public function build(cellery:ImageName iName) returns error? {
             recommendationServiceComponent: recommendationServiceComponent
         }
     };
-    return cellery:createImage(productsCell, untaint iName);
+    return <@untainted> cellery:createImage(productsCell,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage productCell = check cellery:constructCellImage(untaint iName);
-    return cellery:createInstance(productCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage productCell = check cellery:constructCellImage( iName);
+    return <@untainted> cellery:createInstance(productCell, iName, instances, startDependencies, shareDependencies);
 }

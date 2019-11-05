@@ -1,4 +1,3 @@
-import ballerina/config;
 import celleryio/cellery;
 
 public function build(cellery:ImageName iName) returns error? {
@@ -9,7 +8,7 @@ public function build(cellery:ImageName iName) returns error? {
     // Redis-based cache
     cellery:Component cacheServiceComponent = {
         name: "cache",
-        source: {
+         src: {
             image: "redis:alpine"
         },
         ingresses: {
@@ -23,7 +22,7 @@ public function build(cellery:ImageName iName) returns error? {
     // Stores the items in the user's shipping cart in Redis and retrieves it.
     cellery:Component cartServiceComponent = {
         name: "cart",
-        source: {
+         src: {
             image: "gcr.io/google-samples/microservices-demo/cartservice:v0.1.1"
         },
         ingresses: {
@@ -37,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
                 value: cartContainerPort
             },
             REDIS_ADDR: {
-                value: cellery:getHost(cacheServiceComponent) + ":" + cacheContainerPort
+                value: cellery:getHost(cacheServiceComponent) + ":" + cacheContainerPort.toString()
             },
             LISTEN_ADDR: {
                 value: "0.0.0.0"
@@ -58,10 +57,10 @@ public function build(cellery:ImageName iName) returns error? {
             cartServiceComponent: cartServiceComponent
         }
     };
-    return cellery:createImage(cartCell, untaint iName);
+    return <@untainted> cellery:createImage(cartCell,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage cartCell = check cellery:constructCellImage(untaint iName);
-    return cellery:createInstance(cartCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage cartCell = check cellery:constructCellImage( iName);
+    return <@untainted> cellery:createInstance(cartCell, iName, instances, startDependencies, shareDependencies);
 }

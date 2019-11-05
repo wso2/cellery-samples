@@ -153,7 +153,7 @@ public function build(cellery:ImageName iName) returns error? {
             todoService: todoServiceComponent
         }
     };
-    return cellery:createImage(cellImage, untaint iName);
+    return <@untainted> cellery:createImage(cellImage,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
@@ -172,8 +172,8 @@ returns (cellery:InstanceState[] | error?) {
         }
     };
     error? e = cellery:createSecret(mysqlCreds);
-    cellery:CellImage todoCell = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(todoCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage todoCell = check cellery:constructImage( iName);
+    return <@untainted> cellery:createInstance(todoCell, iName, instances, startDependencies, shareDependencies);
 }
 
 
