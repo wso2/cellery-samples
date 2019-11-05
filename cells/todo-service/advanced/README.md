@@ -40,11 +40,11 @@ import ballerina/config;
 public function build(cellery:ImageName iName) returns error? {
     int mysqlPort = 3306;
     string mysqlPassword = "root";
-    string mysqlScript = readFile("../mysql/init.sql");
+    string mysqlScript = readFile("./mysql/init.sql");
     //Mysql database service which stores the todos that were added via the todos service
     cellery:Component mysqlComponent = {
         name: "mysql-db",
-        source: {
+        src: {
             image: "library/mysql:8.0"
         },
         ingresses: {
@@ -73,7 +73,7 @@ public function build(cellery:ImageName iName) returns error? {
                 readOnly: false,
                 volume:<cellery:K8sNonSharedPersistence>{
                      name:"data-vol",
-                    //  storageClass:"local-storage",
+                     storageClass:"local-storage",
                      accessMode: ["ReadWriteOnce"],
                      request:"1G"
                 }
@@ -85,8 +85,8 @@ public function build(cellery:ImageName iName) returns error? {
     // to database to persists the information.
     cellery:Component todoServiceComponent = {
         name: "todos",
-        source: {
-            image: "docker.io/mirage20/samples-todoapp-todos:latest"
+        src: {
+            image: "docker.io/wso2cellery/samples-todoapp-todos:latest-dev"
         },
         ingresses: {
             todo:  <cellery:HttpApiIngress>{
@@ -158,11 +158,10 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
 returns (cellery:InstanceState[] | error?) {
-    // Read db credentials at runtime from env.
     string db_user = config:getAsString("MYSQL_USERNAME");
     string db_pwd = config:getAsString("MYSQL_PASSWORD");
     if (db_user == "" || db_pwd == "") {
-        panic error("MYSQL_USERNAME or MYSQL_PASSWORD not found in environment");
+            panic error("MYSQL_USERNAME or MYSQL_PASSWORD not found in environment");
     }
     cellery:NonSharedSecret mysqlCreds = {
         name: "db-credentials",
@@ -172,20 +171,20 @@ returns (cellery:InstanceState[] | error?) {
         }
     };
     error? e = cellery:createSecret(mysqlCreds);
-    cellery:CellImage todoCell = check cellery:constructImage( iName);
+    cellery:CellImage todoCell = check cellery:constructCellImage( iName);
     return <@untainted> cellery:createInstance(todoCell, iName, instances, startDependencies, shareDependencies);
 }
 
 
 function readFile(string filePath) returns (string) {
-    io:ReadableByteChannel bchannel = io:openReadableFile(filePath);
+    io:ReadableByteChannel bchannel = <io:ReadableByteChannel> io:openReadableFile(filePath);
     io:ReadableCharacterChannel cChannel = new io:ReadableCharacterChannel(bchannel, "UTF-8");
 
     var readOutput = cChannel.read(5000);
     if (readOutput is string) {
-        return readOutput;
+        return <@untainted> readOutput;
     } else {
-        return "Error: Unable to read file " + filePath;
+        return <@untainted> "Error: Unable to read file " + filePath;
     }
 }
 ```

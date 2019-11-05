@@ -21,7 +21,7 @@ public function build(cellery:ImageName iName) returns error? {
 
     cellery:Component portalComponent = {
             name: "portal",
-            source: {
+            src: {
                 image: "wso2cellery/samples-pet-store-portal:latest-dev"
             },
             ingresses: {
@@ -45,8 +45,8 @@ public function build(cellery:ImageName iName) returns error? {
 
     // Assign the URL of the backend cell
    cellery:Reference petStoreBackend = cellery:getReference(portalComponent, "petStoreBackend");
-   portalComponent.envVars.PET_STORE_CELL_URL.value =
-        "http://" +<string>petStoreBackend.controller_host + ":" + <string>petStoreBackend.controller_port;
+   portalComponent["envVars"]["PET_STORE_CELL_URL"].value =
+        "http://" +<string>petStoreBackend["controller_host"] + ":" + <string>petStoreBackend["controller_port"];
 
 
     // Composite Initialization
@@ -56,11 +56,11 @@ public function build(cellery:ImageName iName) returns error? {
         }
     };
 
-    return cellery:createImage(petstore, untaint iName);
+    return <@untainted> cellery:createImage(petstore,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
        returns (cellery:InstanceState[]|error?) {
-    cellery:Composite petFE = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(petFE, iName, instances, startDependencies, shareDependencies);
+    cellery:Composite petFE = check cellery:constructImage( iName);
+    return <@untainted> cellery:createInstance(petFE, iName, instances, startDependencies, shareDependencies);
 }

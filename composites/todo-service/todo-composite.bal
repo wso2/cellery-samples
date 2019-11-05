@@ -21,7 +21,7 @@ public function build(cellery:ImageName iName) returns error? {
     //Mysql database service which stores the todos that were added via the todos service
     cellery:Component mysqlComponent = {
             name: "mysql-db",
-            source: {
+            src: {
                 image: "docker.io/wso2cellery/samples-todoapp-mysql:latest"
             },
             ingresses: {
@@ -38,7 +38,7 @@ public function build(cellery:ImageName iName) returns error? {
     // to database to persists the information.
     cellery:Component todoServiceComponent = {
         name: "todos",
-        source: {
+        src: {
             image: "docker.io/wso2cellery/samples-todoapp-todos:latest"
         },
         ingresses: {
@@ -66,11 +66,11 @@ public function build(cellery:ImageName iName) returns error? {
             todoService: todoServiceComponent
         }
     };
-    return cellery:createImage(composite, untaint iName);
+    return <@untainted> cellery:createImage(composite,  iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
        returns (cellery:InstanceState[]|error?) {
-    cellery:Composite composite = check cellery:constructImage(untaint iName);
-    return cellery:createInstance(composite, iName, instances, startDependencies, shareDependencies);
+    cellery:Composite composite = check cellery:constructImage( iName);
+    return <@untainted> cellery:createInstance(composite, iName, instances, startDependencies, shareDependencies);
 }

@@ -243,7 +243,7 @@ Example:
 public function test(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns error? {
    cellery:Test petBeDockerTests = {
        name: "pet-be-test",
-       source: {
+        src: {
            image: "docker.io/wso2cellery/pet-be-tests"
        },
        envVars: {
@@ -312,7 +312,7 @@ If a combination of in-line and docker based tests are used, the ```.bal``` file
  public function test(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns error? {
     cellery:Test petBeDockerTests = {
         name: "pet-be-test",
-        source: {
+         src: {
             image: "docker.io/wso2cellery/pet-be-tests"
         },
         envVars: {

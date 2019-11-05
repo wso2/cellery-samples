@@ -53,14 +53,14 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
             cells: {
-                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "latest" }
+                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-cell", ver: "latest-dev" }
             }
         }
     };
 
     // Assign the URL of the backend cell
-    portalComponent.envVars.PET_STORE_CELL_URL.value = 
-    <string>cellery:getReference(portalComponent, "petStoreBackend").controller_ingress_api_url;
+    portalComponent["envVars"]["PET_STORE_CELL_URL"].value =
+    <string>cellery:getReference(portalComponent, "petStoreBackend")["controller_ingress_api_url"];
 
     // Cell Initialization
     cellery:CellImage petStoreFrontendCell = {
@@ -73,24 +73,24 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
     cellery:CellImage petStoreFrontendCell = check cellery:constructCellImage( iName);
-    cellery:Component portalComponent = petStoreFrontendCell.components.portal;
+    cellery:Component portalComponent = <cellery:Component> petStoreFrontendCell.components["portal"];
     string vhostName = config:getAsString("VHOST_NAME");
     if (vhostName !== "") {
-        cellery:WebIngress web = <cellery:WebIngress>portalComponent.ingresses.portal;
+        cellery:WebIngress web = <cellery:WebIngress>portalComponent["ingresses"]["portal"];
         web.gatewayConfig.vhost = vhostName;
         web.gatewayConfig.oidc.redirectUrl = "http://" + vhostName + "/_auth/callback";
         web.gatewayConfig.oidc.baseUrl = "http://" + vhostName + "/";
     }
 
-    cellery:WebIngress portalIngress = <cellery:WebIngress>portalComponent.ingresses.portal;
-    portalIngress.gatewayConfig.oidc.providerUrl = config:getAsString("providerUrl", defaultValue =
+    cellery:WebIngress portalIngress = <cellery:WebIngress>portalComponent["ingresses"]["portal"];
+    portalIngress["gatewayConfig"]["oidc"]["providerUrl"] = config:getAsString("providerUrl",
         "https://idp.cellery-system/oauth2/token");
-    portalIngress.gatewayConfig.oidc.clientId = config:getAsString("clientId", defaultValue = "petstoreapplication");
+    portalIngress["gatewayConfig"]["oidc"]["clientId"] = config:getAsString("clientId", "petstoreapplication");
     cellery:DCR dcrConfig = {
-        dcrUser: config:getAsString("dcrUser", defaultValue = "admin"),
-        dcrPassword: config:getAsString("dcrPassword", defaultValue = "admin")
+        dcrUser: config:getAsString("dcrUser", "admin"),
+        dcrPassword: config:getAsString("dcrPassword", "admin")
     };
-    portalIngress.gatewayConfig.oidc.clientSecret = dcrConfig;
+    portalIngress["gatewayConfig"]["oidc"]["clientSecret"] = dcrConfig;
 
     return <@untainted> cellery:createInstance(petStoreFrontendCell, iName, instances, startDependencies, shareDependencies);
 }
