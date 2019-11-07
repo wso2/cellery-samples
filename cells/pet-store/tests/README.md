@@ -2,7 +2,7 @@
 
 ### Prerequisites:
  
- * Ballerina 0.991.0 installed
+ * Ballerina 1.0.3 installed
  * [Telepresence 0.101](https://www.telepresence.io/reference/install) dependencies.
  
     Cellery testing uses Telepresence. Hence Telepresence dependencies have to be installed. In order to
@@ -213,7 +213,7 @@ Note: Ballerina does not support remote debugging for tests yet and therefore th
    
  #### Prerequisites:
  
- * Ballerina 0.991.0 installed
+ * Ballerina 1.0.3 installed
  * Note : If you have set your DNS to ```8.8.8.8```, remove it before proceeding. (You can use any other DNS except
   ```8.8.8.8```). This is due to a bug in Telepresence which emerges since we set ```8.8.8.8``` as cluster DNS.
  * A Cellery runtime must be running. (Local, GCP, etc..)   

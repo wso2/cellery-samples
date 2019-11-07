@@ -10,7 +10,7 @@ cache:
     - .autoconf
     - ${HOME}/.m2
 before_install:
-  - wget https://product-dist.ballerina.io/downloads/0.991.0/ballerina-linux-installer-x64-0.991.0.deb
+  - wget https://product-dist.ballerina.io/downloads/1.0.3/ballerina-linux-installer-x64-1.0.3.deb
   - sudo dpkg -i ballerina*.deb
   - wget https://wso2.org/jenkins/view/cellery/job/cellery/job/sdk/lastSuccessfulBuild/artifact/installers/ubuntu-x64/target/*zip*/target.zip
   - unzip target.zip
