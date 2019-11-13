@@ -15,39 +15,51 @@
 
 import ballerina/io;
 import ballerina/test;
-import ballerina/config;
 import ballerina/http;
 import celleryio/cellery;
+//import ballerina/runtime;
 
 cellery:InstanceState[] instanceList = [];
+string PET_BE_CONTROLLER_ENDPOINT = "";
 
 # Handle creation of instances for running tests
 @test:BeforeSuite
 function setup() {
     cellery:ImageName iName = <cellery:ImageName>cellery:getCellImage();
+    io:println(iName);
 
     cellery:InstanceState[]|error? result = run(iName, {}, true, true);
+    io:println(result);
     if (result is error) {
         cellery:InstanceState iNameState = {
             iName : iName, 
             isRunning: true
         };
-        instanceList[instanceList.length()] = iNameState;
+        instanceList[instanceList.length()] = <@untainted> iNameState;
     } else {
         instanceList = <cellery:InstanceState[]>result;
     }
+
+    cellery:Reference petBeUrls = <cellery:Reference>cellery:getCellEndpoints(<@untainted> instanceList);
+    PET_BE_CONTROLLER_ENDPOINT= <string>petBeUrls["controller_ingress_api_url"];
+}
+
+@test:Config {}
+function testDocker() {
+    map<cellery:Env> envVars = {PET_BE_CELL_URL: { value: PET_BE_CONTROLLER_ENDPOINT }};
+    error? a = cellery:runDockerTest("docker.io/wso2cellery/pet-be-tests", envVars);
 }
 
 # Tests inserting order from an external cell by calling the pet-be gateway
-@test:Config
+@test:Config {}
 function testInsertOrder() {
-    cellery:Reference petBeUrls = <cellery:Reference>cellery:getGatewayHost(instanceList);
-    string PET_BE_CONTROLLER_ENDPOINT= <string>petBeUrls.controller_ingress_api_url;
+    
+    // string PET_BE_CONTROLLER_ENDPOINT = "http://pet-be--gateway-service:80/controller/orders";
     io:println(PET_BE_CONTROLLER_ENDPOINT);
 
     string ordersContext = "/orders";
     string payload = "{\"order\":[{\"id\":1,\"amount\":1}]}";
-    string expectedPostResponsePrefix = "{\"status\":\"SUCCESS\", \"data\":{\"id\":";
+    string expectedPostResponsePrefix = "status=SUCCESS";
     string expectedGetResponse = "{\"status\":\"SUCCESS\",\"data\":{\"orders\":[{\"order\":[{\"item\":{\"id\":1," +
                 "\"name\":\"Pet Travel Carrier Cage\",\"description\":\"Ideal for airline travel, the carry cage has " +
                 "a sturdy handle grip and tie down strapping points for safe and secure travel\"";
@@ -62,12 +74,12 @@ function testInsertOrder() {
     io:println();
     string responseStr = handleResponse(response);
     test:assertTrue(
-        responseStr.hasPrefix(expectedPostResponsePrefix), 
+        responseStr.startsWith(expectedPostResponsePrefix), 
         msg = "Order insertion failed.\n Expected: \n" + expectedPostResponsePrefix + "\n Actual: \n" + responseStr
     );
 }
 
-function handleResponse(http:Response|error response) returns string {
+function handleResponse(http:Response|error response) returns @tainted string {
     if (response is http:Response) {
         var msg = response.getJsonPayload();
         if (msg is json) {
