@@ -349,7 +349,8 @@ Execute below steps to invoke `todo-api` in Global APIM.
 
 # 4. Push your cell  
 As a final step, let's push your todo-cell [cellery hub](https://hub.cellery.io/) account as shown below.
-    ```
+
+```bash
     $ cellery push <CELLERY_HUB_ORG>/todo-cell-advanced:latest
     ✔ Connecting to registry-1.docker.io
     ✔ Reading image <CELLERY_HUB_ORG>/todo-cell-advanced:latest from the Local Repository
@@ -365,7 +366,8 @@ As a final step, let's push your todo-cell [cellery hub](https://hub.cellery.io/
     Execute the following command to pull the image:
       $ cellery pull <CELLERY_HUB_ORG>/todo-cell-advanced:latest
     --------------------------------------------------------
-    ```
+```
+
 Congratulations! You have successfully created your own cell!
 
 # 5. Clean up the setup.
