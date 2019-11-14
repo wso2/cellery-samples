@@ -113,16 +113,16 @@ Follow below instructions to build and run the `todo` composite.
 
 2. Once the todo-composite is built, you can run the composite and create the `todos` instance by below command. 
     ```
-    $ cellery run wso2cellery/todo-composite:latest -n todos
-       ✔ Extracting Cell Image wso2cellery/todo-composite:latest
-       ✔ Reading Image wso2cellery/todo-composite:latest
+    $ cellery run <CELLERY_HUB_ORG>/todo-composite:latest -n todos
+       ✔ Extracting Cell Image <CELLERY_HUB_ORG>/todo-composite:latest
+       ✔ Reading Image <CELLERY_HUB_ORG>/todo-composite:latest
        Info: Main Instance: todos
        Info: Validating dependencies
        Info: Instances to be Used
        ------------------------------------------------------------------------------------------------------------------------
        INSTANCE NAME                  CELL IMAGE                          USED INSTANCE             KIND            SHARED
        ------------------------------------------------------------------------------------------------------------------------
-       todos                          wso2cellery/todo-composite:latest   To be Created             Composite       -
+       todos                          <CELLERY_HUB_ORG>/todo-composite:latest   To be Created             Composite       -
        ------------------------------------------------------------------------------------------------------------------------
        Info: Dependency Tree to be Used
        
@@ -130,7 +130,7 @@ Follow below instructions to build and run the `todo` composite.
        ✔ Starting main instance todos
        
        
-       ✔ Successfully deployed cell image: wso2cellery/todo-composite:latest
+       ✔ Successfully deployed cell image: <CELLERY_HUB_ORG>/todo-composite:latest
        
        What's next?
        --------------------------------------------------------
@@ -146,7 +146,7 @@ Follow below instructions to build and run the `todo` composite.
         Composite Instances:
          INSTANCE                 IMAGE                 STATUS   COMPONENTS           AGE
         ---------- ----------------------------------- -------- ------------ ----------------------
-         todos      wso2cellery/todo-composite:latest   Ready    2            1 minutes 40 seconds
+         todos      <CELLERY_HUB_ORG>/todo-composite:latest   Ready    2            1 minutes 40 seconds
     ```
     
 4. Execute `cellery view` to see the components of the composite. This will open a webpage in a browser that allows to visualize the components of the composite image.
@@ -248,7 +248,7 @@ the service name will be `todos--todos-service`). Therefore, in case if you have
 and create it accordingly (e.g. `my-todos--todos-service`).
 
     ```
-    $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/todo-service/todo-service-ingress.yaml
+    $ kubectl apply -f todo-service-ingress.yaml
     ```
     
 2. Check the ingress rules are correctly applied by getting the list of ingresses as shown below.

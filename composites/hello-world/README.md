@@ -143,7 +143,7 @@ as shown below to change the hello-world components's default behaviour.
    and create it accordingly (e.g. `my-hello--hello-service`).
    
     ```
-    $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/hello-world/hello-world-ingress.yaml
+    $ kubectl apply -f hello-world-ingress.yaml
     ```
 
 6. Check the ingress rules are correctly applied by getting the list of ingresses as shown below.
