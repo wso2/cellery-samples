@@ -359,7 +359,7 @@ Congratulations! You have successfully created your own cell!
     ```bash
     $ cellery terminate todos
     $ kubectl delete pvc todos--mysql-db-data-vol-pvc
-    $ kubectl delete pv -f pv-local.yaml
+    $ kubectl delete -f pv-local.yaml
     ```
    
 Try the [advanced todo service](./advanced) next to learn how to create volumes at runtime.
