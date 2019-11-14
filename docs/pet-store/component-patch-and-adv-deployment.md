@@ -50,7 +50,7 @@ a new pet-be cell instance, and having a canary deployment by having 50% traffic
 Then, we completely switch 100% traffic to new deployment and still have the both cell instances running as per the blue-green deployment pattern. 
 Finally, terminate old instance.
 
-Please start the cell pet-store cell it is not running already as mentioned [here](../../cells/pet-store#quick-run). 
+Please start the cell pet-store cell if it is not running already as mentioned [here](../../cells/pet-store#quick-run). 
 
 1) You can optionally build cell with `wso2cellery/pet-be-auto-scale-cell:latest` from cell file [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) 
 as explained [here](build-and-run.md). Or you can simply run directly which will pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
@@ -83,7 +83,7 @@ $ kubectl logs pet-be--gateway-deployment-7f787575c6-pwvw7 envoy-gateway
 
 ```
 // Logs from pet-be-as cell gateway. Note the timestamp of last logs.
-$ kubectl logs pet-be-as--gateway-deployment-7f787575c6-pwvw7 cell-gateway
+$ kubectl logs pet-be-as--gateway-deployment-7f787575c6-pwvw7 envoy-gateway
 2019-07-05 13:24:24,764 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [33801ec3-1be0-46b8-9559-e6b74ae7c929] Request is not throttled
 2019-07-05 13:24:24,764 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [33801ec3-1be0-46b8-9559-e6b74ae7c929] Throttling latency: 5ms
 2019-07-05 13:24:24,765 DEBUG [wso2/gateway:0.0.0] - [ThrottleFilter] [33801ec3-1be0-46b8-9559-e6b74ae7c929] Throttling latency: 1ms
