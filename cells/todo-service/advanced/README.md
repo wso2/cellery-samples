@@ -201,7 +201,7 @@ Follow below instructions to build, run and push the `todo` cell.
     ```
     2. Create the volume by deploying pv-docker-desktop.yaml
     ```bash
-       $ kubctl create -f ../pv-docker-desktop.yaml
+       $ kubectl create -f ../pv-docker-desktop.yaml
            storageclass.storage.k8s.io/local-storage created
            persistentvolume/mysql-pv-volume created
     ```
@@ -218,7 +218,7 @@ Follow below instructions to build, run and push the `todo` cell.
     ```
     3. Create the volume by deploying pv-docker-desktop.yaml
     ```bash
-       $ kubctl create -f ../pv-local.yaml
+       $ kubectl create -f ../pv-local.yaml
        storageclass.storage.k8s.io/local-storage created
        persistentvolume/mysql-pv-volume created
     ```
