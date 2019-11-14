@@ -208,7 +208,7 @@ Follow below instructions to build, run and push the `todo` cell.
     ```
     3. Create the volume by deploying pv-docker-desktop.yaml
     ```bash
-       $ kubctl create -f https://raw.githubusercontent.com/wso2-cellery/samples/master/cells/todo-service/pv-local.yaml
+       $ kubectl create -f https://raw.githubusercontent.com/wso2-cellery/samples/master/cells/todo-service/pv-local.yaml
     ```
    
    #### GCP
