@@ -245,8 +245,7 @@ Note: Ballerina does not support remote debugging for tests yet and therefore th
  aforementioned [```test``` command](#in-order-to-debug-tests-debug-mode-must-be-enabled-while-starting-tests-using
  ---debug) creates a ballerina.conf or replaces existing with in order to
   debug. This is to pass cellery configurations to the debug process. If you are not familiar with VS code please refer 
-  official documentation on [configuring launch.json](https://code.visualstudio
-  .com/docs/editor/debugging#_launch-configurations)
+  official documentation on [configuring launch.json](https://code.visualstudio.com/docs/editor/debugging#_launch-configurations)
 
 # What's Next?
 - [Observe the pet-store](observability.md) - This shows how you can observe and understand the runtime operations to the pet-store application.
