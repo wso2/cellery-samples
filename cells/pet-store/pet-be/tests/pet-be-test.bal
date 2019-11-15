@@ -17,7 +17,7 @@ import ballerina/io;
 import ballerina/test;
 import ballerina/http;
 import celleryio/cellery;
-//import ballerina/runtime;
+import ballerina/runtime;
 
 cellery:InstanceState[] instanceList = [];
 string PET_BE_CONTROLLER_ENDPOINT = "";
@@ -53,6 +53,8 @@ function testDocker() {
 # Tests inserting order from an external cell by calling the pet-be gateway
 @test:Config {}
 function testInsertOrder() {
+
+    runtime:sleep(10000);
     
     // string PET_BE_CONTROLLER_ENDPOINT = "http://pet-be--gateway-service:80/controller/orders";
     io:println(PET_BE_CONTROLLER_ENDPOINT);
