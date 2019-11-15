@@ -43,16 +43,9 @@ cellery test wso2cellery/pet-be-cell:latest -n pet-be
 ### Writing Cellery tests
  
 As outlined in [Cellery Testing](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md), developer
- has the flexibility to write two separate types of integration tests along with a combination of those two.
+ has the flexibility to write two separate types of integration tests along with a combination of those two. 
  
- 1) [In-line integration tests](#writing-in-line-tests-for-pet-store-backend-cell)
- 2) [Docker image based integration tests](#writing-docker-image-based-tests-for-pet-store-backend-cell)
- 3) [Running both in-line and docker based tests](#running-both-in-line-and-docker-based-tests)
- 
- ### Writing in-line tests for pet-store backend Cell
- 
- 
-#### Writing in-line Cellery tests involve below steps, 
+#### Writing Cellery tests involve below steps, 
 
 1) [Initialize a ballerina project in the sample root directory (optional)](#initialize-a-ballerina-project-in-the-sample-root-directory)
 2) [Write inline ballerina test file](#write-inline-ballerina-test-file)
@@ -62,38 +55,41 @@ As outlined in [Cellery Testing](https://github.com/wso2-cellery/sdk/blob/master
 
 ##### 1) Initialize a ballerina project in the sample root directory
 
-This step is optional but recommended since it makes writing tests easy. By making it a ballerina project, one can
- simply reuse functions in the cell bal file in the test bal file without having to rewrite the logic.
+According to the Ballerina specifications, a Ballerina project is required to run tests. By making it a ballerina 
+project, one can simply reuse functions in the cell bal file in the test bal file without having to rewrite the logic.
 
 Eg: using ```run()``` function to create instances in the @BeforeSuite function.
 Else, the logic written in the cell file has to be repeated in the test file.
 
 ```ballerina
 $ cd <samples-root>/cells/pet-store
-$ ballerina init
+$ cellery init test pet-be/pet-be.bal
 ```
 
-[back to top](#writing-in-line-cellery-tests-involve-below-steps)
+The above steps will convert the current sample directory structure to a ballerina project as shown below.
 
-##### 2) Write inline ballerina test file
-
-This includes two steps. Creating test file and writing the actual tests. 
-
-1) Create the test file(s) on the specified directory structure. File name can be any arbitrary name with ```.bal```
- extension. 
-```
+New project structure:
+```bash
 pet-store
- |- Ballerina.toml
- |- pet-be
-     |- pet-be.bal // cell definition bal file
-     |- /tests
-	    | - pet-be-test.bal // integration tests written for pet-be cell
+└── pet-be_proj/
+    ├── Ballerina.toml
+    └── src
+        └── pet-be
+            ├── pet-be.bal
+            └── tests
+                └── pet-be_test.bal
 ```
-    
-2) Writing the ballerina test file.
 
-Next step is to write the actual content of the test file. ie pet-be-test.bal file. Developer writes test
- file assuming the services which are exposed by the Cell gateway is running in the developer local machine. Final
+
+[back to top](#writing-cellery-tests-involve-below-steps)
+
+##### 2) Write ballerina test file
+
+Modify the test file pet-be_test.bal generated from the previous step. You can rename the fie or add more test
+file in the same directory.
+
+Developer writes test file assuming the services which are exposed by the Cell gateway is running in the developer 
+local machine. Final
   pet-be-test.bal would look like [this](https://github.com/wso2-cellery/samples/blob/master/cells/pet-store/pet-be/tests/pet-be-test.bal). Let's walk through each section and figure out what is taking place.
   
 
@@ -105,39 +101,43 @@ The below snippet of code is meant to run before the actual tests run and ```@te
    ```startDependencies=true``` and ```shareDependencies=true```. This returns the list of instances started or an
     error if it doesn't.
     
+ Endpoints exposed by the cell are retrieved using the [```getCellEndpoints``` helper function](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md#functiongetcellendpoints)
+    
   ```ballerina
+  
+cellery:InstanceState[] instanceList = [];
+string PET_BE_CONTROLLER_ENDPOINT = "";
+
 # Handle creation of instances for running tests
 @test:BeforeSuite
 function setup() {
     cellery:ImageName iName = <cellery:ImageName>cellery:getCellImage();
-
     cellery:InstanceState[]|error? result = run(iName, {}, true, true);
+    io:println(result);
     if (result is error) {
         cellery:InstanceState iNameState = {
             iName : iName, 
             isRunning: true
         };
-        instanceList[instanceList.length()] = iNameState;
+        instanceList[instanceList.length()] = <@untainted> iNameState;
     } else {
         instanceList = <cellery:InstanceState[]>result;
     }
+
+    cellery:Reference petBeUrls = <cellery:Reference>cellery:getCellEndpoints(<@untainted> instanceList);
+    PET_BE_CONTROLLER_ENDPOINT= <string>petBeUrls["controller_ingress_api_url"];
 }  
 ``` 
 Below is the snippet of code where actual integration tests are executed. Endpoints which are exposed through above
- started instances are retrieved through the  [```getGatewayHost``` helper function](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md#functiongetgatewayhost). Out of returned endpoints, the pet-be controller URL is
-  retrieved and used to send out the request. Refer [pet-be-test.bal](https://github.com/wso2-cellery/samples/blob/master/cells/pet-store/pet-be/tests/pet-be-test.bal) for the omitted part of the code. 
+ started instances are retrieved through the  [```getCellEndpoints``` helper function](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md#functiongetcellendpoints).
+ Out of returned endpoints, the pet-be controller URL is retrieved and used to send out the request. Refer [pet-be-test.bal](https://github.com/wso2-cellery/samples/blob/master/cells/pet-store/pet-be/tests/pet-be-test.bal) for the omitted part of the code. 
  
 ```ballerina
 @test:Config
 function testInsertOrder() {
-    cellery:Reference petBeUrls = <cellery:Reference>cellery:getGatewayHost(instanceList);
-    string PET_BE_CONTROLLER_ENDPOINT= <string>petBeUrls.controller_ingress_api_url;
-    io:println(PET_BE_CONTROLLER_ENDPOINT);
 
     // Send the request to endpoint and retrieve response
 
-    io:print(response);
-    io:println();
     string responseStr = handleResponse(response);
     test:assertTrue(
         responseStr.hasPrefix(expectedPostResponsePrefix), 
@@ -154,17 +154,51 @@ public function cleanUp() {
     error? err = cellery:stopInstances(instanceList);
 }
 ```
-[back to top](#writing-in-line-cellery-tests-involve-below-steps)
+##### Writing docker image based Cellery tests
+
+Cellery also supports running tests written in other languages by containerizing it in a docker image. Cellery 
+facilitates the helper function [```runDockerTest``` helper function](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md#functionrundockertest)
+
+Below are the steps to be followed in order to implement docker based tests for your Cell files.
+
+Writing docker image based Cellery tests involve below steps,
+
+1) [Write tests, create a Dockerfile and push it to DockerHub](#write-tests-create-a-dockerfile-and-push-it-to-dockerhub)
+2) [Define test function in the test bal file](#define-test-function-in-the-test-bal-file)
+3) [Build the cell image](#build-the-cell-image)
+3) [Run Cellery test command to test the cell](#run-cellery-test-command-to-test-the-cell)
+5) [View logs](#view-logs)
+
+
+##### i) Write tests, create a Dockerfile and push it to DockerHub
+
+As highlighted previously developers can select any framework and language to develop the test. For pet-be we have
+ used a set of [integration tests](https://github.com/wso2-cellery/samples/blob/master/tests/pet-store/pet-be/order/src/test/java/io/cellery/test/petstore/be/PetBeTest.java) written using Java and TestNG. This set of tests is built
+  as a [docker image](https://github.com/wso2-cellery/samples/blob/master/tests/pet-store/pet-be/Dockerfile) and
+   pushed into DockerHub. The name of the image is ```docker.io/wso2cellery/pet-be-tests```.
+
+##### ii) Define test function in the test bal file
+
+
+```ballerina
+@test:Config {}
+function testDocker() {
+    map<cellery:Env> envVars = {PET_BE_CELL_URL: { value: PET_BE_CONTROLLER_ENDPOINT }};
+    error? err = cellery:runDockerTest("docker.io/wso2cellery/pet-be-tests", envVars);
+    test:assertFalse(err is error);
+}
+```
+
+[back to top](#writing-cellery-tests-involve-below-steps)
 
 ##### 3) Build the cell image
 
-Build the Cell image using below command. This must be issued after navigating to pet-store/pet-be. Building cell
- creates Cell image which consist of the tests implemented inside ```tests/pet-be-tesets.bal``` as
-  well. 
+Build the Cell image using below command. Building cell creates Cell image which consist of the tests implemented 
+inside ```tests/pet-be_tests.bal``` as well. 
   
 ``` cellery build <BAL_FILE_NAME> <ORGANIZATION_NAME>/<IMAGE_NAME>:<VERSION> ```
 
-[back to top](#writing-in-line-cellery-tests-involve-below-steps)
+[back to top](#writing-cellery-tests-involve-below-steps)
 
 ##### 4) Run ```cellery test``` command
 
@@ -178,10 +212,20 @@ $ cellery test <ORGANIZATION_NAME>/<IMAGE_NAME>:<VERSION> [-n <CELL_INSTANCE_NAM
 -v verbose mode
 ```
 [back to top](#writing-in-line-cellery-tests-involve-below-steps)
+  
+##### 5) View Logs
 
-##### 5) Debugging tests
+Ballerina currently does not generate any log files and therefore this command is only applicable to docker image
+ based tests. A ```target``` folder is created in the place you run ```cellery test``` and you can find the log
+  file inside it.
 
-##### In order to debug in-line tests, debug mode must be enabled while starting tests using ```--debug```.
+```bash
+$ cat pet-be.log
+```
+
+##### 6) Debugging tests
+
+##### In order to debug tests, debug mode must be enabled while starting tests using ```--debug -p <PROJECT_LOCATION>```.
 
 ```bash
 $ cellery test <ORGANIZATION_NAME>/<IMAGE_NAME>:<VERSION> [-n <CELL_INSTANCE_NAME-2>] [-l <ALIAS>:<CELL_INSTANCE_NAME
@@ -198,156 +242,11 @@ To exit debug mode, execute the command ```exit``` in the Telepresence shell.
 ```
 
 Note: Ballerina does not support remote debugging for tests yet and therefore the VSCode debugger should be used. The
- aforementioned [```test``` command](#in-order-to-debug-in-line-tests-debug-mode-must-be-enabled-while-starting-tests-using---debug) prints the configuration required to be added to Visual Code in order to
-  debug. If you are not familiar with VS code please refer official documentation on [configuring launch.json](https://code.visualstudio.com/docs/editor/debugging#_launch-configurations)
-  
-
- ### Writing docker image based tests for pet-store backend Cell
- 
- As outlined in [Cellery Testing](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-testing.md), this type of
-  testing consists of a set of integration tests containerized in a docker image. Below are the steps to be followed
-   in order to implement docker based tests for your Cell files.
-   
-#### Writing docker image base Cellery tests involve below steps,
-
-1) [Write tests, create a Dockerfile and push it to DockerHub](#write-tests-create-a-dockerfile-and-push-it-to-dockerhub)
-2) [Define test function in cell bal file](#define-test-function-in-cell-bal-file)
-3) [Build the cell image](#build-the-cell-image)
-3) [Run Cellery test command to test the cell](#run-cellery-test-command-to-test-the-cell)
-5) [View logs](#view-logs)
-
-
-##### 1) Write tests, create a Dockerfile and push it to DockerHub
-
-As highlighted previously developers can select any framework and language to develop the test. For pet-be we have
- used a set of [integration tests](https://github.com/wso2-cellery/samples/blob/master/tests/pet-store/pet-be/order/src/test/java/io/cellery/test/petstore/be/PetBeTest.java) written using Java and TestNG. This set of tests is built
-  as a [docker image](https://github.com/wso2-cellery/samples/blob/master/tests/pet-store/pet-be/Dockerfile) and
-   pushed into DockerHub. The name of the image is ```docker.io/wso2cellery/pet-be-tests```.
-   
-##### 2) Define test function in cell bal file
-
-These tests are embedded into Cell ```.bal``` file itself. All you have to do is to implement ```test``` function
- inside Cell ```.bal``` file along with other Cellery code. There are three main tasks done within this function.
- 
- ```ballerina
-public function test(cellery:ImageName iName, map<cellery:ImageName> instances) returns error? {
-
-    // Start instances
-    // Run test suite
-    // Stop instances
-}
- 
-```
-Example: 
-```ballerina
-public function test(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns error? {
-   cellery:Test petBeDockerTests = {
-       name: "pet-be-test",
-        src: {
-           image: "docker.io/wso2cellery/pet-be-tests"
-       },
-       envVars: {
-           PET_BE_CELL_URL: { value: <string>cellery:resolveReference(iName).controller_ingress_api_url }
-       }
-   };
-   cellery:TestSuite petBeTestSuite = {
-       tests: [petBeDockerTests]
-   };
- 
-   cellery:InstanceState[]|error? result = run(iName, instances, startDependencies, shareDependencies);
-   cellery:InstanceState[] instanceList = [];
-   if (result is error) {
-       cellery:InstanceState iNameState = {
-           iName : iName,
-           isRunning: true
-       };
-       instanceList = [iNameState];
-   } else {
-       instanceList = <cellery:InstanceState[]>result;
-   }
- 
-   error? a = cellery:runTestSuite(instanceList, petBeTestSuite);
-   return cellery:stopInstances(instanceList);
-}
-
-```
-
-##### 3) Build the cell image
-
-Build the Cell image using below command.
-
-```bash
-$ cellery build <BAL_FILE_NAME> <ORGANIZATION_NAME>/<IMAGE_NAME>:<VERSION>
-```
-
-##### 4) Run ```cellery test``` command to test the cell
-
-This is the same command which is run for in-line tests as well.
-```bash
-$ cellery test <ORGANIZATION_NAME>/<IMAGE_NAME>:<VERSION> [-n <CELL_INSTANCE_NAME-2>] [-l <ALIAS>:<CELL_INSTANCE_NAME-1>] [-v]
-
--n instance name
--l dependency cell instance name
--v verbose mode
-```
-
-##### 5) View Logs
-
-Ballerina currently does not generate any log files and therefore this command is only applicable to docker image
- based tests. A ```target``` folder is created in the place you run ```cellery test``` and you can find the log
-  file inside it.
-
-```bash
-$ cat pet-be.log
-```
-
-### Running both in-line and docker based tests.
-
-If a combination of in-line and docker based tests are used, the ```.bal``` file has to be updated as below. The full
- implementation of test function in this case can be found from [pet-be-cell.bal](https://github.com/wso2-cellery/samples/blob/master/cells/pet-store/pet-be/pet-be.bal) file.
- 
- Developer can define what are the tests which needs to be run while giving the order which they need to be run.
- 
- ```ballerina
- public function test(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns error? {
-    cellery:Test petBeDockerTests = {
-        name: "pet-be-test",
-         src: {
-            image: "docker.io/wso2cellery/pet-be-tests"
-        },
-        envVars: {
-            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(iName).controller_ingress_api_url }
-        }
-    };
-    cellery:Test petBeInlineTests = {
-        name: "pet-be-test",
-        source : <cellery:FileSource> {
-            filepath: "tests/"
-        }
-    };
-
-    // Order of the tests.
-    cellery:TestSuite petBeTestSuite = {
-        tests: [petBeDockerTests, petBeInlineTests]
-    };
-  
-    cellery:InstanceState[]|error? result = run(iName, instances, startDependencies, shareDependencies);
-    cellery:InstanceState[] instanceList = [];
-    if (result is error) {
-        cellery:InstanceState iNameState = {
-            iName : iName,
-            isRunning: true
-        };
-        instanceList = [iNameState];
-    } else {
-        instanceList = <cellery:InstanceState[]>result;
-    }
-  
-    error? a = cellery:runTestSuite(instanceList, petBeTestSuite);
-    return cellery:stopInstances(instanceList);
- }
-
-```
+ aforementioned [```test``` command](#in-order-to-debug-tests-debug-mode-must-be-enabled-while-starting-tests-using
+ ---debug) creates a ballerina.conf or replaces existing with in order to
+  debug. This is to pass cellery configurations to the debug process. If you are not familiar with VS code please refer 
+  official documentation on [configuring launch.json](https://code.visualstudio
+  .com/docs/editor/debugging#_launch-configurations)
 
 # What's Next?
 - [Observe the pet-store](observability.md) - This shows how you can observe and understand the runtime operations to the pet-store application.
