@@ -53,10 +53,9 @@ function testDocker() {
 # Tests inserting order from an external cell by calling the pet-be gateway
 @test:Config {}
 function testInsertOrder() {
-
+    // Add sleeptime of 10 seconds till sts goes to ready state. 
+    // This is a workaround to overcome the bug of cell going to ready state before sts deployment is ready.
     runtime:sleep(10000);
-    
-    // string PET_BE_CONTROLLER_ENDPOINT = "http://pet-be--gateway-service:80/controller/orders";
     io:println(PET_BE_CONTROLLER_ENDPOINT);
 
     string ordersContext = "/orders";
