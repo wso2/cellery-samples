@@ -376,7 +376,7 @@ Congratulations! You have successfully created your own cell!
     $ cellery terminate todos
     $ kubectl delete secret db-credentials
     $ kubectl delete pvc todos--mysql-db-data-vol-pvc
-    $ kubectl delete pv -f pv-local.yaml
+    $ kubectl delete -f pv-local.yaml
     ``` 
 
 ## What's Next? 
