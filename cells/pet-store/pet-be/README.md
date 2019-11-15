@@ -106,43 +106,6 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances, b
     cellery:CellImage petStoreBackendCell = check cellery:constructCellImage( iName);
     return <@untainted> cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
 }
-
-public function test(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns error? {
-    cellery:InstanceState[]|error? result = run(iName, instances, startDependencies, shareDependencies);
-    cellery:InstanceState[] instanceList = [];
-    if (result is error) {
-        cellery:InstanceState iNameState = {
-            iName : iName,
-            isRunning: true
-        };
-        instanceList = [iNameState];
-    } else {
-        instanceList = <cellery:InstanceState[]>result;
-    }
-
-    cellery:ImageName img = <cellery:ImageName>cellery:getCellImage();
-    cellery:Test petBeDockerTests = {
-        name: "pet-be-test",
-        src: {
-            image: "docker.io/wso2cellery/pet-be-tests"
-        },
-        envVars: {
-            PET_BE_CELL_URL: { value: <string>cellery:resolveReference(img)["controller_ingress_api_url"] }
-        }
-    };
-    cellery:Test petBeInlineTests = {
-        name: "pet-be-test",
-        src : <cellery:FileSource> {
-            filepath: "tests/"
-        }
-    };
-    cellery:TestSuite petBeTestSuite = {
-        tests: [petBeDockerTests, petBeInlineTests]
-    };
-
-    error? a = cellery:runTestSuite(instanceList, petBeTestSuite);
-    return cellery:stopInstances(instanceList);
-}
 ```
 ### Build method 
 - The `build` method will be executed when `cellery build` is performed, and user can pass the `cellery:ImageName iName` as a parameter during cellery build. 
