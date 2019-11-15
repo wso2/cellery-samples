@@ -47,7 +47,7 @@ function setup() {
 @test:Config {}
 function testDocker() {
     map<cellery:Env> envVars = {PET_BE_CELL_URL: { value: PET_BE_CONTROLLER_ENDPOINT }};
-    error? a = cellery:runDockerTest("docker.io/wso2cellery/pet-be-tests", envVars);
+    error? a = cellery:runDockerTest("docker.io/wso2cellery/samples-pet-store-order-tests", envVars);
 }
 
 # Tests inserting order from an external cell by calling the pet-be gateway
