@@ -185,7 +185,7 @@ $ cellery test <ORGANIZATION_NAME>/<IMAGE_NAME>:<VERSION> [-n <CELL_INSTANCE_NAM
 
 ```bash
 $ cellery test <ORGANIZATION_NAME>/<IMAGE_NAME>:<VERSION> [-n <CELL_INSTANCE_NAME-2>] [-l <ALIAS>:<CELL_INSTANCE_NAME
--1>] [-v] --debug
+-1>] [-v] --debug -p <BALLERINA_PROJECT_LOCATION>
 ```
 The above command starts Telepresence and open the Telepresence shell allowing the user to debug the test using
  the IDE.
