@@ -36,9 +36,9 @@ public class PetBeTest {
         String ordersEndpoint = PET_BE_GATEWAY_ENDPOINT + "/orders";
         String payload = "{\"order\":[{\"id\":1,\"amount\":1}]}";
         String expectedPostResponseRegex = "\\{\"status\":\"SUCCESS\",\"data\":\\{\"id\":[0-9]*\\}\\}";
-        String expectedGetResponse = "{\"status\":\"SUCCESS\",\"data\":{\"orders\":[{\"order\":[{\"item\":{\"id\":1," +
-                "\"name\":\"Pet Travel Carrier Cage\",\"description\":\"Ideal for airline travel, the carry cage has " +
-                "a sturdy handle grip and tie down strapping points for safe and secure travel\"";
+//        String expectedGetResponse = "{\"status\":\"SUCCESS\",\"data\":{\"orders\":[{\"order\":[{\"item\":{\"id\":1," +
+//                "\"name\":\"Pet Travel Carrier Cage\",\"description\":\"Ideal for airline travel, the carry cage has " +
+//                "a sturdy handle grip and tie down strapping points for safe and secure travel\"";
 
         StringEntity entity = new StringEntity(payload);
         HttpUriRequest request = RequestBuilder.post()
@@ -51,12 +51,12 @@ public class PetBeTest {
         System.out.println("Response: " + actualResponse);
         Assert.assertTrue(Pattern.matches(expectedPostResponseRegex, actualResponse));
 
-        request = RequestBuilder.get()
-                .setUri(ordersEndpoint)
-                .build();
-        String actualGetResponse = HTTPClient.doSend(request);
-        assert actualGetResponse != null;
-        System.out.println("Response: " + actualGetResponse);
-        Assert.assertTrue(actualGetResponse.startsWith(expectedGetResponse));
+//        request = RequestBuilder.get()
+//                .setUri(ordersEndpoint)
+//                .build();
+//        String actualGetResponse = HTTPClient.doSend(request);
+//        assert actualGetResponse != null;
+//        System.out.println("Response: " + actualGetResponse);
+//        Assert.assertTrue(actualGetResponse.startsWith(expectedGetResponse));
     }
 }
