@@ -66,8 +66,8 @@ function testInsertOrder() {
     
     http:Client clientEndpoint = new(PET_BE_CONTROLLER_ENDPOINT);
     http:Request req = new;
-    req.setHeader("Content-Type", "application/json");
     req.setPayload(payload);
+    req.setHeader("Content-Type", "application/json");
     var response = clientEndpoint->post(ordersContext, req);
 
     io:print(response);
