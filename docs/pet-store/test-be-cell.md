@@ -242,8 +242,7 @@ To exit debug mode, execute the command ```exit``` in the Telepresence shell.
 ```
 
 Note: Ballerina does not support remote debugging for tests yet and therefore the VSCode debugger should be used. The
- aforementioned [```test``` command](#in-order-to-debug-tests-debug-mode-must-be-enabled-while-starting-tests-using
- ---debug) creates a ballerina.conf or replaces existing with in order to
+ aforementioned [```test``` command](#in-order-to-debug-tests-debug-mode-must-be-enabled-while-starting-tests-using---debug) creates a ballerina.conf or replaces existing with in order to
   debug. This is to pass cellery configurations to the debug process. If you are not familiar with VS code please refer 
   official documentation on [configuring launch.json](https://code.visualstudio.com/docs/editor/debugging#_launch-configurations)
 
