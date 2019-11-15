@@ -13,7 +13,7 @@ This sample is a simple webapp which consists of 5 Docker images (4 microservice
 
 All 4 micro services are implemented in [node.js](https://nodejs.org/en/) and portal web application is a [React](https://reactjs.org/) application. 
 
-All four backedn components (Catalog, Customers, Orders, and Controller) are included in a backend Composite - [pet-be-composite.bal](pet-be-composite.bal) file, a
+All four backend components (Catalog, Customers, Orders, and Controller) are included in a backend Composite - [pet-be-composite.bal](pet-be-composite.bal) file, a
 and front end component (Portal) is wrapped as cell - [pet-fe-cell-to-composite.bal](pet-fe-cell-to-composite.bal). Therefore, the cell gateway 
 in the frontend cell can enable OIDC flow, unlike composites [all-in-composite](../all-in-one-composite) or [composite-composite](../cell-to-composite) samples.
 

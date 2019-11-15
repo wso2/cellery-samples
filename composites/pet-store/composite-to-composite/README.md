@@ -13,7 +13,7 @@ This sample is a simple webapp which consists of 5 Docker images (4 microservice
 
 All 4 micro services are implemented in [node.js](https://nodejs.org/en/) and portal web application is a [React](https://reactjs.org/) application. 
 
-All four backedn components (Catalog, Customers, Orders, and Controller) are included in a backend Composite - [pet-be-guest-mode-composite.bal](pet-be-guest-mode-composite.bal) file, a
+All four backend components (Catalog, Customers, Orders, and Controller) are included in a backend Composite - [pet-be-guest-mode-composite.bal](pet-be-guest-mode-composite.bal) file, a
 and front end component (Portal) is wrapped as another Composite - [pet-fe-guest-mode-composite.bal](pet-fe-guest-mode-composite.bal).
 
 Composites are simply a group of components, and it do not have control over inter-communication between components. Further, unlike cells, 
