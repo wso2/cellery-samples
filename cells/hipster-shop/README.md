@@ -55,8 +55,10 @@ Hipster Shop services](../../docs/images/hipster-shop/hipstershop-cell-architect
 ## Quick Deploy the Hipster Shop Cells
 Execute the command below to deploy the pre-built cell images in one go. If you are interested in building and running the cell images, execute the steps explained [here](#build-and-deploy-the-hipstershop-cells).
 
+**Note:** If you are testing this sample with GCP setup, you may need to [add additional node pool](https://cloud.google.com/kubernetes-engine/docs/how-to/node-pools) to the cluster in order to provide the required resources.
+
 ```
-cellery run wso2cellery/front-end-cell:latest-dev -n front-end-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -l adsCellDep:ads-cell -l checkoutCellDep:checkout-cell -d -y
+cellery run wso2cellery/front-end-cell:latest-dev -n front-end-cell -l cartCellDep:cart-cell -l productsCellDep:products-cell -l adsCellDep:ads-cell -l checkoutCellDep:checkout-cell -d
 ```
 Now [view the application](#viewing-the-application).
 
