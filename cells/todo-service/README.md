@@ -226,6 +226,33 @@ Follow below instructions to build, run and push the `todo` cell.
            }
        }  
     ``` 
+    #### Existing Setup
+
+   Create the persistence volume of your choice based on your setup. 
+    
+    To create a local persistence volume, you can use [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/cells/todo-service/pv-local.yaml) file for creating the volume with the following 
+    change. 
+   
+    1. Download the file and change the value of _kubernetes.io/hostname_ in the `nodeaffinity` block. The node 
+    name is 
+    denoted by the placeholder `<node-name>` as shown below. Replace this value with your Kubernetes node name.
+    
+    ```yaml
+     nodeAffinity:
+       required:
+         nodeSelectorTerms:
+           - matchExpressions:
+               - key: kubernetes.io/hostname
+                 operator: In
+                 values:
+                   - <node-name>
+    ```
+    
+    2. Create the volume by deploying the modified pv-local.yaml
+    
+    ```bash
+       $ kubectl create -f pv-local.yaml
+    ```
 
 2. After creating the persistence volume. Build the cell image for todo-cell project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
