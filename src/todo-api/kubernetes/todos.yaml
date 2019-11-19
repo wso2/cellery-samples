@@ -103,7 +103,7 @@ spec:
         replicas: 1
       template:
         containers:
-        - image: docker.io/wso2cellery/samples-todoapp-todos:latest
+        - image: docker.io/wso2cellery/samples-todoapp-todos:latest-dev
           name: todos
           env:
           - name: PORT
