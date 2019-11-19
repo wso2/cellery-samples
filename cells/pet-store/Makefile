@@ -17,7 +17,7 @@
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 GIT_REVISION := $(shell git rev-parse --verify HEAD)
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= latest
+CELLERY_VERSION ?= latest-dev
 
 SAMPLE := pet-store
 PET_BE_CELL := pet-be
