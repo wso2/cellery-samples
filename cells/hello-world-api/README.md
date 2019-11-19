@@ -151,7 +151,9 @@ before proceeding to the following steps.
    Hello World!
    ```
 
-Congratulations! You have successfully tried out the hello world api sample! 
+Congratulations! You have successfully tried out the hello world api sample!
+
+You can refer [Cell API versioning](../../docs/hello-world-api/api-versioning.md) for versioning the hello-world-api. 
 
 Please feel free to checkout this repository and play around with the sample as explained [here](../../src/hello-world-api)
 

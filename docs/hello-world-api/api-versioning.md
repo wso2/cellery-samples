@@ -1,17 +1,17 @@
-# Api Versioning - Hello-world-api cell
+# API Versioning - Hello-world-api cell
 
 Hello-world-api cell defines a standard contract for the external parties to communicate with it. Hence, it is
-accessible only via the cell gateway. Let's see how to manage api versions in Cellery by using hello-world-api sample.
+accessible only via the cell gateway. Let's see how to manage API versions in Cellery by using hello-world-api sample.
 
-## Exposing Apis for External Access
+## Exposing APIs for External Access
 
 Cell APIs can be selectively published to the Cellery global gateway to be accessed by external clients. This is done by 
 marking the relevant HTTP ingress as `expose: global`. APIs which are only need to expose via local cell gateway, can
 mark the relevant HTTP ingress as `expose: local`.
 
 Context field under ingress is used to expose a set of cell APIs globally with a unique context. Also each set of APIs
-can have their own API versions and those versions can be specified by using the apiVersion field. The default API
-version(0.1) will applied if no version is specified under apiVersion.
+can have their own API versions and those versions can be specified by using the `apiVersion` field. The default API
+version(0.1) will applied if no version is specified under `apiVersion`.
 
 ingress of our globally exposed hello-world-api cell will looks like the below.
 ```ballerina
@@ -37,7 +37,7 @@ Hello-world-api can be exposed with a common root context by using the global pu
 Each context specified in the HTTP ingress will be used as a sub context of the root context specified in the publisher.
 
 Note: When there are multiple APIs available, the version specified in here will apply to all the APIs. Any API version
-specified under apiVersion in ingress is overwritten by globalPublisher apiVersion.
+specified under `apiVersion` in `HttpApiIngress` is overwritten by `apiVersion` in `globalPublisher`.
 Ex.:
 ```ballerina
 ingress: <cellery:HttpApiIngress>{
