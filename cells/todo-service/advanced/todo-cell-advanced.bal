@@ -65,7 +65,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component todoServiceComponent = {
         name: "todos",
         src: {
-            image: "docker.io/wso2cellery/samples-todoapp-todos:latest-dev"
+            image: "docker.io/wso2cellery/samples-todoapp-todos:0.5.0"
         },
         ingresses: {
             todo:  <cellery:HttpApiIngress>{

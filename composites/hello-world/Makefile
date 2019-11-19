@@ -17,7 +17,7 @@
 PROJECT_ROOT := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 GIT_REVISION := $(shell git rev-parse --verify HEAD)
 CELLERY_ORG ?= wso2cellery
-CELLERY_VERSION ?= latest-dev
+CELLERY_VERSION ?= 0.5.0
 
 SAMPLE := hello-world
 COMPOSITE_FILE := hello-world-composite

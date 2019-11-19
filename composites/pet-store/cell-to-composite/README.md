@@ -31,7 +31,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component portalComponent = {
         name: "portal",
         source: {
-            image: "wso2cellery/samples-pet-store-portal:latest"
+            image: "wso2cellery/samples-pet-store-portal:0.5.0"
         },
         ingresses: {
             portal: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
@@ -61,7 +61,7 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
             composites: {
-                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-composite", ver: "latest" }
+                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-composite", ver: "0.5.0" }
             }
         }
     };
@@ -100,7 +100,7 @@ Now let us quick run or build and run the composites. And also observe the compo
 please go [here](#build-and-run-the-composite).
 
 ```
-$ cellery run wso2cellery/pet-fe-cell-to-composite:latest -n pet-fe-comp-cell -l petStoreBackend:pet-be-comp -d
+$ cellery run wso2cellery/pet-fe-cell-to-composite:0.5.0 -n pet-fe-comp-cell -l petStoreBackend:pet-be-comp -d
 ```
 Now you can [access the pet-store application](#access-the-pet-store-web-application). 
 
@@ -120,43 +120,43 @@ You can perform a [Quick Run](#quick-run) or build and run the pet-store composi
    ```
 1. Build the cell image for pet-store project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [Cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build pet-be-composite.bal <CELLERY_HUB_ORG>/pet-be-composite:latest
+    $ cellery build pet-be-composite.bal <CELLERY_HUB_ORG>/pet-be-composite:0.5.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <CELLERY_HUB_ORG>/pet-be-composite:latest
+    ✔ Building image <CELLERY_HUB_ORG>/pet-be-composite:0.5.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-be-composite:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-be-composite:0.5.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/pet-be-composite:latest
+      $ cellery run <CELLERY_HUB_ORG>/pet-be-composite:0.5.0
     --------------------------------------------------------
 
-    $ cellery build pet-fe-cell-to-composite.bal <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:latest
+    $ cellery build pet-fe-cell-to-composite.bal <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:0.5.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:latest
+    ✔ Building image <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:0.5.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:0.5.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:latest
+      $ cellery run <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:0.5.0
     --------------------------------------------------------
     
     ```
 
 2. Once the pet-store is built, you can run the composite and create the `pet-fe-comp-cell` instance by below command. 
 ```
-$ cellery run wso2cellery/pet-fe-cell-to-composite:latest -n pet-fe-comp-cell -l petStoreBackend:pet-be-comp -d
-  ✔ Extracting Cell Image wso2cellery/pet-fe-cell-to-composite:latest
-  ✔ Reading Image wso2cellery/pet-fe-cell-to-composite:latest
+$ cellery run wso2cellery/pet-fe-cell-to-composite:0.5.0 -n pet-fe-comp-cell -l petStoreBackend:pet-be-comp -d
+  ✔ Extracting Cell Image wso2cellery/pet-fe-cell-to-composite:0.5.0
+  ✔ Reading Image wso2cellery/pet-fe-cell-to-composite:0.5.0
   ✔ Parsing dependency links
   Info: Main Instance: pet-fe-comp-cell
   Info: Validating dependencies
@@ -164,8 +164,8 @@ $ cellery run wso2cellery/pet-fe-cell-to-composite:latest -n pet-fe-comp-cell -l
 ------------------------------------------------------------------------------------------------------------------------
 INSTANCE NAME     CELL IMAGE                                       USED INSTANCE     KIND           SHARED         
 ------------------------------------------------------------------------------------------------------------------------
-pet-be-comp       wso2cellery/pet-be-composite:latest              To be Created     Composite      -              
-pet-fe-comp-cell  wso2cellery/pet-fe-cell-to-composite:latest      To be Created     Cell           -              
+pet-be-comp       wso2cellery/pet-be-composite:0.5.0              To be Created     Composite      -              
+pet-fe-comp-cell  wso2cellery/pet-fe-cell-to-composite:0.5.0      To be Created     Cell           -              
 ------------------------------------------------------------------------------------------------------------------------
 
   Info: Dependency Tree to be Used
@@ -177,7 +177,7 @@ pet-fe-comp-cell  wso2cellery/pet-fe-cell-to-composite:latest      To be Created
   ✔ Starting main instance pet-fe-comp-cell
   
   
-  ✔ Successfully deployed cell image: wso2cellery/pet-fe-cell-to-composite:latest
+  ✔ Successfully deployed cell image: wso2cellery/pet-fe-cell-to-composite:0.5.0
   
   What's next?
   --------------------------------------------------------
@@ -194,18 +194,18 @@ pet-fe-comp-cell  wso2cellery/pet-fe-cell-to-composite:latest      To be Created
  Cell Instances:
    INSTANCE            IMAGE                                    STATUS              GATEWAY              COMPONENTS   AGE     
  ------------------ ------------------------------------------- ----- --------------------------------- ------------ -------
-  pet-fe-comp-cell  wso2cellery/pet-fe-cell-to-composite:latest Ready pet-fe-comp-cell--gateway-service     1       45 seconds 
+  pet-fe-comp-cell  wso2cellery/pet-fe-cell-to-composite:0.5.0 Ready pet-fe-comp-cell--gateway-service     1       45 seconds 
  
  Composite Instances:
    INSTANCE                 IMAGE                    STATUS   COMPONENTS      AGE      
  ------------- ------------------------------------ -------- ------------ ------------ 
-  pet-be-comp   wso2cellery/pet-be-composite:latest   Ready    4            1 minutes   
+  pet-be-comp   wso2cellery/pet-be-composite:0.5.0   Ready    4            1 minutes   
   
 ```
     
 4. Execute `cellery view` to see the components of the composite. This will open a webpage in a browser that allows to visualize the components of the composite image.
     ```
-    $ cellery view <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:latest
+    $ cellery view <CELLERY_HUB_ORG>/pet-fe-cell-to-composite:0.5.0
     ```
     ![pet-store view-1](../../../docs/images/composites/pet-store/cell-to-comp/cellery-view-1.png)
     ![pet-store view-2](../../../docs/images/composites/pet-store/cell-to-comp/cellery-view-2.png)

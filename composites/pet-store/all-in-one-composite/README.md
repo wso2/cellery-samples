@@ -36,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component ordersComponent = {
         name: "orders",
         src: {
-            image: "wso2cellery/samples-pet-store-orders:latest-dev"
+            image: "wso2cellery/samples-pet-store-orders:0.5.0"
         },
         ingresses: {
             orders:  <cellery:HttpPortIngress>{
@@ -54,7 +54,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component customersComponent = {
         name: "customers",
         src: {
-            image: "wso2cellery/samples-pet-store-customers:latest-dev"
+            image: "wso2cellery/samples-pet-store-customers:0.5.0"
         },
         ingresses: {
             customers: <cellery:HttpPortIngress>{
@@ -72,7 +72,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component catalogComponent = {
         name: "catalog",
         src: {
-            image: "wso2cellery/samples-pet-store-catalog:latest-dev"
+            image: "wso2cellery/samples-pet-store-catalog:0.5.0"
         },
         ingresses: {
             catalog: <cellery:HttpPortIngress>{
@@ -91,7 +91,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component controllerComponent = {
         name: "controller",
         src: {
-            image: "wso2cellery/samples-pet-store-controller:latest-dev"
+            image: "wso2cellery/samples-pet-store-controller:0.5.0"
         },
         ingresses: {
             ingress: <cellery:HttpPortIngress>{
@@ -115,7 +115,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component portalComponent = {
             name: "portal",
             src: {
-                image: "wso2cellery/samples-pet-store-portal:latest-dev"
+                image: "wso2cellery/samples-pet-store-portal:0.5.0"
             },
             ingresses: {
                 portal: <cellery:HttpPortIngress>{
@@ -172,18 +172,18 @@ Now let us quick run or build and run the composites. And also observe the compo
 please go [here](#build-and-run-the-pet-store-composite).
 
 ```
-$ cellery run wso2cellery/pet-store-composite:latest -n pet-store 
+$ cellery run wso2cellery/pet-store-composite:0.5.0 -n pet-store 
 ```
 Now [create the ingress](#create-ingress) to access the pet-store application. 
 
 ## Create Ingress
 1. You need to create the ingress to allow the external traffic to the pet-store application by below command. 
-Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml) 
+Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/v0.5.0/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml) 
 ingress is created to direct the traffic to kubernetes service `pet-store--portal-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `pet-store`, 
 the service name will be `pet-store--portal-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-pet-store`), you will have to modify the ingress service name, 
 and create it accordingly (e.g. `my-pet-store--portal-service`).
 ```
- $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml
+ $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/v0.5.0/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml
 ```
 2. Check the ingress rules are correctly applied by getting the list of ingresses as shown below.
 ```
@@ -214,34 +214,34 @@ You can perform a [Quick Run](#quick-run) or build and run the pet-store composi
    ```
 1. Build the cell image for pet-store project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [Cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build pet-store-composite.bal <CELLERY_HUB_ORG>/pet-store-composite:latest
+    $ cellery build pet-store-composite.bal <CELLERY_HUB_ORG>/pet-store-composite:0.5.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <CELLERY_HUB_ORG>/pet-store-composite:latest
+    ✔ Building image <CELLERY_HUB_ORG>/pet-store-composite:0.5.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-store-composite:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-store-composite:0.5.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/pet-store-composite:latest
+      $ cellery run <CELLERY_HUB_ORG>/pet-store-composite:0.5.0
     --------------------------------------------------------
     ```
 
 2. Once the pet-store is built, you can run the composite and create the `pet-store` instance by below command. 
     ```
-    $ cellery run wso2cellery/pet-store-composite:latest -n pet-store
-       ✔ Extracting Cell Image wso2cellery/pet-store-composite:latest
-       ✔ Reading Image wso2cellery/pet-store-composite:latest
+    $ cellery run wso2cellery/pet-store-composite:0.5.0 -n pet-store
+       ✔ Extracting Cell Image wso2cellery/pet-store-composite:0.5.0
+       ✔ Reading Image wso2cellery/pet-store-composite:0.5.0
        Info: Main Instance: pet-store
        Info: Validating dependencies
        Info: Instances to be Used
        ------------------------------------------------------------------------------------------------------------------------
        INSTANCE NAME                  CELL IMAGE                                   USED INSTANCE             KIND            SHARED
        ------------------------------------------------------------------------------------------------------------------------
-       pet-store                     wso2cellery/pet-store-composite:latest        To be Created             Composite       -
+       pet-store                     wso2cellery/pet-store-composite:0.5.0        To be Created             Composite       -
        ------------------------------------------------------------------------------------------------------------------------
        Info: Dependency Tree to be Used
        
@@ -249,7 +249,7 @@ You can perform a [Quick Run](#quick-run) or build and run the pet-store composi
        ✔ Starting main instance pet-store
        
        
-       ✔ Successfully deployed cell image: wso2cellery/pet-store-composite:latest
+       ✔ Successfully deployed cell image: wso2cellery/pet-store-composite:0.5.0
        
        What's next?
        --------------------------------------------------------
@@ -265,12 +265,12 @@ You can perform a [Quick Run](#quick-run) or build and run the pet-store composi
         Composite Instances:
          INSTANCE                 IMAGE                 STATUS   COMPONENTS           AGE
         ---------- ----------------------------------- -------- ------------ ----------------------
-         pet-store      wso2cellery/pet-store-composite:latest   Ready    5            1 minutes 40 seconds
+         pet-store      wso2cellery/pet-store-composite:0.5.0   Ready    5            1 minutes 40 seconds
     ```
     
 4. Execute `cellery view` to see the components of the composite. This will open a webpage in a browser that allows to visualize the components of the composite image.
     ```
-    $ cellery view <CELLERY_HUB_ORG>/pet-store-composite:latest
+    $ cellery view <CELLERY_HUB_ORG>/pet-store-composite:0.5.0
     ```
     ![pet-store view](../../../docs/images/composites/pet-store/all-in-one/cellery-view.png)
 
@@ -296,7 +296,7 @@ cluster name: docker-desktop
   Horizontal pod auto scalar   Disabled
 ``` 
 
-2. If observability is already disabled, then you require to enable the observability as shown below. Please find more information about modify command [here](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/modify-setup.md).
+2. If observability is already disabled, then you require to enable the observability as shown below. Please find more information about modify command [here](https://github.com/wso2-cellery/sdk/blob/v0.5.0/docs/setup/modify-setup.md).
 
 ```
 $ cellery setup modify --observability=enable

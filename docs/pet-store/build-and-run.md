@@ -19,34 +19,34 @@ This readme explains the steps to build and run the pet-store cells by your own.
 1.  Build the pet-be cell by executing `cellery build` command as shown below. 
    ```
    $ cd pet-be
-   $ cellery build pet-be.bal wso2cellery/pet-be-cell:latest
+   $ cellery build pet-be.bal wso2cellery/pet-be-cell:0.5.0
    Warning: Value is empty for environment variable "ORDER_HOST"
    Warning: Value is empty for environment variable "CATALOG_HOST"
    Warning: Value is empty for environment variable "CUSTOMER_HOST"
    true
-   ✔ Building image wso2cellery/pet-be-cell:latest
+   ✔ Building image wso2cellery/pet-be-cell:0.5.0
    ✔ Removing old Image
    ✔ Saving new Image to the Local Repository
    
    
-   ✔ Successfully built cell image: wso2cellery/pet-be-cell:latest
+   ✔ Successfully built cell image: wso2cellery/pet-be-cell:0.5.0
    
    What's next?
    --------------------------------------------------------
    Execute the following command to run the image:
-     $ cellery run wso2cellery/pet-be-cell:latest
+     $ cellery run wso2cellery/pet-be-cell:0.5.0
    --------------------------------------------------------
    ```
 2. View the cell information by executing `cellery view` command. This will open up a new tab in the browser and shows 
 the component and dependency details of the cell. 
     ```
-    $ cellery view wso2cellery/pet-be-cell:latest
+    $ cellery view wso2cellery/pet-be-cell:0.5.0
     ```
     ![pet fe view](../../docs/images/pet-store/pet-be-view.png)
 
 3. Execute `cellery list ingress` to see the list ingress supported by the pet-be cell, and you can see only `controller` component is exposing the API. 
     ```
-    $ cellery list ingress wso2cellery/pet-be-cell:latest
+    $ cellery list ingress wso2cellery/pet-be-cell:0.5.0
       COMPONENT    INGRESS TYPE   INGRESS CONTEXT   INGRESS PORT   GLOBALLY EXPOSED
      ------------ -------------- ----------------- -------------- ------------------
       controller   HTTP           controller        80             False
@@ -56,25 +56,25 @@ the component and dependency details of the cell.
 1. Build the pet-fe cell by executing the `cellery build` command.
    ```
    $ cd pet-fe
-   $ cellery build pet-fe.bal wso2cellery/pet-fe-cell:latest
+   $ cellery build pet-fe.bal wso2cellery/pet-fe-cell:0.5.0
    Warning: Value is empty for environment variable "PET_STORE_CELL_URL"
    true
-   ✔ Building image wso2cellery/pet-fe-cell:latest
+   ✔ Building image wso2cellery/pet-fe-cell:0.5.0
    ✔ Removing old Image
    ✔ Saving new Image to the Local Repository
    
    
-   ✔ Successfully built cell image: wso2cellery/pet-fe-cell:latest
+   ✔ Successfully built cell image: wso2cellery/pet-fe-cell:0.5.0
    
    What's next?
    --------------------------------------------------------
    Execute the following command to run the image:
-     $ cellery run wso2cellery/pet-fe-cell:latest
+     $ cellery run wso2cellery/pet-fe-cell:0.5.0
    --------------------------------------------------------
    ```
-2. View the inner components and cell dependency of cell wso2cellery/pet-fe-cell:latest.
+2. View the inner components and cell dependency of cell wso2cellery/pet-fe-cell:0.5.0.
     ```
-    $ cellery view wso2cellery/pet-fe-cell:latest
+    $ cellery view wso2cellery/pet-fe-cell:0.5.0
     ```
     ![pet fe view](../../docs/images/pet-store/pet-fe-view.png)
 
@@ -82,12 +82,12 @@ the component and dependency details of the cell.
 As we haven't started the pet-be cell instance, we'll pass `-d` or `--start-dependencies` flag with run command to 
 start dependent cell instance if it is not available in the runtime.
    ```
-   $ cellery run wso2cellery/pet-fe-cell:latest -n pet-fe -l petStoreBackend:pet-be -d
-   ✔ Extracting Cell Image wso2cellery/pet-fe-cell:latest
+   $ cellery run wso2cellery/pet-fe-cell:0.5.0 -n pet-fe -l petStoreBackend:pet-be -d
+   ✔ Extracting Cell Image wso2cellery/pet-fe-cell:0.5.0
    
    Main Instance: pet-fe
    
-   ✔ Reading Cell Image wso2cellery/pet-fe-cell:latest
+   ✔ Reading Cell Image wso2cellery/pet-fe-cell:0.5.0
    ✔ Validating dependency links
    ✔ Generating dependency tree
    ✔ Validating dependency tree
@@ -96,8 +96,8 @@ start dependent cell instance if it is not available in the runtime.
    
      INSTANCE NAME          CELL IMAGE               USED INSTANCE   SHARED
     --------------- ------------------------------- --------------- --------
-     pet-be          wso2cellery/pet-be-cell:latest   To be Created    -
-     pet-fe          wso2cellery/pet-fe-cell:latest   To be Created    -
+     pet-be          wso2cellery/pet-be-cell:0.5.0   To be Created    -
+     pet-fe          wso2cellery/pet-fe-cell:0.5.0   To be Created    -
    
    Dependency Tree to be Used:
    
@@ -111,7 +111,7 @@ start dependent cell instance if it is not available in the runtime.
    ✔ Starting main instance pet-fe
    
    
-   ✔ Successfully deployed cell image: wso2cellery/pet-fe-cell:latest
+   ✔ Successfully deployed cell image: wso2cellery/pet-fe-cell:0.5.0
    
    What's next?
    --------------------------------------------------------

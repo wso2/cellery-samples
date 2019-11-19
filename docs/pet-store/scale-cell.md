@@ -25,12 +25,12 @@ cluster name: cellery-admin@cellery
   Horizontal pod auto scalar   Enabled
 ```
 
-2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-scaling.md#enable-hpa).
+2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/v0.5.0/docs/cell-scaling.md#enable-hpa).
   
 ### Run auto scaling enabled pet-be
-1) Run `pet-be` cell instance with cell image `wso2cellery/pet-be-auto-scale-cell:latest`. You can optionally build the [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) as mentioned [here](build-and-run.md).
+1) Run `pet-be` cell instance with cell image `wso2cellery/pet-be-auto-scale-cell:0.5.0`. You can optionally build the [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) as mentioned [here](build-and-run.md).
 ```
-$ cellery run  wso2cellery/pet-be-auto-scale-cell:latest -n pet-be
+$ cellery run  wso2cellery/pet-be-auto-scale-cell:0.5.0 -n pet-be
 ```
 
 2) Now execute `kubectl get hpa` and you see the resource utilization.
@@ -43,7 +43,7 @@ pet-be--controller-autoscalepolicy-hpa   Deployment/pet-be--controller-deploymen
 ```
 3) Execute the `export-policy` command and view the current autoscaling configuration. This will create a file where you execute the command. 
 You can also optionally pass the `-f` flag to point to the file location to be used to store the policy as explained 
-[here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-export-policy). 
+[here](https://github.com/wso2-cellery/sdk/blob/v0.5.0/docs/cli-reference.md#cellery-export-policy). 
 ```
  $ cellery export-policy autoscale cell pet-be 
 ```
@@ -51,11 +51,11 @@ You can also optionally pass the `-f` flag to point to the file location to be u
 `catalog` component in a high concurrency. There are optional environmental variables can be passed to the load-gen 
 cell to configure the duration (default 5minutes), concurrency (default 40) of the load test, and pet-store instance name (default pet-be). 
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -n load-gen 
+$ cellery run wso2cellery/load-gen-cell:0.5.0 -n load-gen 
 ```
  OR
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
+$ cellery run wso2cellery/load-gen-cell:0.5.0 -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
 ```
 5) Execute `kubectl get hpa` to see the current load for pet-be's controller component once the `load-gen` cell instance is running. 
 ```
@@ -143,13 +143,13 @@ cluster name: cellery-admin@cellery
   Horizontal pod auto scalar   Disabled
 ```
 
-2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-scaling.md#enable-zero-scaling).
+2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/v0.5.0/docs/cell-scaling.md#enable-zero-scaling).
 
 ### Run zero scaling enabled pet-be
-1) Run `pet-be` cell instance with cell image `wso2cellery/pet-be-zero-scale-cell:latest`. You can optionally build the [pet-be-zero-scale.bal](../../cells/pet-store/advanced/pet-be-zero-scale/pet-be-zero-scale.bal) 
+1) Run `pet-be` cell instance with cell image `wso2cellery/pet-be-zero-scale-cell:0.5.0`. You can optionally build the [pet-be-zero-scale.bal](../../cells/pet-store/advanced/pet-be-zero-scale/pet-be-zero-scale.bal) 
 as mentioned [here](build-and-run.md).
 ```
-$ cellery run  wso2cellery/pet-be-zero-scale-cell:latest -n pet-be
+$ cellery run  wso2cellery/pet-be-zero-scale-cell:0.5.0 -n pet-be
 ```
 
 2) Execute `kubectl get pods`. Approximately after two minutes the pods for `controller` and `catalog` will be terminated.
@@ -175,11 +175,11 @@ pet-be--sts-deployment-7f4f56b5d5-qwfzw         3/3     Running   0          7m2
 `catalog` component in a high concurrency. There are optional environmental variables can be passed to the load-gen 
 cell to configure the duration (default 5minutes), concurrency (default 40) of the load test, and pet-store instance name (default pet-be). 
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -n load-gen
+$ cellery run wso2cellery/load-gen-cell:0.5.0 -n load-gen
 ```
   OR
 ```
-$ cellery run wso2cellery/load-gen-cell:latest -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
+$ cellery run wso2cellery/load-gen-cell:0.5.0 -e DURATION=10m -e CONCURRENCY=20 -e PET_STORE_INST=pet-be
 ```
 4) Once the load-gen cell is started, the `controller` and `catalog` components will be running as shown below.
 ```
