@@ -27,7 +27,7 @@ ingress: <cellery:HttpApiIngress>{
         ]
     },
     expose: "global",
-    apiVersion: "1.0.0",
+    apiVersion: "1.0.0"
 }
 ```
 
@@ -52,7 +52,7 @@ ingress: <cellery:HttpApiIngress>{
         ]
     },
     expose: "global",
-    apiVersion: "1.0.0",
+    apiVersion: "1.0.0"
 };
 
 cellery:CellImage helloCell = {
