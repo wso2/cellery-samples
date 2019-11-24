@@ -19,11 +19,20 @@ const fs = require("fs");
 const morgan = require("morgan");
 const path = require("path");
 const rotatingFileStream = require("rotating-file-stream");
+const validate = require("express-validation");
+const joi = require("joi");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3002;
 const customersDataDir = "data";
 const customersDataFile = `${customersDataDir}/customers.json`;
+
+const globalValidationOptions = {
+    headers: {
+        "content-type": joi.string().valid("application/json").insensitive().required(),
+        "x-pet-store-guest": joi.string()
+    }
+};
 
 fs.mkdirSync(customersDataDir); // eslint-disable-line no-sync
 fs.writeFileSync(customersDataFile, "[]", "utf8"); // eslint-disable-line no-sync
@@ -50,7 +59,7 @@ morgan.token("log-level", (req, res) => {
 
     return logLevel;
 });
-service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
+service.use(morgan("[:log-level] access :method :url :status :response-time ms - :res[content-length]", {
     skip: (req, res) => res.statusCode < 400
 }));
 
@@ -77,7 +86,7 @@ const handleSuccess = (res, data) => {
  * @param message The error message
  */
 const handleError = (res, message) => {
-    console.log("[ERROR] " + message);
+    console.error("[ERROR] " + message);
     res.status(500).send({
         status: "ERROR",
         message: message
@@ -97,6 +106,14 @@ const handleNotFound = (res, message) => {
     });
 };
 
+const customerSchema = {
+    username: joi.string().required(),
+    firstName: joi.string().required(),
+    lastName: joi.string().required(),
+    address: joi.string().required(),
+    pets: joi.array().items(joi.string().valid("Dog", "Cat", "Hamster")).min(1).required()
+};
+
 /*
  * API endpoint for getting a list of customers available in the catalog.
  */
@@ -113,7 +130,11 @@ service.get("/customers", (req, res) => {
 /*
  * API endpoint for creating a new customer.
  */
-service.post("/customers", (req, res) => {
+const postCustomerValidationOptions = {
+    body: customerSchema,
+    ...globalValidationOptions
+};
+service.post("/customers", validate(postCustomerValidationOptions), (req, res) => {
     fs.readFile(customersDataFile, "utf8", function (err, data) {
         const customers = JSON.parse(data);
         if (err) {
@@ -123,7 +144,11 @@ service.post("/customers", (req, res) => {
             const match = customers.filter((customer) => customer.username === req.body.username);
             if (match.length === 0) {
                 customers.push({
-                    ...req.body
+                    username: req.body.username,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    address: req.body.address,
+                    pets: req.body.pets
                 });
 
                 // Creating the new customer
@@ -163,7 +188,11 @@ service.get("/customers/:username", (req, res) => {
 /*
  * API endpoint for updating a customer in the catalog.
  */
-service.put("/customers/:username", (req, res) => {
+const putCustomerValidationOptions = {
+    body: customerSchema,
+    ...globalValidationOptions
+};
+service.put("/customers/:username", validate(putCustomerValidationOptions), (req, res) => {
     fs.readFile(customersDataFile, "utf8", function (err, data) {
         const customers = JSON.parse(data);
         if (err) {
@@ -172,7 +201,12 @@ service.put("/customers/:username", (req, res) => {
             const match = customers.filter((customer) => customer.username === req.params.username);
 
             if (match.length === 1) {
-                Object.assign(match[0], req.body);
+                Object.assign(match[0], {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    address: req.body.address,
+                    pets: req.body.pets
+                });
 
                 // Updating the customer
                 fs.writeFile(customersDataFile, JSON.stringify(customers), "utf8", function (err) {
@@ -214,6 +248,33 @@ service.delete("/customers/:username", (req, res) => {
             }
         }
     });
+});
+
+// Error handler for validation errors
+service.use(function (err, req, res, next) {
+    if (err instanceof validate.ValidationError) {
+        // At this point you can execute your error handling code
+        console.error("[ERROR] Invalid incoming request " + req.method + " " + req.path, err);
+
+        const errors = {};
+        err.errors.forEach((validationErr) => {
+            errors[validationErr.location] = {
+                field: validationErr.field,
+                messages: validationErr.messages,
+                types: validationErr.types
+            };
+        });
+
+        res.status(400).send({
+            status: "BAD_REQUEST",
+            message: "Invalid Request",
+            errors: errors
+        });
+        next();
+    } else {
+        // Pass error on if not a validation error
+        next(err);
+    }
 });
 
 /*

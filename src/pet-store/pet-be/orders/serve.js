@@ -20,6 +20,8 @@ const moment = require("moment");
 const morgan = require("morgan");
 const path = require("path");
 const rotatingFileStream = require("rotating-file-stream");
+const validate = require("express-validation");
+const joi = require("joi");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3003;
@@ -30,6 +32,13 @@ const ordersDataFile = `${ordersDataDir}/orders.json`;
 const DATE_FORMAT = "DD-MM-YYYY";
 const CELLERY_USER_HEADER = "x-cellery-auth-subject";
 const PET_STORE_GUEST_HEADER = "x-pet-store-guest";
+
+const globalValidationOptions = {
+    headers: {
+        "content-type": joi.string().valid("application/json").insensitive().required(),
+        "x-pet-store-guest": joi.string()
+    }
+};
 
 fs.mkdirSync(ordersDataDir); // eslint-disable-line no-sync
 fs.writeFileSync(ordersDataFile, "[]", "utf8"); // eslint-disable-line no-sync
@@ -56,7 +65,7 @@ morgan.token("log-level", (req, res) => {
 
     return logLevel;
 });
-service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
+service.use(morgan("[:log-level] access :method :url :status :response-time ms - :res[content-length]", {
     skip: (req, res) => res.statusCode < 400
 }));
 
@@ -101,7 +110,7 @@ const handleSuccess = (res, data) => {
  * @param message The error message
  */
 const handleError = (res, message) => {
-    console.log("[ERROR] " + message);
+    console.error("[ERROR] " + message);
     res.status(500).send({
         status: "ERROR",
         message: message
@@ -119,6 +128,13 @@ const handleNotFound = (res, message) => {
         status: "NOT_FOUND",
         message: message
     });
+};
+
+const orderSchema = {
+    order: joi.array().items(joi.object({
+        id: joi.number().integer().greater(0).required(),
+        amount: joi.number().integer().greater(0).required()
+    })).required()
 };
 
 /*
@@ -140,7 +156,11 @@ service.get("/orders", (req, res) => {
 /*
  * API endpoint for creating a new order.
  */
-service.post("/orders", (req, res) => {
+const postOrderValidationOptions = {
+    body: orderSchema,
+    ...globalValidationOptions
+};
+service.post("/orders", validate(postOrderValidationOptions), (req, res) => {
     fs.readFile(ordersDataFile, "utf8", function (err, data) {
         const orders = JSON.parse(data);
         if (err) {
@@ -150,7 +170,10 @@ service.post("/orders", (req, res) => {
             const user = getUsername(req);
             const maxId = orders.reduce((acc, order) => order.id > acc ? order.id : acc, 0);
             orders.push({
-                ...req.body,
+                order: req.body.order.map((orderItem) => ({
+                    id: orderItem.id,
+                    amount: orderItem.amount
+                })),
                 customer: user,
                 id: maxId + 1,
                 orderDate: moment().format(DATE_FORMAT)
@@ -193,7 +216,11 @@ service.get("/orders/:id", (req, res) => {
 /*
  * API endpoint for updating a order.
  */
-service.put("/orders/:id", (req, res) => {
+const putOrderValidationOptions = {
+    body: orderSchema,
+    ...globalValidationOptions
+};
+service.put("/orders/:id", validate(putOrderValidationOptions), (req, res) => {
     fs.readFile(ordersDataFile, "utf8", function (err, data) {
         const orders = JSON.parse(data);
         if (err) {
@@ -203,7 +230,12 @@ service.put("/orders/:id", (req, res) => {
             const match = orders.filter((order) => order.id === req.params.id && order.customer === user);
 
             if (match.length === 1) {
-                Object.assign(match[0], req.body);
+                Object.assign(match[0], {
+                    order: req.body.order.map((orderItem) => ({
+                        id: orderItem.id,
+                        amount: orderItem.amount
+                    }))
+                });
 
                 // Updating the order
                 fs.writeFile(ordersDataFile, JSON.stringify(orders), "utf8", function (err) {
@@ -246,6 +278,33 @@ service.delete("/orders/:id", (req, res) => {
             }
         }
     });
+});
+
+// Error handler for validation errors
+service.use(function (err, req, res, next) {
+    if (err instanceof validate.ValidationError) {
+        // At this point you can execute your error handling code
+        console.error("[ERROR] Invalid incoming request " + req.method + " " + req.path, err);
+
+        const errors = {};
+        err.errors.forEach((validationErr) => {
+            errors[validationErr.location] = {
+                field: validationErr.field,
+                messages: validationErr.messages,
+                types: validationErr.types
+            };
+        });
+
+        res.status(400).send({
+            status: "BAD_REQUEST",
+            message: "Invalid Request",
+            errors: errors
+        });
+        next();
+    } else {
+        // Pass error on if not a validation error
+        next(err);
+    }
 });
 
 /*

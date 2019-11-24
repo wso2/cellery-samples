@@ -36,7 +36,6 @@
             "error",
             "1tbs"
         ],
-        "callback-return": "error",
         "camelcase": "error",
         "capitalized-comments": [
             "error",
@@ -121,7 +120,6 @@
         ],
         "max-lines-per-function": "error",
         "max-nested-callbacks": "error",
-        "max-params": "error",
         "max-statements": "error",
         "max-statements-per-line": "error",
         "multiline-comment-style": [
@@ -132,7 +130,6 @@
         "new-parens": "error",
         "newline-after-var": "off",
         "newline-before-return": "off",
-        "newline-per-chained-call": "error",
         "no-alert": "error",
         "no-array-constructor": "error",
         "no-async-promise-executor": "error",
