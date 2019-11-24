@@ -19,6 +19,8 @@ const axios = require("axios");
 const morgan = require("morgan");
 const path = require("path");
 const rotatingFileStream = require("rotating-file-stream");
+const validate = require("express-validation");
+const joi = require("joi");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3004;
@@ -50,6 +52,13 @@ const forwardedHeaders = [
     PET_STORE_GUEST_HEADER
 ];
 
+const globalValidationOptions = {
+    headers: {
+        "content-type": joi.string().valid("application/json").insensitive().required(),
+        "x-pet-store-guest": joi.string()
+    }
+};
+
 service.use(express.json());
 
 // Logger for access logs
@@ -72,7 +81,7 @@ morgan.token("log-level", (req, res) => {
 
     return logLevel;
 });
-service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
+service.use(morgan("[:log-level] access :method :url :status :response-time ms - :res[content-length]", {
     skip: (req, res) => res.statusCode < 400
 }));
 
@@ -117,7 +126,7 @@ const handleSuccess = (res, data) => {
  * @param message The error message
  */
 const handleError = (res, message) => {
-    console.log("[ERROR] " + message);
+    console.error("[ERROR] " + message);
     res.status(500).send({
         status: "ERROR",
         message: message
@@ -141,6 +150,7 @@ const callAPI = (config, req) => new Promise((resolve, reject) => {
             config.headers[header] = headerValue;
         }
     });
+    config.headers["Content-Type"] = "application/json";
 
     axios(config)
         .then((response) => {
@@ -148,13 +158,13 @@ const callAPI = (config, req) => new Promise((resolve, reject) => {
             if (responseBody.status === "SUCCESS") {
                 resolve(responseBody.data);
             } else {
-                console.log("[ERROR] Failed to call API " + config.url + " using method " + config.method + " due to " +
+                console.error("[ERROR] Failed to call API " + config.url + " using method " + config.method + " due to " +
                     responseBody.message);
                 reject(new Error("Failed to fetch data"));
             }
         })
         .catch((error) => {
-            console.log("[ERROR] Failed to call API " + config.url + " using method " + config.method + " due to " +
+            console.error("[ERROR] Failed to call API " + config.url + " using method " + config.method + " due to " +
                 error);
             reject(error);
         });
@@ -249,14 +259,30 @@ service.get("/orders", (req, res) => {
         });
 });
 
+const orderSchema = {
+    order: joi.array().items(joi.object({
+        id: joi.number().integer().greater(0).required(),
+        amount: joi.number().integer().greater(0).required()
+    })).required()
+};
+
 /*
  * API endpoint for getting a list of accessories available in the catalog.
  */
-service.post("/orders", (req, res) => {
+const postOrderValidationOptions = {
+    body: orderSchema,
+    ...globalValidationOptions
+};
+service.post("/orders", validate(postOrderValidationOptions), (req, res) => {
     const config = {
         url: "/orders",
         method: "POST",
-        data: req.body
+        data: {
+            order: req.body.order.map((orderItem) => ({
+                id: orderItem.id,
+                amount: orderItem.amount
+            }))
+        }
     };
     callOrdersService(config, req)
         .then((data) => {
@@ -287,17 +313,31 @@ service.get("/profile", (req, res) => {
         });
 });
 
+const profileSchema = {
+    firstName: joi.string().required(),
+    lastName: joi.string().required(),
+    address: joi.string().required(),
+    pets: joi.array().items(joi.string().valid("Dog", "Cat", "Hamster")).min(1).required()
+};
+
 /*
  * API endpoint for creating the user profile.
  */
-service.post("/profile", (req, res) => {
+const postProfileValidationOptions = {
+    body: profileSchema,
+    ...globalValidationOptions
+};
+service.post("/profile", validate(postProfileValidationOptions), (req, res) => {
     const username = getUsername(req);
     const config = {
         url: "/customers",
         method: "POST",
         data: {
-            ...req.body,
-            username: username
+            username: username,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            address: req.body.address,
+            pets: req.body.pets
         }
     };
     callCustomersService(config, req)
@@ -307,6 +347,33 @@ service.post("/profile", (req, res) => {
         .catch((error) => {
             handleError(res, "Failed to create profile due to " + error);
         });
+});
+
+// Error handler for validation errors
+service.use(function (err, req, res, next) {
+    if (err instanceof validate.ValidationError) {
+        // At this point you can execute your error handling code
+        console.error("[ERROR] Invalid incoming request " + req.method + " " + req.path, err);
+
+        const errors = {};
+        err.errors.forEach((validationErr) => {
+            errors[validationErr.location] = {
+                field: validationErr.field,
+                messages: validationErr.messages,
+                types: validationErr.types
+            };
+        });
+
+        res.status(400).send({
+            status: "BAD_REQUEST",
+            message: "Invalid Request",
+            errors: errors
+        });
+        next();
+    } else {
+        // Pass error on if not a validation error
+        next(err);
+    }
 });
 
 /*

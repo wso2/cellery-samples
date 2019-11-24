@@ -89,7 +89,7 @@ class SignUp extends React.Component {
             });
     };
 
-    handleChange = (name) => (event) => {
+    getChangeHandler = (name) => (event) => {
         const value = event.currentTarget.value;
         this.setState((prevState) => ({
             profile: {
@@ -131,15 +131,15 @@ class SignUp extends React.Component {
                             <StepContent>
                                 <FormControl fullWidth={true}>
                                     <TextField required id={"first-name"} label={"First Name"} margin={"normal"}
-                                        value={profile.firstName} onChange={this.handleChange("firstName")}/>
+                                        value={profile.firstName} onChange={this.getChangeHandler("firstName")}/>
                                 </FormControl>
                                 <FormControl fullWidth={true}>
                                     <TextField required id={"last-name"} label={"Last Name"} margin={"normal"}
-                                        value={profile.lastName} onChange={this.handleChange("lastName")}/>
+                                        value={profile.lastName} onChange={this.getChangeHandler("lastName")}/>
                                 </FormControl>
                                 <FormControl fullWidth={true}>
                                     <TextField required multiline id={"address"} label={"Address"} margin={"normal"}
-                                        value={profile.address} onChange={this.handleChange("address")}/>
+                                        value={profile.address} onChange={this.getChangeHandler("address")}/>
                                 </FormControl>
                                 <div>
                                     <Button disabled onClick={this.handleBack}>Back</Button>

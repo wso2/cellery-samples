@@ -19,10 +19,19 @@ const fs = require("fs");
 const morgan = require("morgan");
 const path = require("path");
 const rotatingFileStream = require("rotating-file-stream");
+const validate = require("express-validation");
+const joi = require("joi");
 
 const service = express();
 const port = process.env.SERVICE_PORT || 3001;
 const catalogDataFile = "data/catalog.json";
+
+const globalValidationOptions = {
+    headers: {
+        "content-type": joi.string().valid("application/json").insensitive().required(),
+        "x-pet-store-guest": joi.string()
+    }
+};
 
 service.use(express.json());
 
@@ -46,7 +55,7 @@ morgan.token("log-level", (req, res) => {
 
     return logLevel;
 });
-service.use(morgan("[:log-level] :method :url :status :response-time ms - :res[content-length]", {
+service.use(morgan("[:log-level] access :method :url :status :response-time ms - :res[content-length]", {
     skip: (req, res) => res.statusCode < 400
 }));
 
@@ -73,7 +82,7 @@ const handleSuccess = (res, data) => {
  * @param message The error message
  */
 const handleError = (res, message) => {
-    console.log("[ERROR] " + message);
+    console.error("[ERROR] " + message);
     res.status(500).send({
         status: "ERROR",
         message: message
@@ -93,6 +102,13 @@ const handleNotFound = (res, message) => {
     });
 };
 
+const accessorySchema = {
+    name: joi.string().required(),
+    description: joi.string().required(),
+    unitPrice: joi.number().greater(0).precision(2).required(),
+    inStock: joi.number().integer().min(0).required()
+};
+
 /*
  * API endpoint for getting a list of accessories available in the catalog.
  */
@@ -109,7 +125,11 @@ service.get("/accessories", (req, res) => {
 /*
  * API endpoint for creating a new accessory in the catalog.
  */
-service.post("/accessories", (req, res) => {
+const postAccessoryValidationOptions = {
+    body: accessorySchema,
+    ...globalValidationOptions
+};
+service.post("/accessories", validate(postAccessoryValidationOptions), (req, res) => {
     fs.readFile(catalogDataFile, "utf8", function (err, data) {
         const accessories = JSON.parse(data);
         if (err) {
@@ -118,8 +138,11 @@ service.post("/accessories", (req, res) => {
             // Creating the new accessory data.
             const maxId = accessories.reduce((acc, accessory) => accessory.id > acc ? accessory.id : acc, 0);
             accessories.push({
-                ...req.body,
-                id: maxId + 1
+                id: maxId + 1,
+                name: req.body.name,
+                description: req.body.description,
+                unitPrice: req.body.unitPrice,
+                inStock: req.body.inStock
             });
 
             // Creating the new accessory
@@ -158,7 +181,11 @@ service.get("/accessories/:id", (req, res) => {
 /*
  * API endpoint for updating an accessory in the catalog.
  */
-service.put("/accessories/:id", (req, res) => {
+const putAccessoryValidationOptions = {
+    body: accessorySchema,
+    ...globalValidationOptions
+};
+service.put("/accessories/:id", validate(putAccessoryValidationOptions), (req, res) => {
     fs.readFile(catalogDataFile, "utf8", function (err, data) {
         const accessories = JSON.parse(data);
         if (err) {
@@ -167,7 +194,12 @@ service.put("/accessories/:id", (req, res) => {
             const match = accessories.filter((accessory) => accessory.id === req.params.id);
 
             if (match.length === 1) {
-                Object.assign(match[0], req.body);
+                Object.assign(match[0], {
+                    name: req.body.name,
+                    description: req.body.description,
+                    unitPrice: req.body.unitPrice,
+                    inStock: req.body.inStock
+                });
 
                 // Updating the accessory
                 fs.writeFile(catalogDataFile, JSON.stringify(accessories), "utf8", function (err) {
@@ -209,6 +241,33 @@ service.delete("/accessories/:id", (req, res) => {
             }
         }
     });
+});
+
+// Error handler for validation errors
+service.use(function (err, req, res, next) {
+    if (err instanceof validate.ValidationError) {
+        // At this point you can execute your error handling code
+        console.error("[ERROR] Invalid incoming request " + req.method + " " + req.path, err);
+
+        const errors = {};
+        err.errors.forEach((validationErr) => {
+            errors[validationErr.location] = {
+                field: validationErr.field,
+                messages: validationErr.messages,
+                types: validationErr.types
+            };
+        });
+
+        res.status(400).send({
+            status: "BAD_REQUEST",
+            message: "Invalid Request",
+            errors: errors
+        });
+        next();
+    } else {
+        // Pass error on if not a validation error
+        next(err);
+    }
 });
 
 /*
