@@ -11,7 +11,7 @@ Now let's look at the steps required to try this hello-world cell.
 
 ### 1. Checkout the Sample
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository
 2. Navigate to the hello-world Sample.
    ```
    cd <SAMPLES_ROOT>/composite/hello-world
@@ -137,7 +137,7 @@ as shown below to change the hello-world components's default behaviour.
     ```
     ![hello world composite view](../../docs/images/composites/hello-world/hello-world-view.png)
     
-5. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/hello-world/hello-world-ingress.yaml) 
+5. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/master/composites/hello-world/hello-world-ingress.yaml) 
    ingress is created to direct the traffic to kubernetes service `hello--hello-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `hello`, 
    the service name will be `hello--hello-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-hello`), you will have to modify the ingress service name, 
    and create it accordingly (e.g. `my-hello--hello-service`).

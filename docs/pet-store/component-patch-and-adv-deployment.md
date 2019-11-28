@@ -37,7 +37,7 @@ pet-fe--sts-deployment-59dbb995c7-g7tc7          3/3     Running           0    
 
 4) Now you can check the pet-store application is up and running by following the instructions [here](../../cells/pet-store/README.md#view-application).
 
-Refer to [CLI docs](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-patch) for a complete guide on performing updates on cell instances.
+Refer to [CLI docs](https://github.com/wso2/cellery/blob/master/docs/cli-reference.md#cellery-patch) for a complete guide on performing updates on cell instances.
 
 ## Blue-Green and Canary deployment
 Blue-Green and Canary are advanced deployment patterns which can used to perform updates to running cell instances. 
@@ -130,7 +130,7 @@ $ kubectl logs pet-be-as--gateway-deployment-7f787575c6-pwvw7 cell-gateway
 cellery terminate pet-be
 ```
 
-Refer to [CLI docs](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-route-traffic) for a complete guide on route-traffic for cell instances.
+Refer to [CLI docs](https://github.com/wso2/cellery/blob/master/docs/cli-reference.md#cellery-route-traffic) for a complete guide on route-traffic for cell instances.
 
 
 # What's Next?

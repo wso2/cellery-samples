@@ -25,7 +25,7 @@ cluster name: cellery-admin@cellery
   Horizontal pod auto scalar   Enabled
 ```
 
-2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-scaling.md#enable-hpa).
+2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2/cellery/blob/master/docs/cell-scaling.md#enable-hpa).
   
 ### Run auto scaling enabled pet-be
 1) Run `pet-be` cell instance with cell image `wso2cellery/pet-be-auto-scale-cell:latest`. You can optionally build the [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) as mentioned [here](build-and-run.md).
@@ -43,7 +43,7 @@ pet-be--controller-autoscalepolicy-hpa   Deployment/pet-be--controller-deploymen
 ```
 3) Execute the `export-policy` command and view the current autoscaling configuration. This will create a file where you execute the command. 
 You can also optionally pass the `-f` flag to point to the file location to be used to store the policy as explained 
-[here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-export-policy). 
+[here](https://github.com/wso2/cellery/blob/master/docs/cli-reference.md#cellery-export-policy). 
 ```
  $ cellery export-policy autoscale cell pet-be 
 ```
@@ -143,7 +143,7 @@ cluster name: cellery-admin@cellery
   Horizontal pod auto scalar   Disabled
 ```
 
-2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cell-scaling.md#enable-zero-scaling).
+2) If that is not enabled, you have to enable as explained [here](https://github.com/wso2/cellery/blob/master/docs/cell-scaling.md#enable-zero-scaling).
 
 ### Run zero scaling enabled pet-be
 1) Run `pet-be` cell instance with cell image `wso2cellery/pet-be-zero-scale-cell:latest`. You can optionally build the [pet-be-zero-scale.bal](../../cells/pet-store/advanced/pet-be-zero-scale/pet-be-zero-scale.bal) 

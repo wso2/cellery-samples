@@ -178,12 +178,12 @@ Now [create the ingress](#create-ingress) to access the pet-store application.
 
 ## Create Ingress
 1. You need to create the ingress to allow the external traffic to the pet-store application by below command. 
-Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml) 
+Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/master/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml) 
 ingress is created to direct the traffic to kubernetes service `pet-store--portal-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `pet-store`, 
 the service name will be `pet-store--portal-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-pet-store`), you will have to modify the ingress service name, 
 and create it accordingly (e.g. `my-pet-store--portal-service`).
 ```
- $ kubectl apply -f https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml
+ $ kubectl apply -f https://raw.githubusercontent.com/wso2/cellery-samples/master/composites/pet-store/all-in-one-composite/pet-store-ingress.yaml
 ```
 2. Check the ingress rules are correctly applied by getting the list of ingresses as shown below.
 ```
@@ -207,7 +207,7 @@ Now you are all set, you can try to [access the pet-store application](#access-t
 ## Build and Run the Pet-store Composite
 You can perform a [Quick Run](#quick-run) or build and run the pet-store composite in your own. Please perform below operations to be build your composite.
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository.
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository.
 2. Navigate to the pet-store composite sample.
    ```
    cd <SAMPLES_ROOT>/composites/pet-store/all-in-one-composite
@@ -296,7 +296,7 @@ cluster name: docker-desktop
   Horizontal pod auto scalar   Disabled
 ``` 
 
-2. If observability is already disabled, then you require to enable the observability as shown below. Please find more information about modify command [here](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/modify-setup.md).
+2. If observability is already disabled, then you require to enable the observability as shown below. Please find more information about modify command [here](https://github.com/wso2/cellery/blob/master/docs/setup/modify-setup.md).
 
 ```
 $ cellery setup modify --observability=enable

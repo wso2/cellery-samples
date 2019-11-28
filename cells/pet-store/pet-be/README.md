@@ -111,7 +111,7 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances, b
 - The `build` method will be executed when `cellery build` is performed, and user can pass the `cellery:ImageName iName` as a parameter during cellery build. 
 And therefore the controller component's HttpAPIIngress's API definition is updated by reading the swagger file in the `build` method.
 - There are four components defined to deploy four micro-services (catalog, orders, customers, and controller), and all four components have HTTP ingress to receive the external requests. 
-- Only `controller` component has defined `expose` parameter to `local` in the [HttpAPIIngress](https://github.com/wso2-cellery/spec#1-http-ingresses), 
+- Only `controller` component has defined `expose` parameter to `local` in the [HttpAPIIngress](https://github.com/wso2/cellery-spec#1-http-ingresses), 
 and therefore only `controller` component is exposed as cell API, and all other three components are only accessible within the cell and not from other cells.
 - The API definition of the controller micro service is defined in the swagger file [pet-store.swagger.json](../../../src/pet-store/pet-be/controller/resources/pet-store.swagger.json). 
 - The `controller` component cell has defined `envVars` to get the runtime value of host and ports for other components catalog, customer, and orders. 

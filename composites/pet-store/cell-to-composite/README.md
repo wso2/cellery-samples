@@ -113,7 +113,7 @@ Now you can [access the pet-store application](#access-the-pet-store-web-applica
 ## Build and Run the Composite
 You can perform a [Quick Run](#quick-run) or build and run the pet-store composite in your own. Please perform below operations to be build your composite.
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository.
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository.
 2. Navigate to the pet-store composite sample.
    ```
    cd <SAMPLES_ROOT>/composites/pet-store/cell-to-composite

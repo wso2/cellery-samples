@@ -1,7 +1,7 @@
 # Observability with Pet-store Application
 
 This readme provides the overview of the features that are available with observability when using pet-store application. 
-Please follow the instructions below to work with [Cellery Dashboard](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md#use-cellery-dashboard).
+Please follow the instructions below to work with [Cellery Dashboard](https://github.com/wso2/cellery/blob/master/docs/cellery-observability.md#use-cellery-dashboard).
 
 If you have installed complete setup or basic setup with observability enabled, you can follow below steps to view the cellery observability.
 

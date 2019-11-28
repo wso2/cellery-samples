@@ -4,7 +4,7 @@ data based on the business logic and logged in user.
 
 ### Development of portal app
 - The front end logic is written in [React](https://reactjs.org/), and it make calls to pet-be.
-- The swagger file of the pet-fe can be fetched by executing command [`cellery extract-resources`](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#extract-resources) 
+- The swagger file of the pet-fe can be fetched by executing command [`cellery extract-resources`](https://github.com/wso2/cellery/blob/master/docs/cli-reference.md#extract-resources) 
 which will extract the swagger file in the same location where you run the command.
   ```
   cellery extract-resources wso2cellery/cells-pet-fe:latest
