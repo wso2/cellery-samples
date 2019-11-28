@@ -18,7 +18,7 @@ You do not need to build the components if you just wish to deploy the cells. Th
 
 If you wish to change the Hello World API Sample and play around with Cellery, you can follow this section to rebuild the Components.
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository to your `GO_PATH/src/github.com/wso2cellery` directory. 
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository to your `GO_PATH/src/github.com/wso2cellery` directory. 
 2. Set the following environment variables for customizing the build.
 
    | Environment Variable  |                                                                       |

@@ -26,7 +26,7 @@ You do not need to build the Components if you just wish to deploy the Cells. Th
 
 If you wish to change the Pet Store Sample and play around with Cellery, you can follow this section to rebuild the Components.
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository
 2. Set the following environment variables for customizing the build.
 
    | Environment Variable  |                                                                       |

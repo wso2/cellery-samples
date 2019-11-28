@@ -11,7 +11,7 @@ Now let's look at the steps required to try this todo-cell.
 
 ### 1. Checkout the Sample
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository
 2. Navigate to the todo-service Sample.
    ```
    cd <SAMPLES_ROOT>/cells/todo-service/advanced

@@ -11,7 +11,7 @@ Hello-world API sample is a simple rest API that returns the text 'Hello World!'
 
 ### 1. Checkout the Sample
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository
 2. Navigate to the hello-world-api Sample.
    ```
    cd <SAMPLES_ROOT>/cells/hello-world-api
@@ -136,8 +136,8 @@ public function run(cellery:ImageName iName, map<cellery:ImageName> instances, b
 
 Since the hello-world-api is exposed via the global gateway, the request can go through the global API gateway to the hello world service. 
 And, by default all the APIs are secured, therefore we need to obtain a token to invoke the API. The below provided steps explains the process to obtain the token and invoke the API.
-Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/local-setup.md), 
-[gcp](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and [existing setup](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries) 
+Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2/cellery/blob/v0.3.0/docs/setup/local-setup.md), 
+[gcp](https://github.com/wso2/cellery/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and [existing setup](https://github.com/wso2/cellery/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries) 
 before proceeding to the following steps.
        
 1. Login to the [API Store](https://wso2-apim/store/) as admin user (username: admin, password: admin).

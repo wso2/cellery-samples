@@ -12,7 +12,7 @@ Now let's look at the steps required to try this todo-composite.
 
 ### 1. Checkout the Sample
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository
 2. Navigate to the todo-service Sample.
    ```
    cd <SAMPLES_ROOT>/composites/todo-service
@@ -242,7 +242,7 @@ hence it simply opens up the service to external access.
 
 Execute below steps to create ingress and invoke the application.
 
-1. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/composites/todo-service/todo-service-ingress.yaml) 
+1. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/master/composites/todo-service/todo-service-ingress.yaml) 
 ingress is created to direct the traffic to kubernetes service `todos--todos-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `todos`, 
 the service name will be `todos--todos-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-todos`), you will have to modify the ingress service name, 
 and create it accordingly (e.g. `my-todos--todos-service`).

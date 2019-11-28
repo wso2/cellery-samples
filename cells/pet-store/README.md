@@ -39,7 +39,7 @@ This Pet store sample includes,
 
 ## Quick run 
 1. Pet store application can be started by executing the single command as shown below. For more details about flags 
-refer [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.md#cellery-run).
+refer [here](https://github.com/wso2/cellery/blob/master/docs/cli-reference.md#cellery-run).
 ```
  $ cellery run wso2cellery/pet-fe-cell:latest -n pet-fe -l petStoreBackend:pet-be -d
 ```
@@ -55,8 +55,8 @@ refer [here](https://github.com/wso2-cellery/sdk/blob/master/docs/cli-reference.
 3. Now view the application by following the [instructions](#view-application).
 
 ## View application 
-Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/local-setup.md), 
-[gcp](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/gcp-setup.md#configure-host-entries) and [existing setup](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/existing-cluster.md#configure-host-entries) before
+Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2/cellery/blob/master/docs/setup/local-setup.md), 
+[gcp](https://github.com/wso2/cellery/blob/master/docs/setup/gcp-setup.md#configure-host-entries) and [existing setup](https://github.com/wso2/cellery/blob/master/docs/setup/existing-cluster.md#configure-host-entries) before
 proceeding to following steps.
 
 1. Access the petstore add via accessing [http://pet-store.com/](http://pet-store.com/). You will be landed in the home page of cellery. 
@@ -96,7 +96,7 @@ orders endpoint of the Petstore backend by following the instructions given [her
 
 ## [Observability](../../docs/pet-store/observability.md)
 You can observe the pet-store application in runtime, and view cell overeview, request traces, metrics, dependency diagram and much more. 
-Cellery observability mainly supported by [Cellery Dashboard](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md#use-cellery-dashboard). 
+Cellery observability mainly supported by [Cellery Dashboard](https://github.com/wso2/cellery/blob/master/docs/cellery-observability.md#use-cellery-dashboard). 
 Please follow the instructions provided [here](../../docs/pet-store/observability.md) to use observability with pet-store. 
 
 ## [Update cell with new version](../../docs/pet-store/component-patch-and-adv-deployment.md)

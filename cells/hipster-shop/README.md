@@ -64,8 +64,8 @@ Now [view the application](#viewing-the-application).
 
 ## Build and Deploy the Hipster Shop Cells
 ### 1. Clone sample
-Clone the wso2-cellery/samples repository and 
-navigate to the samples/cells/hipster-shop/directory.
+Clone the wso2/cellery-samples repository and 
+navigate to the cellery-samples/cells/hipster-shop/directory.
 ```
 cd samples/cells/hipster-shop
 ```
@@ -401,9 +401,9 @@ cellery view wso2cellery/front-end-cell:latest-dev
 
 
 ### 8. View the application
-You would have already added the `/etc/host` entries during the cellery installation as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/local-setup.md#configure-host-entries), 
-[GCP](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/gcp-setup.md#configure-host-entries) and
-[existing kubernetes cluster](https://github.com/wso2-cellery/sdk/blob/master/docs/setup/existing-cluster.md#configure-host-entries). 
+You would have already added the `/etc/host` entries during the cellery installation as mentioned in [local](https://github.com/wso2/cellery/blob/master/docs/setup/local-setup.md#configure-host-entries), 
+[GCP](https://github.com/wso2/cellery/blob/master/docs/setup/gcp-setup.md#configure-host-entries) and
+[existing kubernetes cluster](https://github.com/wso2/cellery/blob/master/docs/setup/existing-cluster.md#configure-host-entries). 
 You will also need to add the entry `my-hipstershop.com` to the `/etc/host` file as shown below.
 
 ```
@@ -419,7 +419,7 @@ Access url [http://my-hipstershop.com/](http://my-hipstershop.com/) from a brows
 ## Observability
 The hipster shop cells and components can be observed in runtime, and it provides overview about the cells, components, metrics, and distributed tracing. Below are 
 some of the screenshots of observability provided by [http://cellery-dashboard](http://cellery-dashboard). You can find more information about the observability 
-[here](https://github.com/wso2-cellery/sdk/blob/master/docs/cellery-observability.md). 
+[here](https://github.com/wso2/cellery/blob/master/docs/cellery-observability.md). 
 
 ---
 Cells overview.

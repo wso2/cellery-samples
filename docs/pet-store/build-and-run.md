@@ -9,7 +9,7 @@ This readme explains the steps to build and run the pet-store cells by your own.
 
 ### 1. Checkout the Sample
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository
 2. Navigate to the pet-store Sample.
    ```
    cd <SAMPLES_ROOT>/cells/pet-store

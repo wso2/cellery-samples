@@ -11,7 +11,7 @@ Now let's look at the steps required to try this todo-cell.
 
 ### 1. Checkout the Sample
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository
 2. Navigate to the todo-service Sample.
    ```
    cd <SAMPLES_ROOT>/cells/todo-service
@@ -192,7 +192,7 @@ Follow below instructions to build, run and push the `todo` cell.
     ```
     2. Create the volume by deploying pv-docker-desktop.yaml
     ```bash
-       $ kubectl create -f https://raw.githubusercontent.com/wso2-cellery/samples/master/cells/todo-service/pv-docker-desktop.yaml
+       $ kubectl create -f https://raw.githubusercontent.com/wso2/cellery-samples/master/cells/todo-service/pv-docker-desktop.yaml
          
     ```
     
@@ -208,7 +208,7 @@ Follow below instructions to build, run and push the `todo` cell.
     ```
     3. Create the volume by deploying pv-docker-desktop.yaml
     ```bash
-       $ kubectl create -f https://raw.githubusercontent.com/wso2-cellery/samples/master/cells/todo-service/pv-local.yaml
+       $ kubectl create -f https://raw.githubusercontent.com/wso2/cellery-samples/master/cells/todo-service/pv-local.yaml
     ```
    
    #### GCP
@@ -230,7 +230,7 @@ Follow below instructions to build, run and push the `todo` cell.
 
    Create the persistence volume of your choice based on your setup. 
     
-    To create a local persistence volume, you can use [this](https://raw.githubusercontent.com/wso2-cellery/samples/master/cells/todo-service/pv-local.yaml) file for creating the volume with the following 
+    To create a local persistence volume, you can use [this](https://raw.githubusercontent.com/wso2/cellery-samples/master/cells/todo-service/pv-local.yaml) file for creating the volume with the following 
     change. 
    
     1. Download the file and change the value of _kubernetes.io/hostname_ in the `nodeaffinity` block. The node 

@@ -11,7 +11,7 @@ Now let's look at the steps required to try this hello-world cell.
 
 ### 1. Checkout the Sample
 
-1. Clone the [wso2-cellery/samples](https://github.com/wso2-cellery/samples) repository
+1. Clone the [wso2/cellery-samples](https://github.com/wso2/cellery-samples) repository
 2. Navigate to the hello-world Sample.
    ```
    cd <SAMPLES_ROOT>/cells/hello-world
@@ -149,8 +149,8 @@ as shown below to change the hello-world cell's default behaviour.
     ![hello world cell view](../../docs/images/hello-world/hello-web-cell.png)
     
 5. Access url [http://my-hello-world.com/](http://my-hello-world.com/) from browser. You will see updated web page with greeting param you passed for HELLO_NAME in step-2.
-Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/local-setup.md), 
-[gcp](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and [existing cluster](https://github.com/wso2-cellery/sdk/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries).
+Make sure you have configured the host entries correctly as mentioned in [local](https://github.com/wso2/cellery/blob/v0.3.0/docs/setup/local-setup.md), 
+[gcp](https://github.com/wso2/cellery/blob/v0.3.0/docs/setup/gcp-setup.md#configure-host-entries) and [existing cluster](https://github.com/wso2/cellery/blob/v0.3.0/docs/setup/existing-cluster.md#configure-host-entries).
 
 6. As a final step, let's push your first cell project to your [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
