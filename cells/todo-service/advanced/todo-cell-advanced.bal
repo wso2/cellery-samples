@@ -150,7 +150,7 @@ returns (cellery:InstanceState[] | error?) {
         }
     };
     error? e = cellery:createSecret(mysqlCreds);
-    cellery:CellImage todoCell = check cellery:constructCellImage( iName);
+    cellery:CellImage|cellery:Composite todoCell = cellery:constructImage(iName);
     return <@untainted> cellery:createInstance(todoCell, iName, instances, startDependencies, shareDependencies);
 }
 

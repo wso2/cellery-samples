@@ -41,7 +41,7 @@ public function build(cellery:ImageName iName) returns error? {
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage loadGenImage = check cellery:constructCellImage( iName);
+    cellery:CellImage|cellery:Composite loadGenImage = cellery:constructImage(iName);
     cellery:Component loadGenComponent = <cellery:Component> loadGenImage.components["loadGen"];
 
     string duration = config:getAsString("DURATION");
