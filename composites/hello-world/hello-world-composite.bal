@@ -45,7 +45,7 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies,
                     boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:Composite helloComposite = check cellery:constructImage( iName);
+    cellery:CellImage|cellery:Composite helloComposite = cellery:constructImage(iName);
     string helloName = config:getAsString("HELLO_NAME");
     if (helloName !== "") {
         helloComposite.components["helloComp"]["envVars"]["HELLO_NAME"].value = helloName;

@@ -72,7 +72,7 @@ public function build(cellery:ImageName iName) returns error? {
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage petStoreFrontendCell = check cellery:constructCellImage( iName);
+    cellery:CellImage|cellery:Composite petStoreFrontendCell = cellery:constructImage(iName);
     cellery:Component portalComponent = <cellery:Component> petStoreFrontendCell.components["portal"];
     string vhostName = config:getAsString("VHOST_NAME");
     if (vhostName !== "") {

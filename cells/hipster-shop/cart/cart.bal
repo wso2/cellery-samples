@@ -61,6 +61,6 @@ public function build(cellery:ImageName iName) returns error? {
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage cartCell = check cellery:constructCellImage( iName);
+    cellery:CellImage|cellery:Composite cartCell = cellery:constructImage( iName);
     return <@untainted> cellery:createInstance(cartCell, iName, instances, startDependencies, shareDependencies);
 }
