@@ -22,7 +22,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the orders related functionality.
     cellery:Component ordersComponent = {
         name: "orders",
-         src: {
+        src: {
             image: "wso2cellery/samples-pet-store-orders:latest-dev"
         },
         ingresses: {
@@ -36,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the customers related functionality.
     cellery:Component customersComponent = {
         name: "customers",
-         src: {
+        src: {
             image: "wso2cellery/samples-pet-store-customers:latest-dev"
         },
         ingresses: {
@@ -50,7 +50,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This component deals with all the catalog related functionality.
     cellery:Component catalogComponent = {
         name: "catalog",
-         src: {
+        src: {
             image: "wso2cellery/samples-pet-store-catalog:latest-dev"
         },
         ingresses: {
@@ -65,7 +65,7 @@ public function build(cellery:ImageName iName) returns error? {
     // This exposes useful functionality from the Cell by using the other three components.
     cellery:Component controllerComponent = {
         name: "controller",
-         src: {
+        src: {
             image: "wso2cellery/samples-pet-store-controller:latest-dev"
         },
         ingresses: {
@@ -74,7 +74,7 @@ public function build(cellery:ImageName iName) returns error? {
                 context: "/controller",
                 expose: "local",
                 definition: <cellery:ApiDefinition>cellery:readSwaggerFile(
-                                                       "./resources/pet-store.swagger.json")
+                                                       "./src/pet_be/resources/pet-store.swagger.json")
             }
         },
         envVars: {
@@ -87,21 +87,6 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
             components: [catalogComponent, ordersComponent, customersComponent]
-        },
-        resources: {
-            requests: {
-                cpu: "125m"
-            },
-            limits: {
-                cpu: "125m"
-            }
-        },
-        scalingPolicy: <cellery:AutoScalingPolicy> {
-            minReplicas: 1,
-            maxReplicas: 3,
-            metrics: {
-               cpu: <cellery:Percentage>{ threshold : 40 }
-            }
         }
     };
 
@@ -114,10 +99,10 @@ public function build(cellery:ImageName iName) returns error? {
             controller: controllerComponent
         }
     };
-    return <@untainted> cellery:createImage(petStoreBackendCell,  iName);
+    return <@untainted> cellery:createImage(petStoreBackendCell, iName);
 }
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies) returns (cellery:InstanceState[]|error?) {
-    cellery:CellImage|cellery:Composite petStoreBackendCell = cellery:constructImage(iName);
-    return <@untainted> cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage|cellery:Composite petStoreBackendCell = cellery:constructImage(<@untainted> iName);
+    return cellery:createInstance(petStoreBackendCell, iName, instances, startDependencies, shareDependencies);
 }

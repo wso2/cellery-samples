@@ -14,12 +14,13 @@
 // Cell file that wraps a todo micro service and mysql database.
 import celleryio/cellery;
 import ballerina/io;
-import ballerina/config;
 
 public function build(cellery:ImageName iName) returns error? {
     int mysqlPort = 3306;
     string mysqlPassword = "root";
-    string mysqlScript = readFile("./mysql/init.sql");
+
+    string mysqlScript = readFile("./src/todo/resources/init.sql");
+
     //Mysql database service which stores the todos that were added via the todos service
     cellery:Component mysqlComponent = {
         name: "mysql-db",
@@ -41,11 +42,11 @@ public function build(cellery:ImageName iName) returns error? {
                 path: "/docker-entrypoint-initdb.d",
                 readOnly: false,
                 volume:<cellery:NonSharedConfiguration>{
-                     name:"init-sql",
-                     data:{
-                        "init.sql":mysqlScript
-                     }
-                }
+                                 name:"init-sql",
+                                 data:{
+                                    "init.sql":mysqlScript
+                                 }
+                             }
             },
             volumeClaim: {
                 path: "/var/lib/mysql",
@@ -115,8 +116,12 @@ public function build(cellery:ImageName iName) returns error? {
             secret: {
                 path: "/credentials",
                 readOnly: false,
-                volume:<cellery:SharedSecret>{
-                    name:"db-credentials"
+                volume:<cellery:NonSharedSecret>{
+                    name:"db-credentials",
+                    data:{
+                        username:"root",
+                        password:"root"
+                    }
                 }
             }
         },
@@ -137,21 +142,8 @@ public function build(cellery:ImageName iName) returns error? {
 
 public function run(cellery:ImageName iName, map<cellery:ImageName> instances, boolean startDependencies, boolean shareDependencies)
 returns (cellery:InstanceState[] | error?) {
-    string db_user = config:getAsString("MYSQL_USERNAME");
-    string db_pwd = config:getAsString("MYSQL_PASSWORD");
-    if (db_user == "" || db_pwd == "") {
-            panic error("MYSQL_USERNAME or MYSQL_PASSWORD not found in environment");
-    }
-    cellery:NonSharedSecret mysqlCreds = {
-        name: "db-credentials",
-        data: {
-            username: db_user,
-            password: db_pwd
-        }
-    };
-    error? e = cellery:createSecret(mysqlCreds);
-    cellery:CellImage|cellery:Composite todoCell = cellery:constructImage(iName);
-    return <@untainted> cellery:createInstance(todoCell, iName, instances, startDependencies, shareDependencies);
+    cellery:CellImage|cellery:Composite cell = cellery:constructImage(iName);
+    return <@untainted> cellery:createInstance(cell, iName, instances, startDependencies, shareDependencies);
 }
 
 
