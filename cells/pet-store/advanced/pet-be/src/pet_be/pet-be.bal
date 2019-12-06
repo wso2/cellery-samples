@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component ordersComponent = {
         name: "orders",
          src: {
-            image: "wso2cellery/samples-pet-store-orders:latest-dev"
+            image: "wso2cellery/samples-pet-store-orders:latest-devv2"
         },
         ingresses: {
             orders: <cellery:HttpApiIngress>{
@@ -37,7 +37,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component customersComponent = {
         name: "customers",
          src: {
-            image: "wso2cellery/samples-pet-store-customers:latest-dev"
+            image: "wso2cellery/samples-pet-store-customers:latest-devv2"
         },
         ingresses: {
             customers: <cellery:HttpApiIngress>{
@@ -51,16 +51,12 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component catalogComponent = {
         name: "catalog",
          src: {
-            image: "wso2cellery/samples-pet-store-catalog:latest-dev"
+            image: "wso2cellery/samples-pet-store-catalog:latest-devv2"
         },
         ingresses: {
             catalog: <cellery:HttpApiIngress>{
                 port: 80
             }
-        },
-        scalingPolicy: <cellery:ZeroScalingPolicy> {
-           maxReplicas: 3,
-           concurrencyTarget: 5
         }
     };
 
@@ -70,7 +66,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component controllerComponent = {
         name: "controller",
          src: {
-            image: "wso2cellery/samples-pet-store-controller:latest-dev"
+            image: "wso2cellery/samples-pet-store-controller:latest-devv2"
         },
         ingresses: {
             ingress: <cellery:HttpApiIngress>{
@@ -78,7 +74,7 @@ public function build(cellery:ImageName iName) returns error? {
                 context: "/controller",
                 expose: "local",
                 definition: <cellery:ApiDefinition>cellery:readSwaggerFile(
-                                                       "./resources/pet-store.swagger.json")
+                                                       "./src/pet_be/resources/pet-store.swagger.json")
             }
         },
         envVars: {
@@ -91,10 +87,6 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
              components: [catalogComponent, ordersComponent, customersComponent]
-        },
-        scalingPolicy: <cellery:ZeroScalingPolicy> {
-             maxReplicas: 3,
-             concurrencyTarget: 10
         }
     };
 
