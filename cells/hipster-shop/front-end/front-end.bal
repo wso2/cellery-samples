@@ -58,19 +58,19 @@ public function build(cellery:ImageName iName) returns error? {
     };
 
     cellery:Reference productReference = cellery:getReference(frontEndComponent, "productsCellDep");
-    frontEndComponent["envVars"]["PRODUCT_CATALOG_SERVICE_ADDR"].value = <string>productReference["gateway_host"] + ":" + <string>productReference["products_grpc_port"];
-    frontEndComponent["envVars"]["RECOMMENDATION_SERVICE_ADDR"].value = <string>productReference["gateway_host"] + ":" + <string>productReference["recommendations_grpc_port"];
+    frontEndComponent["envVars"]["PRODUCT_CATALOG_SERVICE_ADDR"].value = <string>productReference["gateway_host"] + ":" + <string>productReference.get("products_grpcIngress_grpc_port");
+    frontEndComponent["envVars"]["RECOMMENDATION_SERVICE_ADDR"].value = <string>productReference["gateway_host"] + ":" + <string>productReference.get("recommendations_grpcIngress_grpc_port");
 
     cellery:Reference checkoutReference = cellery:getReference(frontEndComponent, "checkoutCellDep");
-    frontEndComponent["envVars"]["CURRENCY_SERVICE_ADDR"].value = <string>checkoutReference["gateway_host"] + ":" + <string>checkoutReference["currency_grpc_port"];
-    frontEndComponent["envVars"]["SHIPPING_SERVICE_ADDR"].value = <string>checkoutReference["gateway_host"] + ":" + <string>checkoutReference["shipping_grpc_port"];
-    frontEndComponent["envVars"]["CHECKOUT_SERVICE_ADDR"].value = <string>checkoutReference["gateway_host"] + ":" + <string>checkoutReference["checkout_grpc_port"];
+    frontEndComponent["envVars"]["CURRENCY_SERVICE_ADDR"].value = <string>checkoutReference["gateway_host"] + ":" + <string>checkoutReference.get("currency_grpcIngress_grpc_port");
+    frontEndComponent["envVars"]["SHIPPING_SERVICE_ADDR"].value = <string>checkoutReference["gateway_host"] + ":" + <string>checkoutReference.get("shipping_grpcIngress_grpc_port");
+    frontEndComponent["envVars"]["CHECKOUT_SERVICE_ADDR"].value = <string>checkoutReference["gateway_host"] + ":" + <string>checkoutReference.get("checkout_grpcIngress_grpc_port");
 
     cellery:Reference cartReference = cellery:getReference(frontEndComponent, "cartCellDep");
-    frontEndComponent["envVars"]["CART_SERVICE_ADDR"].value = <string>cartReference["gateway_host"] + ":" +<string>cartReference["cart_grpc_port"];
+    frontEndComponent["envVars"]["CART_SERVICE_ADDR"].value = <string>cartReference["gateway_host"] + ":" +<string>cartReference.get("cart_grpcIngress_grpc_port");
 
     cellery:Reference adsReference = cellery:getReference(frontEndComponent, "adsCellDep");
-    frontEndComponent["envVars"]["AD_SERVICE_ADDR"].value = <string>adsReference["gateway_host"] + ":" +<string>adsReference["ads_grpc_port"];
+    frontEndComponent["envVars"]["AD_SERVICE_ADDR"].value = <string>adsReference["gateway_host"] + ":" +<string>adsReference.get("ads_grpcIngress_grpc_port");
 
     // Cell Initialization
     cellery:CellImage frontEndCell = {

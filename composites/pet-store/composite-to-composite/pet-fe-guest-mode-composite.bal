@@ -46,7 +46,7 @@ public function build(cellery:ImageName iName) returns error? {
     // Assign the URL of the backend cell
    cellery:Reference petStoreBackend = cellery:getReference(portalComponent, "petStoreBackend");
    portalComponent["envVars"]["PET_STORE_CELL_URL"].value =
-        "http://" +<string>petStoreBackend["controller_host"] + ":" + <string>petStoreBackend["controller_port"];
+        "http://" +<string>petStoreBackend["controller_host"] + ":" + <string>petStoreBackend.get("controller_ingress_port");
 
 
     // Composite Initialization

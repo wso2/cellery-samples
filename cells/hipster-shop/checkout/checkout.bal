@@ -139,10 +139,10 @@ public function build(cellery:ImageName iName) returns error? {
     };
 
     cellery:Reference productReference = cellery:getReference(checkoutServiceComponent, "productsCellDep");
-    checkoutServiceComponent["envVars"]["PRODUCT_CATALOG_SERVICE_ADDR"].value = <string>productReference["gateway_host"] + ":" +<string>productReference["products_grpc_port"];
+    checkoutServiceComponent["envVars"]["PRODUCT_CATALOG_SERVICE_ADDR"].value = <string>productReference["gateway_host"] + ":" +<string>productReference.get("products_grpcIngress_grpc_port");
 
     cellery:Reference cartReference = cellery:getReference(checkoutServiceComponent, "cartCellDep");
-    checkoutServiceComponent["envVars"]["CART_SERVICE_ADDR"].value = <string>cartReference["gateway_host"] + ":" +<string>cartReference["cart_grpc_port"];
+    checkoutServiceComponent["envVars"]["CART_SERVICE_ADDR"].value = <string>cartReference["gateway_host"] + ":" +<string>cartReference.get("cart_grpcIngress_grpc_port");
 
     // Cell Initialization
     cellery:CellImage checkoutCell = {
