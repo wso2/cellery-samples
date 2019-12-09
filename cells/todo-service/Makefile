@@ -46,3 +46,9 @@ cellery-build.$(ADVANCED_CELL):
 .PHONY: cellery-push.$(TODO_CELL)
 cellery-push.$(TODO_CELL):
 	cellery push $(if $(CELLERY_REGISTRY),$(CELLERY_REGISTRY)/)$(CELLERY_ORG)/$(TODO_CELL)-cell:$(CELLERY_VERSION)  -u $(CELLERY_USER) -p $(CELLERY_USER_PASS)
+
+.PHONY: cellery-push.$(ADVANCED_CELL)
+cellery-push.$(ADVANCED_CELL):
+	cd  $(ADVANCED_CELL); \
+	$(MAKE) cellery-push
+	
