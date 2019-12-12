@@ -53,6 +53,7 @@ LOAD_GEN_CELL_DOCKER_TARGETS := $(addprefix docker.$(LOAD_GEN_CELL)., $(LOAD_GEN
 LOAD_GEN_CELL_DOCKER_PUSH_TARGETS := $(addprefix docker-push.$(LOAD_GEN_CELL)., $(LOAD_GEN_COMPONENTS))
 
 RESOURCES_DIR := resources
+PET_BE_RESOURCES_DIR := $(PET_BE_CELL)/src/pet_be/$(RESOURCES_DIR)
 
 all: clean build docker
 
@@ -161,7 +162,7 @@ $(PET_BE_CELL_DOCKER_TARGETS):
 .PHONY: $(PET_FE_CELL_DOCKER_TARGETS)
 $(PET_FE_CELL_DOCKER_TARGETS):
 	$(eval COMPONENT=$(patsubst docker.$(PET_FE_CELL).%,%,$@))
-	cp -f ../../cells/$(SAMPLE)/$(PET_BE_CELL)/$(RESOURCES_DIR)/pet-store.swagger.json $(PET_FE_CELL)/$(COMPONENT)/$(RESOURCES_DIR)/
+	cp -f ../../cells/$(SAMPLE)/$(PET_BE_RESOURCES_DIR)/pet-store.swagger.json $(PET_FE_CELL)/$(COMPONENT)/$(RESOURCES_DIR)/
 	docker build -t ${DOCKER_REPO}/samples-$(SAMPLE)-$(COMPONENT):${DOCKER_IMAGE_TAG} ./$(PET_FE_CELL)/$(COMPONENT)
 
 .PHONY: $(LOAD_GEN_CELL_DOCKER_TARGETS)
