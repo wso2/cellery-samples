@@ -11,7 +11,7 @@ All 4 micro services are implemented in [node.js](https://nodejs.org/en/).
 
 
 ### Pet-be cell
-The below shown is the cell file for the pet-be cell which is in [pet-be.bal](pet-be.bal).
+The below shown is the cell file for the pet-be cell which is in [pet-be.bal](src/pet_be/pet-be.bal).
 
 ```bash
 import celleryio/cellery;
