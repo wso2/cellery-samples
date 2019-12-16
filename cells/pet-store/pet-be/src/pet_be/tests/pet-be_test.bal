@@ -33,7 +33,8 @@ function setup() {
 @test:Config {}
 function testDocker() {
     map<cellery:Env> envVars = {PET_BE_CELL_URL: { value: PET_BE_CONTROLLER_ENDPOINT }};
-    error? a = cellery:runDockerTest("docker.io/wso2cellery/samples-pet-store-order-tests", envVars);
+    error? err = cellery:runDockerTest("docker.io/wso2cellery/samples-pet-store-order-tests", envVars);
+    test:assertFalse(err is error, msg = "Docker image test failed.\n Reason: \n" + err.toString() + "\n");
 }
 
 # Tests inserting order from an external cell by calling the pet-be gateway
@@ -54,7 +55,7 @@ function testInsertOrder() {
     string responseStr = handleResponse(response);
     test:assertTrue(
         responseStr.startsWith(expectedPostResponsePrefix), 
-        msg = "Order insertion failed.\n Expected: \n" + expectedPostResponsePrefix + "\n Actual: \n" + responseStr
+        msg = "Order insertion failed.\n Expected: \n" + expectedPostResponsePrefix + "\n Actual: \n" + responseStr + "\n"
     );
 }
 
