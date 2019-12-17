@@ -242,13 +242,13 @@ Follow below instructions to build, run and push the `todo` cell.
 2. After creating the persistence volume. Build the cell image for todo-cell project by executing the `cellery build` command as shown below.
  Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build advanced/todo/ <CELLERY_HUB_ORG>/todo-cell-advanced:latest   
+    $ cellery build advanced/todo/ <CELLERY_HUB_ORG>/todo-advanced-cell:latest   
     
-    ✔ Building image <CELLERY_HUB_ORG>/todo-cell-advanced:latest
+    ✔ Building image <CELLERY_HUB_ORG>/todo-advanced-cell:latest
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/todo-cell-advanced:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/todo-advanced-cell:latest
     
     What's next?
     --------------------------------------------------------
@@ -259,16 +259,16 @@ Follow below instructions to build, run and push the `todo` cell.
 
 3. Once the todo-cell is built,, you can run the cell and create the `todos` instance by below command. 
     ```
-    $ cellery run wso2cellery/todo-cell-advanced:latest -n todos -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=root                                                        
+    $ cellery run wso2cellery/todo-advanced-cell:latest -n todos -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=root                                                        
        ✔ Extracting Cell Image wso2cellery/todo-cell:latest
-       ✔ Reading Image wso2cellery/todo-cell-advanced:latest
+       ✔ Reading Image wso2cellery/todo-advanced-cell:latest
        Info: Main Instance: todos
        Info: Validating dependencies
        Info: Instances to be Used
        ------------------------------------------------------------------------------------------------------------------------
        INSTANCE NAME                  CELL IMAGE                          USED INSTANCE             KIND            SHARED
        ------------------------------------------------------------------------------------------------------------------------
-       todos                          wso2cellery/todo-cell-advanced:latest   To be Created             cell       -
+       todos                          wso2cellery/todo-advanced-cell:latest   To be Created             cell       -
        ------------------------------------------------------------------------------------------------------------------------
        Info: Dependency Tree to be Used
        
@@ -276,7 +276,7 @@ Follow below instructions to build, run and push the `todo` cell.
        ✔ Starting main instance todos
        
        
-       ✔ Successfully deployed cell image: wso2cellery/todo-cell-advanced:latest
+       ✔ Successfully deployed cell image: wso2cellery/todo-advanced-cell:latest
        
        What's next?
        --------------------------------------------------------
@@ -292,12 +292,12 @@ Follow below instructions to build, run and push the `todo` cell.
         cell Instances:
          INSTANCE                 IMAGE                 STATUS   COMPONENTS           AGE
         ---------- ----------------------------------- -------- ------------ ----------------------
-         todos      wso2cellery/todo-cell-advanced:latest   Ready    2            1 minutes 40 seconds
+         todos      wso2cellery/todo-advanced-cell:latest   Ready    2            1 minutes 40 seconds
     ```
     
 5. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components of the cell image.
     ```
-    $ cellery view <CELLERY_HUB_ORG>/todo-cell-advanced:latest
+    $ cellery view <CELLERY_HUB_ORG>/todo-advanced-cell:latest
     ```
     ![todo-cell view](../../../docs/images/todo-cell/todo-cell.png)
     
@@ -351,20 +351,20 @@ Execute below steps to invoke `todo-api` in Global APIM.
 As a final step, let's push your todo-cell [cellery hub](https://hub.cellery.io/) account as shown below.
 
 ```bash
-    $ cellery push <CELLERY_HUB_ORG>/todo-cell-advanced:latest
+    $ cellery push <CELLERY_HUB_ORG>/todo-advanced-cell:latest
     ✔ Connecting to registry-1.docker.io
-    ✔ Reading image <CELLERY_HUB_ORG>/todo-cell-advanced:latest from the Local Repository
-    ✔ Checking if the image <CELLERY_HUB_ORG>/todo-cell-advanced:latest already exists in the Registry
-    ✔ Pushing image <CELLERY_HUB_ORG>/todo-cell-advanced:latest
+    ✔ Reading image <CELLERY_HUB_ORG>/todo-advanced-cell:latest from the Local Repository
+    ✔ Checking if the image <CELLERY_HUB_ORG>/todo-advanced-cell:latest already exists in the Registry
+    ✔ Pushing image <CELLERY_HUB_ORG>/todo-advanced-cell:latest
     
     Image Digest : sha256:8935b3495a6c1cbc466ac28f4120c3836894e8ea1563fb5da7ecbd17e4b80df5
     
-    ✔ Successfully pushed cell image: <CELLERY_HUB_ORG>/todo-cell-advanced:latest
+    ✔ Successfully pushed cell image: <CELLERY_HUB_ORG>/todo-advanced-cell:latest
     
     What's next?
     --------------------------------------------------------
     Execute the following command to pull the image:
-      $ cellery pull <CELLERY_HUB_ORG>/todo-cell-advanced:latest
+      $ cellery pull <CELLERY_HUB_ORG>/todo-advanced-cell:latest
     --------------------------------------------------------
 ```
 
