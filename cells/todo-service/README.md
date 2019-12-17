@@ -256,7 +256,7 @@ Follow below instructions to build, run and push the `todo` cell.
 
 2. After creating the persistence volume. Build the cell image for todo-cell project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build todo-cell.bal <CELLERY_HUB_ORG>/todo-cell:latest
+    $ cellery build todo/ <CELLERY_HUB_ORG>/todo-cell:latest
     ✔ Building image <CELLERY_HUB_ORG>/todo-cell:latest
     ✔ Saving new Image to the Local Repository
     
