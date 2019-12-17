@@ -17,6 +17,7 @@ import ballerina/io;
 import ballerina/test;
 import ballerina/http;
 import celleryio/cellery;
+import ballerina/runtime;
 
 string PET_BE_CONTROLLER_ENDPOINT = "";
 
@@ -41,6 +42,7 @@ function testDocker() {
 @test:Config {}
 function testInsertOrder() {
     io:println(PET_BE_CONTROLLER_ENDPOINT);
+    runtime:sleep(10000);
 
     string ordersContext = "/orders";
     string payload = "{\"order\":[{\"id\":1,\"amount\":1}]}";
