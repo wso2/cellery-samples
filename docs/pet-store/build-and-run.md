@@ -18,8 +18,7 @@ This readme explains the steps to build and run the pet-store cells by your own.
 ### 2. Build pet-be cell
 1.  Build the pet-be cell by executing `cellery build` command as shown below. 
    ```
-   $ cd pet-be
-   $ cellery build pet-be.bal wso2cellery/pet-be-cell:latest
+   $ cellery build pet-be/ wso2cellery/pet-be-cell:latest
    Warning: Value is empty for environment variable "ORDER_HOST"
    Warning: Value is empty for environment variable "CATALOG_HOST"
    Warning: Value is empty for environment variable "CUSTOMER_HOST"
