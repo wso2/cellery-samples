@@ -197,12 +197,11 @@ Follow below instructions to build, run and push the `todo` cell.
     ```
     
     #### Local Setup
-    1. SSH in to kubernetes node. Enter the password as ```vagrant``` when prompted.
+    1. SSH in to kubernetes node.
     ```bash
-       $ ssh vagrant@192.168.56.10
-       vagrant@192.168.56.10's password:
+       $ minikube ssh -p cellery-local-setup
     ```       
-    2. Create a mysql folder in /tmp directory.
+    2. Create a mysql folder in /tmp directory inside minikube vm.
     ```bash
        $ mkdir -p /tmp/mysql
     ```
