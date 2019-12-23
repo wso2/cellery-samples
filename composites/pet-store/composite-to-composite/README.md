@@ -36,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component portalComponent = {
             name: "portal",
             source: {
-                image: "wso2cellery/samples-pet-store-portal:latest"
+                image: "wso2cellery/samples-pet-store-portal:0.6.0"
             },
             ingresses: {
                 portal: <cellery:HttpPortIngress>{
@@ -52,7 +52,7 @@ public function build(cellery:ImageName iName) returns error? {
             },
             dependencies: {
                 composites: {
-                    petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-guest-mode-composite", ver: "latest" }
+                    petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-guest-mode-composite", ver: "0.6.0" }
                 }
         }
     };
@@ -97,18 +97,18 @@ Now let us quick run or build and run the composites. And also observe the compo
 please go [here](#build-and-run-the-composite).
 
 ```
-$ cellery run wso2cellery/pet-fe-guest-mode-composite:latest -n pet-fe-guest -l petStoreBackend:pet-be-guest -d
+$ cellery run wso2cellery/pet-fe-guest-mode-composite:0.6.0 -n pet-fe-guest -l petStoreBackend:pet-be-guest -d
 ```
 Now [create the ingress](#create-ingress) to access the pet-store application. 
 
 ## Create Ingress
 1. You need to create the ingress to allow the external traffic to the pet-store application by below command. 
-Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/master/composites/pet-store/composite-to-composite/pet-store-guest-ingress.yaml) 
+Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/v0.6.0/composites/pet-store/composite-to-composite/pet-store-guest-ingress.yaml) 
 ingress is created to direct the traffic to kubernetes service `pet-fe-guest--portal-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `pet-fe-guest`, 
 the service name will be `pet-fe-guest--portal-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-pet-fe-guest`), you will have to modify the ingress service name, 
 and create it accordingly (e.g. `my-pet-fe-guest--portal-service`).
 ```
- $ kubectl apply -f https://raw.githubusercontent.com/wso2/cellery-samples/master/composites/pet-store/composite-to-composite/pet-store-guest-ingress.yaml
+ $ kubectl apply -f https://raw.githubusercontent.com/wso2/cellery-samples/v0.6.0/composites/pet-store/composite-to-composite/pet-store-guest-ingress.yaml
 ```
 2. Check the ingress rules are correctly applied by getting the list of ingresses as shown below.
 ```
@@ -139,43 +139,43 @@ You can perform a [Quick Run](#quick-run) or build and run the pet-store composi
    ```
 1. Build the cell image for pet-store project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [Cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build pet-be-guest-mode-composite.bal <CELLERY_HUB_ORG>/pet-be-guest-mode-composite:latest
+    $ cellery build pet-be-guest-mode-composite.bal <CELLERY_HUB_ORG>/pet-be-guest-mode-composite:0.6.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <CELLERY_HUB_ORG>/pet-be-guest-mode-composite:latest
+    ✔ Building image <CELLERY_HUB_ORG>/pet-be-guest-mode-composite:0.6.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-be-guest-mode-composite:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-be-guest-mode-composite:0.6.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/pet-be-guest-mode-composite:latest
+      $ cellery run <CELLERY_HUB_ORG>/pet-be-guest-mode-composite:0.6.0
     --------------------------------------------------------
 
-    $ cellery build pet-fe-guest-mode-composite.bal <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:latest
+    $ cellery build pet-fe-guest-mode-composite.bal <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:0.6.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:latest
+    ✔ Building image <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:0.6.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:0.6.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:latest
+      $ cellery run <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:0.6.0
     --------------------------------------------------------
     
     ```
 
 2. Once the pet-store is built, you can run the composite and create the `pet-fe-guest` instance by below command. 
 ```
-$ cellery run wso2cellery/pet-fe-guest-mode-composite:latest -n pet-fe-guest -l petStoreBackend:pet-be-guest -d
-  ✔ Extracting Cell Image wso2cellery/pet-fe-guest-mode-composite:latest
-  ✔ Reading Image wso2cellery/pet-fe-guest-mode-composite:latest
+$ cellery run wso2cellery/pet-fe-guest-mode-composite:0.6.0 -n pet-fe-guest -l petStoreBackend:pet-be-guest -d
+  ✔ Extracting Cell Image wso2cellery/pet-fe-guest-mode-composite:0.6.0
+  ✔ Reading Image wso2cellery/pet-fe-guest-mode-composite:0.6.0
   ✔ Parsing dependency links
   Info: Main Instance: pet-fe-guest
   Info: Validating dependencies
@@ -183,8 +183,8 @@ $ cellery run wso2cellery/pet-fe-guest-mode-composite:latest -n pet-fe-guest -l 
   ------------------------------------------------------------------------------------------------------------------------
   INSTANCE NAME                  CELL IMAGE                          USED INSTANCE             KIND            SHARED
   ------------------------------------------------------------------------------------------------------------------------
-  pet-be-guest                   wso2cellery/pet-be-guest-mode-composite:latest To be Created             Composite       -
-  pet-fe-guest                   wso2cellery/pet-fe-guest-mode-composite:latest To be Created             Composite       -
+  pet-be-guest                   wso2cellery/pet-be-guest-mode-composite:0.6.0 To be Created             Composite       -
+  pet-fe-guest                   wso2cellery/pet-fe-guest-mode-composite:0.6.0 To be Created             Composite       -
   ------------------------------------------------------------------------------------------------------------------------
   Info: Dependency Tree to be Used
   
@@ -195,7 +195,7 @@ $ cellery run wso2cellery/pet-fe-guest-mode-composite:latest -n pet-fe-guest -l 
   ✔ Starting main instance pet-fe-guest
   
   
-  ✔ Successfully deployed cell image: wso2cellery/pet-fe-guest-mode-composite:latest
+  ✔ Successfully deployed cell image: wso2cellery/pet-fe-guest-mode-composite:0.6.0
   
   What's next?
   --------------------------------------------------------
@@ -212,14 +212,14 @@ $ cellery run wso2cellery/pet-fe-guest-mode-composite:latest -n pet-fe-guest -l 
  Composite Instances:
     INSTANCE                         IMAGE                        STATUS   COMPONENTS           AGE
  -------------- ------------------------------------------------ -------- ------------ ---------------------
-  pet-be-guest   wso2cellery/pet-be-guest-mode-composite:latest   Ready    4            1 minutes 8 seconds
-  pet-fe-guest   wso2cellery/pet-fe-guest-mode-composite:latest   Ready    1            1 minutes
+  pet-be-guest   wso2cellery/pet-be-guest-mode-composite:0.6.0   Ready    4            1 minutes 8 seconds
+  pet-fe-guest   wso2cellery/pet-fe-guest-mode-composite:0.6.0   Ready    1            1 minutes
   
 ```
     
 4. Execute `cellery view` to see the components of the composite. This will open a webpage in a browser that allows to visualize the components of the composite image.
     ```
-    $ cellery view <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:latest
+    $ cellery view <CELLERY_HUB_ORG>/pet-fe-guest-mode-composite:0.6.0
     ```
     ![pet-store view](../../../docs/images/composites/pet-store/comp-to-comp/cellery-view.png)
 

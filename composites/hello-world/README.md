@@ -20,7 +20,7 @@ Now let's look at the steps required to try this hello-world cell.
 ### 2. Build, run and push hello world composite
 In this section let us focus on build, run and push a [hello-world composite](hello-world-composite.bal). 
 
-The `helloComposite` contains one component `hello`. The hello component is defined by a container image `wso2cellery/samples-hello-world-webapp:latest-dev` 
+The `helloComposite` contains one component `hello`. The hello component is defined by a container image `wso2cellery/samples-hello-world-webapp:0.6.0` 
 which is written in Node.js and it is a simple webapp. An input variable `HELLO_NAME` is expected by the hello component with default value `Cellery` to render the webpage. 
 These input parameters can be supplied when starting up the compositeto modify the runtime behaviour. 
 
@@ -34,7 +34,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component helloComponent = {
         name: "hello",
         src: {
-            image: "wso2cellery/samples-hello-world-webapp:latest-dev"
+            image: "wso2cellery/samples-hello-world-webapp:0.6.0"
         },
         ingresses: {
             webUI: <cellery:HttpPortIngress>{
@@ -71,19 +71,19 @@ Follow below instructions to build, run and push the hello world composite.
 
 1. Build the composite image for hello-world project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build hello-world-composite.bal <CELLERY_HUB_ORG>/hello-world-composite:latest
+    $ cellery build hello-world-composite.bal <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <CELLERY_HUB_ORG>/hello-world-composite:latest
+    ✔ Building image <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built image: <CELLERY_HUB_ORG>/hello-world-composite:latest
+    ✔ Successfully built image: <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/helloworld:latest
+      $ cellery run <CELLERY_HUB_ORG>/helloworld:0.6.0
     --------------------------------------------------------
     ```
 
@@ -91,12 +91,12 @@ Follow below instructions to build, run and push the hello world composite.
 Therefore, run the hello-world composite image with ‘cellery run’ command with input parameters your name for `HELLO_NAME` 
 as shown below to change the hello-world components's default behaviour. 
     ```
-    $ cellery run <CELLERY_HUB_ORG/hello-world-composite:latest -e HELLO_NAME=WSO2 -n hello
-       ✔ Extracting Cell Image  <CELLERY_HUB_ORG/hello-world-composite:latest
+    $ cellery run <CELLERY_HUB_ORG/hello-world-composite:0.6.0 -e HELLO_NAME=WSO2 -n hello
+       ✔ Extracting Cell Image  <CELLERY_HUB_ORG/hello-world-composite:0.6.0
        
        Main Instance: hello
        
-       ✔ Reading Cell Image  <CELLERY_HUB_ORG/hello-world-composite:latest
+       ✔ Reading Cell Image  <CELLERY_HUB_ORG/hello-world-composite:0.6.0
        ✔ Validating environment variables
        ✔ Validating dependencies
        
@@ -104,7 +104,7 @@ as shown below to change the hello-world components's default behaviour.
        
          INSTANCE NAME              CELL IMAGE                               USED INSTANCE   SHARED
         ---------------- ----------------------------------------------- ------------------- --------
-         hello           <CELLERY_HUB_ORG>/hello-world-composite:latest   To be Created         -
+         hello           <CELLERY_HUB_ORG>/hello-world-composite:0.6.0   To be Created         -
        
        Dependency Tree to be Used:
        
@@ -113,7 +113,7 @@ as shown below to change the hello-world components's default behaviour.
        ✔ Starting main instance my-hello-world
        
        
-       ✔ Successfully deployed image:  <CELLERY_HUB_ORG>/hello-world-composite:latest
+       ✔ Successfully deployed image:  <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
        
        What's next?
        --------------------------------------------------------
@@ -129,15 +129,15 @@ as shown below to change the hello-world components's default behaviour.
     Composite Instances:
       INSTANCE                    IMAGE                     STATUS   COMPONENTS            AGE
      ---------- ------------------------------------------ -------- ------------ -----------------------
-      hello      wso2cellery/hello-world-composite:latest   Ready    1            10 minutes 45 seconds   
+      hello      wso2cellery/hello-world-composite:0.6.0   Ready    1            10 minutes 45 seconds   
     ```
 4. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components and dependent cells/components of the composite image.
     ```
-    $ cellery view <CELLERY_HUB_ORG>/hello-world-composite:latest
+    $ cellery view <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
     ```
     ![hello world composite view](../../docs/images/composites/hello-world/hello-world-view.png)
     
-5. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/master/composites/hello-world/hello-world-ingress.yaml) 
+5. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/v0.6.0/composites/hello-world/hello-world-ingress.yaml) 
    ingress is created to direct the traffic to kubernetes service `hello--hello-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `hello`, 
    the service name will be `hello--hello-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-hello`), you will have to modify the ingress service name, 
    and create it accordingly (e.g. `my-hello--hello-service`).
@@ -161,20 +161,20 @@ as shown below to change the hello-world components's default behaviour.
     
 9. As a final step, let us push your first composite project to your [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
-    $ cellery push <CELLERY_HUB_ORG>/hello-world-composite:latest
+    $ cellery push <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
     ✔ Connecting to registry-1.docker.io
-    ✔ Reading image <CELLERY_HUB_ORG>/hello-world-composite:latest from the Local Repository
-    ✔ Checking if the image <CELLERY_HUB_ORG>/hello-world-composite:latest already exists in the Registry
-    ✔ Pushing image <CELLERY_HUB_ORG>/hello-world-composite:latest
+    ✔ Reading image <CELLERY_HUB_ORG>/hello-world-composite:0.6.0 from the Local Repository
+    ✔ Checking if the image <CELLERY_HUB_ORG>/hello-world-composite:0.6.0 already exists in the Registry
+    ✔ Pushing image <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
     
     Image Digest : sha256:8935b3495a6c1cbc466ac28f4120c3836894e8ea1563fb5da7ecbd17e4b80df5
     
-    ✔ Successfully pushed image: <CELLERY_HUB_ORG>/hello-world-composite:latest
+    ✔ Successfully pushed image: <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to pull the image:
-      $ cellery pull <CELLERY_HUB_ORG>/hello-world-composite:latest
+      $ cellery pull <CELLERY_HUB_ORG>/hello-world-composite:0.6.0
     --------------------------------------------------------
     ```
 Congratulations! You have successfully created your own cell!

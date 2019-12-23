@@ -20,7 +20,7 @@ Now let's look at the steps required to try this hello-world cell.
 ### 2. Build, run and push hello world cell
 In this section let's focus on build, run and push a [hello-world cell](hello-world.bal). 
 
-The `helloCell` contains one component `hello`. The hello component is defined by a container image `wso2cellery/samples-hello-world-webapp:latest` 
+The `helloCell` contains one component `hello`. The hello component is defined by a container image `wso2cellery/samples-hello-world-webapp:0.6.0` 
 which is written in Node.js and it is a simple webapp. This component has a web ingress with default vhost `hello-world.com`.
 An input variable `HELLO_NAME` is expected by the hello component with default value `Cellery` to render the webpage. 
 These input parameters can be supplied when starting up the cell to modify the runtime behaviour. 
@@ -36,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component helloComponent = {
         name: "hello",
         src: {
-            image: "wso2cellery/samples-hello-world-webapp:latest-dev"
+            image: "wso2cellery/samples-hello-world-webapp:0.6.0"
         },
         ingresses: {
             webUI: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
@@ -82,19 +82,19 @@ Follow below instructions to build, run and push the hello world cell.
 
 1. Build the cell image for hello-world project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build hello-world.bal <CELLERY_HUB_ORG>/hello-world-cell:latest
+    $ cellery build hello-world.bal <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <CELLERY_HUB_ORG>/hello-world-cell:latest
+    ✔ Building image <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/hello-world-cell:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/helloworld:latest
+      $ cellery run <CELLERY_HUB_ORG>/helloworld:0.6.0
     --------------------------------------------------------
     ```
 
@@ -102,12 +102,12 @@ Follow below instructions to build, run and push the hello world cell.
 Therefore, run the hello-world cell image with ‘cellery run’ command with input parameters `my-hello-world.com` for `VHOST_NAME`, and your name for `HELLO_NAME` 
 as shown below to change the hello-world cell's default behaviour. 
     ```
-    $ cellery run <CELLERY_HUB_ORG/hello-world-cell:latest -e VHOST_NAME=my-hello-world.com -e HELLO_NAME=WSO2 -n my-hello-world
-       ✔ Extracting Cell Image  <CELLERY_HUB_ORG/hello-world-cell:latest
+    $ cellery run <CELLERY_HUB_ORG/hello-world-cell:0.6.0 -e VHOST_NAME=my-hello-world.com -e HELLO_NAME=WSO2 -n my-hello-world
+       ✔ Extracting Cell Image  <CELLERY_HUB_ORG/hello-world-cell:0.6.0
        
        Main Instance: my-hello-world
        
-       ✔ Reading Cell Image  <CELLERY_HUB_ORG/hello-world-cell:latest
+       ✔ Reading Cell Image  <CELLERY_HUB_ORG/hello-world-cell:0.6.0
        ✔ Validating environment variables
        ✔ Validating dependencies
        
@@ -115,7 +115,7 @@ as shown below to change the hello-world cell's default behaviour.
        
          INSTANCE NAME              CELL IMAGE                        USED INSTANCE   SHARED
         ---------------- ------------------------------------------- --------------- --------
-         my-hello-world    <CELLERY_HUB_ORG>/hello-world-cell:latest   To be Created    -
+         my-hello-world    <CELLERY_HUB_ORG>/hello-world-cell:0.6.0   To be Created    -
        
        Dependency Tree to be Used:
        
@@ -126,7 +126,7 @@ as shown below to change the hello-world cell's default behaviour.
        ✔ Starting main instance my-hello-world
        
        
-       ✔ Successfully deployed cell image:  <CELLERY_HUB_ORG>/hello-world-cell:latest
+       ✔ Successfully deployed cell image:  <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
        
        What's next?
        --------------------------------------------------------
@@ -140,11 +140,11 @@ as shown below to change the hello-world cell's default behaviour.
     $ cellery list instances
                         INSTANCE                                   CELL IMAGE                   STATUS                            GATEWAY                            COMPONENTS           AGE
        ------------------------------------------ -------------------------------------------- -------- ----------------------------------------------------------- ------------ ----------------------
-        hello-world-cell-1-0-0-676b2131           <CELLERY_HUB_ORG>/hello-world-cell:latest      Ready       hello-world-cell-1-0-0-676b2131--gateway-service             1        10 minutes 1 seconds
+        hello-world-cell-1-0-0-676b2131           <CELLERY_HUB_ORG>/hello-world-cell:0.6.0      Ready       hello-world-cell-1-0-0-676b2131--gateway-service             1        10 minutes 1 seconds
     ```
 4. Execute `cellery view` to see the components of the cell. This will open a webpage in a browser that allows to visualize the components and dependent cells of the cell image.
     ```
-    $ cellery view <CELLERY_HUB_ORG>/hello-world-cell:latest
+    $ cellery view <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
     ```
     ![hello world cell view](../../docs/images/hello-world/hello-web-cell.png)
     
@@ -154,20 +154,20 @@ Make sure you have configured the host entries correctly as mentioned in [local]
 
 6. As a final step, let's push your first cell project to your [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
-    $ cellery push <CELLERY_HUB_ORG>/hello-world-cell:latest
+    $ cellery push <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
     ✔ Connecting to registry-1.docker.io
-    ✔ Reading image <CELLERY_HUB_ORG>/hello-world-cell:latest from the Local Repository
-    ✔ Checking if the image <CELLERY_HUB_ORG>/hello-world-cell:latest already exists in the Registry
-    ✔ Pushing image <CELLERY_HUB_ORG>/hello-world-cell:latest
+    ✔ Reading image <CELLERY_HUB_ORG>/hello-world-cell:0.6.0 from the Local Repository
+    ✔ Checking if the image <CELLERY_HUB_ORG>/hello-world-cell:0.6.0 already exists in the Registry
+    ✔ Pushing image <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
     
     Image Digest : sha256:8935b3495a6c1cbc466ac28f4120c3836894e8ea1563fb5da7ecbd17e4b80df5
     
-    ✔ Successfully pushed cell image: <CELLERY_HUB_ORG>/hello-world-cell:latest
+    ✔ Successfully pushed cell image: <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to pull the image:
-      $ cellery pull <CELLERY_HUB_ORG>/hello-world-cell:latest
+      $ cellery pull <CELLERY_HUB_ORG>/hello-world-cell:0.6.0
     --------------------------------------------------------
     ```
 Congratulations! You have successfully created your own cell!

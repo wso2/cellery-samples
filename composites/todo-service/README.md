@@ -21,7 +21,7 @@ Now let's look at the steps required to try this todo-composite.
 ### 2. Build and run composite
 In this section let us focus on build and run a [todo composite](todo-composite.bal). 
 
-The `todo composite` contains two components `todo` and `mysql`. The `todo` component is defined by a container image `docker.io/wso2cellery/samples-todoapp-todos:latest` 
+The `todo composite` contains two components `todo` and `mysql`. The `todo` component is defined by a container image `docker.io/wso2cellery/samples-todoapp-todos:0.6.0` 
 which is written in Go Lang and it is a simple micro service that add/list/update todo items by connecting to database. The `mysql` component is a MySQL database that is used to 
 persists the todo items received by the `todo` component.
 
@@ -36,7 +36,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component mysqlComponent = {
             name: "mysql-db",
             src: {
-                image: "docker.io/wso2cellery/samples-todoapp-mysql:latest"
+                image: "docker.io/wso2cellery/samples-todoapp-mysql:0.6.0"
             },
             ingresses: {
                 orders:  <cellery:TCPIngress>{
@@ -53,7 +53,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component todoServiceComponent = {
         name: "todos",
         src: {
-            image: "docker.io/wso2cellery/samples-todoapp-todos:latest"
+            image: "docker.io/wso2cellery/samples-todoapp-todos:0.6.0"
         },
         ingresses: {
             todo:  <cellery:HttpPortIngress>{
@@ -95,34 +95,34 @@ Follow below instructions to build and run the `todo` composite.
 
 1. Build the cell image for todo-composite project by executing the `cellery build` command as shown below. Note `CELLERY_HUB_ORG` is your organization name in [cellery hub](https://hub.cellery.io/).
     ```
-    $ cellery build todo-composite.bal <CELLERY_HUB_ORG>/todo-composite:latest
+    $ cellery build todo-composite.bal <CELLERY_HUB_ORG>/todo-composite:0.6.0
     Hello World Cell Built successfully.
     
-    ✔ Building image <CELLERY_HUB_ORG>/todo-composite:latest
+    ✔ Building image <CELLERY_HUB_ORG>/todo-composite:0.6.0
     ✔ Saving new Image to the Local Repository
     
     
-    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/todo-composite:latest
+    ✔ Successfully built cell image: <CELLERY_HUB_ORG>/todo-composite:0.6.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to run the image:
-      $ cellery run <CELLERY_HUB_ORG>/todo-composite:latest
+      $ cellery run <CELLERY_HUB_ORG>/todo-composite:0.6.0
     --------------------------------------------------------
     ```
 
 2. Once the todo-composite is built, you can run the composite and create the `todos` instance by below command. 
     ```
-    $ cellery run <CELLERY_HUB_ORG>/todo-composite:latest -n todos
-       ✔ Extracting Cell Image <CELLERY_HUB_ORG>/todo-composite:latest
-       ✔ Reading Image <CELLERY_HUB_ORG>/todo-composite:latest
+    $ cellery run <CELLERY_HUB_ORG>/todo-composite:0.6.0 -n todos
+       ✔ Extracting Cell Image <CELLERY_HUB_ORG>/todo-composite:0.6.0
+       ✔ Reading Image <CELLERY_HUB_ORG>/todo-composite:0.6.0
        Info: Main Instance: todos
        Info: Validating dependencies
        Info: Instances to be Used
        ------------------------------------------------------------------------------------------------------------------------
        INSTANCE NAME                  CELL IMAGE                          USED INSTANCE             KIND            SHARED
        ------------------------------------------------------------------------------------------------------------------------
-       todos                          <CELLERY_HUB_ORG>/todo-composite:latest   To be Created             Composite       -
+       todos                          <CELLERY_HUB_ORG>/todo-composite:0.6.0   To be Created             Composite       -
        ------------------------------------------------------------------------------------------------------------------------
        Info: Dependency Tree to be Used
        
@@ -130,7 +130,7 @@ Follow below instructions to build and run the `todo` composite.
        ✔ Starting main instance todos
        
        
-       ✔ Successfully deployed cell image: <CELLERY_HUB_ORG>/todo-composite:latest
+       ✔ Successfully deployed cell image: <CELLERY_HUB_ORG>/todo-composite:0.6.0
        
        What's next?
        --------------------------------------------------------
@@ -146,12 +146,12 @@ Follow below instructions to build and run the `todo` composite.
         Composite Instances:
          INSTANCE                 IMAGE                 STATUS   COMPONENTS           AGE
         ---------- ----------------------------------- -------- ------------ ----------------------
-         todos      <CELLERY_HUB_ORG>/todo-composite:latest   Ready    2            1 minutes 40 seconds
+         todos      <CELLERY_HUB_ORG>/todo-composite:0.6.0   Ready    2            1 minutes 40 seconds
     ```
     
 4. Execute `cellery view` to see the components of the composite. This will open a webpage in a browser that allows to visualize the components of the composite image.
     ```
-    $ cellery view <CELLERY_HUB_ORG>/todo-composite:latest
+    $ cellery view <CELLERY_HUB_ORG>/todo-composite:0.6.0
     ```
     ![todo-composite view](../../docs/images/composites/todo-service/todo-composite.png)
     
@@ -242,7 +242,7 @@ hence it simply opens up the service to external access.
 
 Execute below steps to create ingress and invoke the application.
 
-1. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/master/composites/todo-service/todo-service-ingress.yaml) 
+1. Execute below command to create an ingress. Please note [this](https://raw.githubusercontent.com/wso2/cellery-samples/v0.6.0/composites/todo-service/todo-service-ingress.yaml) 
 ingress is created to direct the traffic to kubernetes service `todos--todos-service` and this name is depends on the instance name of the composite (as we have started the composite instance as `todos`, 
 the service name will be `todos--todos-service`). Therefore, in case if you have started the composite instance with different name (e.g. `my-todos`), you will have to modify the ingress service name, 
 and create it accordingly (e.g. `my-todos--todos-service`).
@@ -367,20 +367,20 @@ Now you can push the cell image to [Cellery Hub](https://hub.cellery.io/) as exp
 ### 4. Push your composite  
 1. As a final step, let's push your todo-composite [cellery hub](https://hub.cellery.io/) account as shown below.
     ```
-    $ cellery push <CELLERY_HUB_ORG>/todo-composite:latest
+    $ cellery push <CELLERY_HUB_ORG>/todo-composite:0.6.0
     ✔ Connecting to registry-1.docker.io
-    ✔ Reading image <CELLERY_HUB_ORG>/todo-composite:latest from the Local Repository
-    ✔ Checking if the image <CELLERY_HUB_ORG>/todo-composite:latest already exists in the Registry
-    ✔ Pushing image <CELLERY_HUB_ORG>/todo-composite:latest
+    ✔ Reading image <CELLERY_HUB_ORG>/todo-composite:0.6.0 from the Local Repository
+    ✔ Checking if the image <CELLERY_HUB_ORG>/todo-composite:0.6.0 already exists in the Registry
+    ✔ Pushing image <CELLERY_HUB_ORG>/todo-composite:0.6.0
     
     Image Digest : sha256:8935b3495a6c1cbc466ac28f4120c3836894e8ea1563fb5da7ecbd17e4b80df5
     
-    ✔ Successfully pushed cell image: <CELLERY_HUB_ORG>/todo-composite:latest
+    ✔ Successfully pushed cell image: <CELLERY_HUB_ORG>/todo-composite:0.6.0
     
     What's next?
     --------------------------------------------------------
     Execute the following command to pull the image:
-      $ cellery pull <CELLERY_HUB_ORG>/todo-composite:latest
+      $ cellery pull <CELLERY_HUB_ORG>/todo-composite:0.6.0
     --------------------------------------------------------
     ```
 Congratulations! You have successfully created your own composite!

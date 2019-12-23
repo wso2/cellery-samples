@@ -13,11 +13,11 @@ the changes. With this you can patch the component's docker image and environmen
 
 Follow the below mentioned steps to patch the controller component of the running cell pet-be.  
 
-Let us assume the pet-be instance's controller component should be updated with docker image `wso2cellery/samples-pet-store-controller:latestv2`. 
+Let us assume the pet-be instance's controller component should be updated with docker image `wso2cellery/samples-pet-store-controller:0.6.0v2`. 
 
 1) Patch the currently running `pet-be` instance's controller component with below command.
 ```
-$ cellery patch pet-be controller --container-image wso2cellery/samples-pet-store-controller:latestv2
+$ cellery patch pet-be controller --container-image wso2cellery/samples-pet-store-controller:0.6.0v2
 ```
 3) Now execute `kubectl get pods` and you can see the pods of the `pet-be` are getting initialized. And finally, older pods are getting terminated.
 ```
@@ -37,7 +37,7 @@ pet-fe--sts-deployment-59dbb995c7-g7tc7          3/3     Running           0    
 
 4) Now you can check the pet-store application is up and running by following the instructions [here](../../cells/pet-store/README.md#view-application).
 
-Refer to [CLI docs](https://github.com/wso2/cellery/blob/master/docs/cli-reference.md#cellery-patch) for a complete guide on performing updates on cell instances.
+Refer to [CLI docs](https://github.com/wso2/cellery/blob/v0.6.0/docs/cli-reference.md#cellery-patch) for a complete guide on performing updates on cell instances.
 
 ## Blue-Green and Canary deployment
 Blue-Green and Canary are advanced deployment patterns which can used to perform updates to running cell instances. 
@@ -52,10 +52,10 @@ Finally, terminate old instance.
 
 Please start the cell pet-store cell if it is not running already as mentioned [here](../../cells/pet-store#quick-run). 
 
-1) You can optionally build cell with `wso2cellery/pet-be-auto-scale-cell:latest` from cell file [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) 
+1) You can optionally build cell with `wso2cellery/pet-be-auto-scale-cell:0.6.0` from cell file [pet-be-auto-scale.bal](../../cells/pet-store/advanced/pet-be-auto-scale/pet-be-auto-scale.bal) 
 as explained [here](build-and-run.md). Or you can simply run directly which will pull the hosted cell from [cellery hub](https://hub.cellery.io/orgs/wso2cellery) via below command. 
 ```
-$ cellery run wso2cellery/pet-be-auto-scale-cell:latest -n pet-be-as
+$ cellery run wso2cellery/pet-be-auto-scale-cell:0.6.0 -n pet-be-as
 ```
 2) Make sure the `pet-be-as` cell is in `Ready` status with `cellery list instances` command.
 
@@ -130,7 +130,7 @@ $ kubectl logs pet-be-as--gateway-deployment-7f787575c6-pwvw7 cell-gateway
 cellery terminate pet-be
 ```
 
-Refer to [CLI docs](https://github.com/wso2/cellery/blob/master/docs/cli-reference.md#cellery-route-traffic) for a complete guide on route-traffic for cell instances.
+Refer to [CLI docs](https://github.com/wso2/cellery/blob/v0.6.0/docs/cli-reference.md#cellery-route-traffic) for a complete guide on route-traffic for cell instances.
 
 
 # What's Next?

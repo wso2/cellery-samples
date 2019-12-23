@@ -22,7 +22,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component mysqlComponent = {
             name: "mysql-db",
             src: {
-                image: "docker.io/wso2cellery/samples-todoapp-mysql:latest-dev"
+                image: "docker.io/wso2cellery/samples-todoapp-mysql:0.6.0"
             },
             ingresses: {
                 orders:  <cellery:TCPIngress>{
@@ -39,7 +39,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component todoServiceComponent = {
         name: "todos",
         src: {
-            image: "docker.io/wso2cellery/samples-todoapp-todos:latest-dev"
+            image: "docker.io/wso2cellery/samples-todoapp-todos:0.6.0"
         },
         ingresses: {
             todo:  <cellery:HttpPortIngress>{

@@ -33,7 +33,7 @@
    execution of tests.
  
  ```bash
-cellery test wso2cellery/pet-be-cell:latest -n pet-be
+cellery test wso2cellery/pet-be-cell:0.6.0 -n pet-be
 ```
  
  If you keep observing the pods in your cluster, you will see there are pods which are related to pet-fe-cell are
@@ -42,7 +42,7 @@ cellery test wso2cellery/pet-be-cell:latest -n pet-be
  
 ### Writing Cellery tests
  
-As outlined in [Cellery Testing](https://github.com/wso2/cellery/blob/master/docs/cell-testing.md), developer
+As outlined in [Cellery Testing](https://github.com/wso2/cellery/blob/v0.6.0/docs/cell-testing.md), developer
  has the flexibility to write two separate types of integration tests along with a combination of those two. 
  
 #### Writing Cellery tests involve below steps, 
@@ -86,15 +86,15 @@ pet-be/
 Modify the test file pet_be_test.bal generated from the previous step. You can rename the fie or add more test
 files in the same directory.
 
-Final pet-be-test.bal would look like [this](https://github.com/wso2/cellery-samples/blob/master/cells/pet-store/pet-be/src/pet_be/tests/pet-be_test.bal). Let's walk through each section and figure out what is taking place.
+Final pet-be-test.bal would look like [this](https://github.com/wso2/cellery-samples/blob/v0.6.0/cells/pet-store/pet-be/src/pet_be/tests/pet-be_test.bal). Let's walk through each section and figure out what is taking place.
   
 
 The below snippet of code is meant to run before the actual tests run and ```@test:BeforeSuite``` is used to denote it.  
 
-The image, instance name, and condition to start/share dependencies which are passed with the `cellery test` command are retrieved using the [```getTestConfig``` helper function](https://github.com/wso2/cellery/blob/master/docs/cell-testing.md#functiongettestconfig).
+The image, instance name, and condition to start/share dependencies which are passed with the `cellery test` command are retrieved using the [```getTestConfig``` helper function](https://github.com/wso2/cellery/blob/v0.6.0/docs/cell-testing.md#functiongettestconfig).
 
-Endpoints exposed by the cell are retrieved using the [```getInstanceEndpoints``` helper function](https://github.com/wso2/cellery/blob/master/docs/cell-testing.md#functiongetinstanceendpoints). The return value of this is passed 
-to the [```runInstances``` helper function](https://github.com/wso2/cellery/blob/master/docs/cell-testing.md#functionruninstances)
+Endpoints exposed by the cell are retrieved using the [```getInstanceEndpoints``` helper function](https://github.com/wso2/cellery/blob/v0.6.0/docs/cell-testing.md#functiongetinstanceendpoints). The return value of this is passed 
+to the [```runInstances``` helper function](https://github.com/wso2/cellery/blob/v0.6.0/docs/cell-testing.md#functionruninstances)
     
   ```ballerina
   
@@ -108,8 +108,8 @@ function setup() {
 }
 ``` 
 Below is the snippet of code where actual integration tests are executed. Endpoints which are exposed through above
- started instances are retrieved through the [```getInstanceEndpoints``` helper function](https://github.com/wso2/cellery/blob/master/docs/cell-testing.md#functiongetinstanceendpoints). Out of the endpoints returned, the 
- pet-be controller URL is retrieved and used to send out the request. Refer [pet-be-test.bal](https://github.com/wso2/cellery-samples/blob/master/cells/pet-store/pet-be/src/pet_be/tests/pet-be_test.bal) for the omitted part of the code. 
+ started instances are retrieved through the [```getInstanceEndpoints``` helper function](https://github.com/wso2/cellery/blob/v0.6.0/docs/cell-testing.md#functiongetinstanceendpoints). Out of the endpoints returned, the 
+ pet-be controller URL is retrieved and used to send out the request. Refer [pet-be-test.bal](https://github.com/wso2/cellery-samples/blob/v0.6.0/cells/pet-store/pet-be/src/pet_be/tests/pet-be_test.bal) for the omitted part of the code. 
  
 ```ballerina
 @test:Config
@@ -124,7 +124,7 @@ function testInsertOrder() {
     );
 }
 ```
-At the end, all instances which are started for the purpose of testing are teared down using the [```stopInstances```helper function](https://github.com/wso2/cellery/blob/master/docs/cell-testing.md#functionstopinstances). 
+At the end, all instances which are started for the purpose of testing are teared down using the [```stopInstances```helper function](https://github.com/wso2/cellery/blob/v0.6.0/docs/cell-testing.md#functionstopinstances). 
 ```@test:AfterSuite``` is used to denote this must be taken place upon the completion of test suite. 
 
 ```ballerina
@@ -136,7 +136,7 @@ public function cleanUp() {
 ##### Writing docker image based Cellery tests
 
 Cellery also supports running tests written in other languages by containerizing it in a docker image. Cellery 
-facilitates the helper function [```runDockerTest``` helper function](https://github.com/wso2/cellery/blob/master/docs/cell-testing.md#functionrundockertest)
+facilitates the helper function [```runDockerTest``` helper function](https://github.com/wso2/cellery/blob/v0.6.0/docs/cell-testing.md#functionrundockertest)
 
 Below are the steps to be followed in order to implement docker based tests for your Cell files.
 
@@ -152,9 +152,9 @@ Writing docker image based Cellery tests involve below steps,
 ##### i) Write tests, create a Dockerfile and push it to DockerHub
 
 As highlighted previously developers can select any framework and language to develop the test. For pet-be we have
- used a set of [integration tests](https://github.com/wso2/cellery-samples/blob/master/tests/pet-store/pet-be/order/src/test/java/io/cellery/test/petstore/be/PetBeTest.java) written using Java and TestNG. This set of tests is built
-  as a [docker image](https://github.com/wso2/cellery-samples/blob/master/tests/pet-store/pet-be/Dockerfile) and
-   pushed into DockerHub. The name of the image is ```docker.io/wso2cellery/samples-pet-store-order-tests:latest```.
+ used a set of [integration tests](https://github.com/wso2/cellery-samples/blob/v0.6.0/tests/pet-store/pet-be/order/src/test/java/io/cellery/test/petstore/be/PetBeTest.java) written using Java and TestNG. This set of tests is built
+  as a [docker image](https://github.com/wso2/cellery-samples/blob/v0.6.0/tests/pet-store/pet-be/Dockerfile) and
+   pushed into DockerHub. The name of the image is ```docker.io/wso2cellery/samples-pet-store-order-tests:0.6.0```.
 
 ##### ii) Define test function in the test bal file
 

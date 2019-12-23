@@ -49,10 +49,10 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
             cells: {
-                productsCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "products-cell", ver: "latest-dev"},
-                adsCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "ads-cell", ver: "latest-dev"},
-                cartCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "cart-cell", ver: "latest-dev"},
-                checkoutCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "checkout-cell", ver: "latest-dev"}
+                productsCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "products-cell", ver: "0.6.0"},
+                adsCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "ads-cell", ver: "0.6.0"},
+                cartCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "cart-cell", ver: "0.6.0"},
+                checkoutCellDep: <cellery:ImageName>{ org: "wso2cellery", name: "checkout-cell", ver: "0.6.0"}
             }
         }
     };

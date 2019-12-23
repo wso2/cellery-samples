@@ -24,7 +24,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component helloComponent = {
         name: "hello-api",
         src: {
-            image: "docker.io/wso2cellery/samples-hello-world-api-service:latest-dev"
+            image: "docker.io/wso2cellery/samples-hello-world-api-service:0.6.0"
         },
         ingresses: {
             ingress: <cellery:HttpApiIngress>{

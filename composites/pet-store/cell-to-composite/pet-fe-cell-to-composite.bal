@@ -23,7 +23,7 @@ public function build(cellery:ImageName iName) returns error? {
     cellery:Component portalComponent = {
         name: "portal",
         src: {
-            image: "wso2cellery/samples-pet-store-portal:latest-dev"
+            image: "wso2cellery/samples-pet-store-portal:0.6.0"
         },
         ingresses: {
             portal: <cellery:WebIngress>{ // Web ingress will be always exposed globally.
@@ -53,7 +53,7 @@ public function build(cellery:ImageName iName) returns error? {
         },
         dependencies: {
             composites: {
-                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-composite", ver: "latest-dev" }
+                petStoreBackend: <cellery:ImageName>{ org: "wso2cellery", name: "pet-be-composite", ver: "0.6.0" }
             }
         }
     };
